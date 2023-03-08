@@ -22,10 +22,25 @@ class Color {
         return color;
     }
 
-    public Color prod(Color color1){
+    public Color prod(Color color1) {
         Color color = new Color();
         color.r = this.r * color1.r;
         color.g = this.g * color1.g;
         color.b = this.b * color1.b;
         return color;
+    }
+    public Color difference(Color color1){
+        Color color = new Color();
+        color.r = this.r - color1.r;
+        color.g = this.g - color1.g;
+        color.b = this.b - color1.b;
+        return color;
+    }
+    public boolean is_close(Color color1){
+        float epsilon = 1e-5F;
+        Color color_diff = this.difference(color1);
+        return (Math.abs(color_diff.r) < epsilon &&
+                Math.abs(color_diff.r) < epsilon &&
+                Math.abs(color_diff.r) < epsilon);
+    }
 }

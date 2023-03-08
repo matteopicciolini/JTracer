@@ -8,5 +8,6 @@ class ColorTest {
         Color color2 = new Color(2.0f, 3.0f, 4.0f);
         Color color_prod = color1.prod(color2);
         Color color_exact = new Color(2.0f, 6.0f, 12.0f);
+        assertTrue(color_prod.is_close(color_exact));
     }
 }
