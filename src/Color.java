@@ -60,4 +60,3 @@ public class Color {
                 color_diff.r < epsilon);
     }
 }
-
