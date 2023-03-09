@@ -22,12 +22,12 @@ public class Color {
             System.exit(-1);
         }
     }
-    public Color sum(Color color2){
-        Color result = new Color();
-        result.r=this.r+color2.r;
-        result.g=this.g+color2.g;
-        result.b=this.b+color2.b;
-        return result;
+    public Color sum(Color color1){
+        Color color = new Color();
+        color.r = this.r + color1.r;
+        color.g = this.g + color1.g;
+        color.b = this.b + color1.b;
+        return color;
     }
 
     public Color prod(float scalar){
@@ -56,7 +56,12 @@ public class Color {
         float epsilon = 1e-5F;
         Color color_diff = this.difference(color1);
         return (color_diff.r < epsilon &&
-                color_diff.r < epsilon &&
-                color_diff.r < epsilon);
+                color_diff.g < epsilon &&
+                color_diff.b < epsilon);
+    }
+
+    @Override
+    public String toString() {
+        return "<r: " + r + ", g: " + g + ", b: " + b + ">";
     }
 }
