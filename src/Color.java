@@ -11,14 +11,13 @@ public class Color {
         this.b = 0.0F;
     }
     public Color(float r, float g, float b){
-        if (r >= 0 && g >= 0 && b >= 0 &&
-                r <= 255 && g <= 255 && b <= 255){
+        if (r >= 0 && g >= 0 && b >= 0){
             this.r = r;
             this.g = g;
             this.b = b;
         }
         else{
-            System.out.println("Error: Class Color can't have negative parameters or grater than 255.");
+            System.out.println("Error: Class Color can't have negative parameters.");
             System.exit(-1);
         }
     }
