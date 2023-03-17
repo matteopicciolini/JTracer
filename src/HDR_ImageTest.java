@@ -68,11 +68,11 @@ class HDR_ImageTest {
     }
     @Test
     void read_line() throws IOException {
-        InputStream targetStream = new FileInputStream("read_lineTest.txt");
+        InputStream targetStream = new ByteArrayInputStream("Hello\nworld".getBytes());
         String out1 = HDR_Image.read_line(targetStream);
-        assertEquals (out1.replaceAll("\r", "\n"), "Hello\n");
+        assertEquals (out1, "Hello");
         String out2 = HDR_Image.read_line(targetStream);
-        assertEquals (out2.replaceAll("\r", "\n"), "world");
+        assertEquals (out2, "world");
 
 
     }
