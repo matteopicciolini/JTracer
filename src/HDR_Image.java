@@ -1,3 +1,6 @@
+import Exceptions.InvalidPfmFileFormat;
+import Exceptions.InvalidPfmFileFormatException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,10 +10,11 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static java.nio.ByteOrder.BIG_ENDIAN;
 import static org.junit.Assert.assertTrue;
 public class HDR_Image {
-    public int height;
-    public int width;
+    public static int height;
+    public static int width;
     public Color[] pixels;
     public HDR_Image() {
         this.width = 0;
@@ -70,7 +74,7 @@ public class HDR_Image {
 
     }
 
-    protected static ByteArrayOutputStream read_line(InputStream targetStream) throws IOException {
+    protected static String read_line(InputStream targetStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         int nextByte;
         while ((nextByte = targetStream.read()) != -1) {
@@ -79,34 +83,52 @@ public class HDR_Image {
             }
             outputStream.write(nextByte);
         }
-        return outputStream;
+        String str = new String(outputStream.toByteArray());
+        return str;
     }
     protected static ByteArrayOutputStream read_float(InputStream inputStream) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        float rif = -1.0f;
+        float rif;
         while ((rif = inputStream.read()) != -1) {
             out.write((byte)rif);
-
         }
         return out;
     }
-    protected int[] parse_img_size(String line) throws IOException {
-        String input = (line);
+
+    public void parse_img_size(String line) throws InvalidPfmFileFormat {
+
         int[] a = new int[2];
-        String[] c = input.split(" ");
-        if (line.length() != 2)
-            System.out.println("invalid image size specification");
+        String[] c = line.split(" ");
+        if (c.length != 2)
+            throw new InvalidPfmFileFormat("invalid image size specification");
         try {
             a[0] = Integer.parseInt(String.valueOf(c[0]));
             a[1] = Integer.parseInt(String.valueOf(c[1]));
+            this.width=a[0];
+            this.height=a[1];
 
-            this.width = (a[0]);
-            this.height = (a[1]);
-        } catch (Exception e){
+        } catch (NumberFormatException e){
+            throw new InvalidPfmFileFormat("invalid width/height");
             
         }
-        return a;
+
     }
 
+    protected static ByteOrder parse_endianness(String line) throws InvalidPfmFileFormatException, InvalidPfmFileFormat {
+        float value;
+        try {
+            value = Float.parseFloat(line);
+        } catch (NumberFormatException e) {
+            throw new InvalidPfmFileFormatException("Missing endianness specification.");
+        }
+        if (value > 0){
+            return BIG_ENDIAN;
+        } else if (value < 0) {
+            return LITTLE_ENDIAN;
+        } else{
+            throw new InvalidPfmFileFormat("Invalid endianness specification, it cannot be zero.");
+        }
+    }
+    
 
 }
