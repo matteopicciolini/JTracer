@@ -17,7 +17,6 @@ public class Main {
         a[0]= Integer.parseInt(String.valueOf(c[0]));
         a[1]= Integer.parseInt(String.valueOf(c[1]));
 
-        System.out.println(a[0]);
 
     }
 }
