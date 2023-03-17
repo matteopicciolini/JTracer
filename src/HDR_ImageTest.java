@@ -1,9 +1,13 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteOrder;
+
+import static org.junit.Assert.assertTrue;
 
 class HDR_ImageTest {
 
@@ -61,5 +65,12 @@ class HDR_ImageTest {
         img.write_pfm(stream_big, ByteOrder.BIG_ENDIAN);
         Assertions.assertTrue(Functions_Constants.match(stream_big, Functions_Constants.BE_reference_bytes));
     }
-
+    @Test
+    void read_line() throws IOException {
+        InputStream targetStream = new ByteArrayInputStream("Hello\nworld".getBytes());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream = HDR_Image.read_line(targetStream);
+        byte[] outputBytes = outputStream.toByteArray();
+        assertTrue(Functions_Constants.match(outputStream, outputBytes));
+    }
 }
