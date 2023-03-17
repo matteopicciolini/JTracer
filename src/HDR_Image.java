@@ -1,4 +1,6 @@
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -68,6 +70,17 @@ public class HDR_Image {
 
     }
 
+    protected static ByteArrayOutputStream read_line(InputStream targetStream) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int nextByte;
+        while ((nextByte = targetStream.read()) != -1) {
+            if (nextByte == '\n') {
+                break;
+            }
+            outputStream.write(nextByte);
+        }
+        return outputStream;
+    }
 
 
 }
