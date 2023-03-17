@@ -1,3 +1,6 @@
+import Exceptions.InvalidPfmFileFormat;
+import Exceptions.InvalidPfmFileFormatException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +10,7 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static java.nio.ByteOrder.BIG_ENDIAN;
 import static org.junit.Assert.assertTrue;
 public class HDR_Image {
     public int height;
@@ -82,5 +86,19 @@ public class HDR_Image {
         return outputStream;
     }
 
-
+    protected static ByteOrder parse_endianness(String line) throws InvalidPfmFileFormatException, InvalidPfmFileFormat {
+        float value;
+        try {
+            value = Float.parseFloat(line);
+        } catch (NumberFormatException e) {
+            throw new InvalidPfmFileFormatException("Missing endianness specification.");
+        }
+        if (value > 0){
+            return BIG_ENDIAN;
+        } else if (value < 0) {
+            return LITTLE_ENDIAN;
+        } else{
+            throw new InvalidPfmFileFormat("Invalid endianness specification, it cannot be zero.");
+        }
+    }
 }
