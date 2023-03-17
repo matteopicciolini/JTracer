@@ -85,7 +85,14 @@ public class HDR_Image {
         }
         return outputStream;
     }
-
+    protected static ByteArrayOutputStream read_float(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        float rif = -1.0f;
+        while ((rif = inputStream.read()) != -1) {
+            out.write((byte)rif);
+        }
+        return out;
+    }
     protected static ByteOrder parse_endianness(String line) throws InvalidPfmFileFormatException, InvalidPfmFileFormat {
         float value;
         try {
@@ -101,4 +108,5 @@ public class HDR_Image {
             throw new InvalidPfmFileFormat("Invalid endianness specification, it cannot be zero.");
         }
     }
+
 }
