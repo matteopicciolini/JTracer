@@ -90,5 +90,23 @@ public class HDR_Image {
         }
         return out;
     }
+    protected int[] parse_img_size(String line) throws IOException {
+        String input = (line);
+        int[] a = new int[2];
+        String[] c = input.split(" ");
+        if (line.length() != 2)
+            System.out.println("invalid image size specification");
+        try {
+            a[0] = Integer.parseInt(String.valueOf(c[0]));
+            a[1] = Integer.parseInt(String.valueOf(c[1]));
+
+            this.width = (a[0]);
+            this.height = (a[1]);
+        } catch (Exception e){
+            
+        }
+        return a;
+    }
+
 
 }
