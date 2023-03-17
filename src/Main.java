@@ -1,3 +1,4 @@
+import Exceptions.InvalidPfmFileFormatException;
 import com.sun.source.tree.AssertTree;
 import org.junit.jupiter.api.Assertions;
 import java.io.*;
@@ -8,7 +9,12 @@ import static org.junit.Assert.assertTrue;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InvalidPfmFileFormatException {
+        HDR_Image img = new HDR_Image();
+        InputStream targetStream = new ByteArrayInputStream("PF\nworld".getBytes());
+        img.read_pfm_image(targetStream);
+
+
         /*HDR_Image img=new HDR_Image(3, 2);
         int i=0;
         FileReader is = new FileReader("reference_be.pfm");

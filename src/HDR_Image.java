@@ -85,6 +85,19 @@ public class HDR_Image {
         }
         return outputStream;
     }
+
+    /*public static String readLine(InputStream inputStream) throws IOException {
+        StringBuilder resultBuilder = new StringBuilder();
+        int curByte;
+        while ((curByte = inputStream.read()) != -1) {
+            curByte = inputStream.read();
+            if (curByte == -1 || curByte == '\n') {
+                return resultBuilder.toString();
+            }
+            resultBuilder.append((char) curByte);
+        }
+    }*/
+
     protected static ByteArrayOutputStream read_float(InputStream inputStream) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         float rif = -1.0f;
@@ -107,6 +120,30 @@ public class HDR_Image {
         } else{
             throw new InvalidPfmFileFormat("Invalid endianness specification, it cannot be zero.");
         }
+    }
+
+
+    protected void read_pfm_image(InputStream targetStream) throws IOException, InvalidPfmFileFormatException {
+        //Creo un ByteArrayOutputStream che converto in lista di byte
+        ByteArrayOutputStream magic = this.read_line(targetStream);
+        byte[] byteArray_magic = magic.toByteArray();
+
+        //Converto la stringa "PF" in byte e la storo in un ByteArrayOutputStream
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream.write("PF".getBytes());
+
+        //Se sono diversi i byte di outputStream e del magic raiso un'Exception
+        if (Functions_Constants.match(outputStream, byteArray_magic) == false) {
+            throw new InvalidPfmFileFormatException("Invalid magic in PFM file");
+        }
+
+        ByteArrayOutputStream img_size = this.read_line(targetStream);
+        byte[] byteArray_img_size = magic.toByteArray();
+
+
+        ByteArrayOutputStream endianness_line = this.read_line(targetStream);
+        byte[] byteArray_endianness_line = magic.toByteArray();
+        //endianness = this.parse_endianness(endianness_line);
     }
 
 }

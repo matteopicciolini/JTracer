@@ -94,4 +94,6 @@ class HDR_ImageTest {
             // Exception was thrown as expected
         }
     }
+
+
 }
