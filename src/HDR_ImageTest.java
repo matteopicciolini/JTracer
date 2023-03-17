@@ -2,14 +2,13 @@ import Exceptions.InvalidPfmFileFormat;
 import Exceptions.InvalidPfmFileFormatException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import java.lang.Object;
 import java.io.*;
 import java.nio.ByteOrder;
 
-import static org.junit.Assert.assertTrue;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.nio.ByteOrder.BIG_ENDIAN;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 class HDR_ImageTest {
 
@@ -69,10 +68,16 @@ class HDR_ImageTest {
     }
     @Test
     void read_line() throws IOException {
-        InputStream targetStream = new ByteArrayInputStream("Hello\nworld".getBytes());
-        ByteArrayOutputStream outputStream = HDR_Image.read_line(targetStream);
-        byte[] outputBytes = outputStream.toByteArray();
-        assertTrue(Functions_Constants.match(outputStream, outputBytes));
+        byte[] byteArray = "hello\nworld".getBytes();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
+
+        assertEquals(HDR_Image.read_line(inputStream), "hello");
+
+        /*InputStream targetStream = new FileInputStream("read_lineTest.txt");
+        String out1 = HDR_Image.read_line(targetStream);
+        assertEquals (out1.replaceAll("\r", "\n"), "Hello\n");
+        String out2 = HDR_Image.read_line(targetStream);
+        assertEquals (out2.replaceAll("\r", "\n"), "world");*/
     }
 
     @Test
@@ -95,5 +100,13 @@ class HDR_ImageTest {
         }
     }
 
+    @Test
+    void parse_img_size() throws InvalidPfmFileFormat {
+        HDR_Image img = new HDR_Image();
+        img.parse_img_size("3 2");
+        assertTrue(img.width==3);
+        assertTrue(img.height==2);
+
+    }
 
 }
