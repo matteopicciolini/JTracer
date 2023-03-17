@@ -23,7 +23,7 @@ public class Functions_Constants {
             (byte) 0x8C, 0x00, 0x00, 0x42, (byte) 0xA0, 0x00, 0x00, 0x42,
             (byte) 0xB4, 0x00, 0x00};
 
-    public static void byte_reverse(byte a [], int n){
+    public static void byte_reverse(byte[] a, int n){
         byte t;
         for(int i = 0; i < n / 2; ++i){
             t = a[i];
@@ -35,17 +35,18 @@ public class Functions_Constants {
     public static boolean match(ByteArrayOutputStream stream, byte[] reference_bytes){
         int i = 0;
         boolean match = true;
-        if (stream.size() != reference_bytes.length) {
-            match = false;
-        } else {
-            if (match) for (byte b : reference_bytes) {
-                if (b == stream.toByteArray()[i]) i++;
-                else {
-                    match = false;
-                    break;
+            if (stream.size() != reference_bytes.length) {
+                match = false;
+            } else {
+                if (match) for (byte b : reference_bytes) {
+                    if (b == stream.toByteArray()[i]) i++;
+                    else {
+                        match = false;
+                        break;
+                    }
                 }
             }
-        }
+
         return match;
     }
 }
