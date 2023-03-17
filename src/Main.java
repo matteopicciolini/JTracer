@@ -1,14 +1,10 @@
-import com.sun.source.tree.AssertTree;
-import org.junit.jupiter.api.Assertions;
-import java.io.*;
-import java.util.*;
-import java.nio.ByteOrder;
 
-import static org.junit.Assert.assertTrue;
+import java.io.*;
+
 
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
 
         String input=("3 2");
