@@ -1,14 +1,15 @@
 import Exceptions.InvalidPfmFileFormat;
-import Exceptions.InvalidPfmFileFormatException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.lang.Object;
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteOrder;
 
-import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.nio.ByteOrder.BIG_ENDIAN;
-import static org.junit.Assert.*;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
 class HDR_ImageTest {
 
@@ -40,8 +41,6 @@ class HDR_ImageTest {
 
     @Test
     void write_pfm() throws IOException {
-        int width = 3;
-        int height = 2;
         HDR_Image img = new HDR_Image(3, 2);
 
         Color color1 = new Color(1.0e1f, 2.0e1f, 3.0e1f);
@@ -68,45 +67,80 @@ class HDR_ImageTest {
     }
     @Test
     void read_line() throws IOException {
-        byte[] byteArray = "hello\nworld".getBytes();
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
-
-        assertEquals(HDR_Image.read_line(inputStream), "hello");
-
-        /*InputStream targetStream = new FileInputStream("read_lineTest.txt");
-        String out1 = HDR_Image.read_line(targetStream);
-        assertEquals (out1.replaceAll("\r", "\n"), "Hello\n");
-        String out2 = HDR_Image.read_line(targetStream);
-        assertEquals (out2.replaceAll("\r", "\n"), "world");*/
+        InputStream targetStream = new ByteArrayInputStream("Hello\nWorld".getBytes());
+        Assertions.assertEquals(HDR_Image.read_line(targetStream), "Hello");
+        Assertions.assertEquals(HDR_Image.read_line(targetStream), "World");
     }
 
     @Test
-    void parse_endianness() throws InvalidPfmFileFormatException, InvalidPfmFileFormat {
-        assertTrue(HDR_Image.parse_endianness(("1.0")) == BIG_ENDIAN);
-        assertTrue(HDR_Image.parse_endianness(("-1.0")) == LITTLE_ENDIAN);
+    void parse_endianness() throws InvalidPfmFileFormat {
+        Assertions.assertTrue(HDR_Image.parse_endianness(("1.0")) == BIG_ENDIAN);
+        Assertions.assertTrue(HDR_Image.parse_endianness(("-1.0")) == LITTLE_ENDIAN);
 
         try {
             HDR_Image.parse_endianness("0.0");
-            fail("Expected InvalidPfmFileFormatException was not thrown");
+            Assertions.fail("Expected InvalidPfmFileFormat was not thrown");
         } catch (InvalidPfmFileFormat e) {
             // Exception was thrown as expected
         }
 
         try {
             HDR_Image.parse_endianness("abc");
-            fail("Expected InvalidPfmFileFormatException was not thrown");
-        } catch (InvalidPfmFileFormatException e) {
+            Assertions.fail("Expected InvalidPfmFileFormat was not thrown");
+        } catch (InvalidPfmFileFormat e) {
             // Exception was thrown as expected
         }
     }
 
     @Test
     void parse_img_size() throws InvalidPfmFileFormat {
-        HDR_Image img = new HDR_Image();
-        img.parse_img_size("3 2");
-        assertTrue(img.width==3);
-        assertTrue(img.height==2);
 
+        int[] expectedSize = {3, 2};
+        int[] actualSize = HDR_Image.parse_img_size("3 2");
+        Assertions.assertArrayEquals(expectedSize, actualSize);
+
+        try {
+            HDR_Image.parse_img_size("-1 3");
+            Assertions.fail("Expected InvalidPfmFileFormat was not thrown");
+        } catch (InvalidPfmFileFormat e) {
+            // Exception was thrown as expected
+        }
+
+        try {
+            HDR_Image.parse_img_size("3 2 1");
+            Assertions.fail("Expected InvalidPfmFileFormat was not thrown");
+        } catch (InvalidPfmFileFormat e) {
+            // Exception was thrown as expected
+        }
     }
 
+    @Test
+    void read_pfm_image() throws IOException, InvalidPfmFileFormat {
+        byte[][] bytes_arrays = new byte[2][];
+        bytes_arrays[0] = Functions_Constants.LE_reference_bytes;
+        bytes_arrays[1] = Functions_Constants.BE_reference_bytes;
+        for (byte [] bytes_array : bytes_arrays){
+            HDR_Image img = HDR_Image.read_pfm_image(new ByteArrayInputStream(bytes_array));
+            Assertions.assertEquals(3, img.width);
+            Assertions.assertEquals(2, img.height);
+
+            Assertions.assertTrue(img.get_pixel(0, 0).is_close(new Color(1.0e1f, 2.0e1f, 3.0e1f)));
+            Assertions.assertTrue(img.get_pixel(1, 0).is_close(new Color(4.0e1f, 5.0e1f, 6.0e1f)));
+            Assertions.assertTrue(img.get_pixel(2, 0).is_close(new Color(7.0e1f, 8.0e1f, 9.0e1f)));
+            Assertions.assertTrue(img.get_pixel(0, 1).is_close(new Color(1.0e2f, 2.0e2f, 3.0e2f)));
+            Assertions.assertTrue(img.get_pixel(0, 0).is_close(new Color(1.0e1f, 2.0e1f, 3.0e1f)));
+            Assertions.assertTrue(img.get_pixel(1, 1).is_close(new Color(4.0e2f, 5.0e2f, 6.0e2f)));
+            Assertions.assertTrue(img.get_pixel(2, 1).is_close(new Color(7.0e2f, 8.0e2f, 9.0e2f)));
+        }
+    }
+
+    @Test
+    void read_pfm_image_wrong() throws IOException {
+        try {
+            HDR_Image.read_pfm_image(new ByteArrayInputStream("PF\n3 2\n-1.0\nstop".getBytes()));
+            Assertions.fail("Expected InvalidPfmFileFormat was not thrown");
+        } catch (InvalidPfmFileFormat e) {
+            // Exception was thrown as expected
+        }
+    }
 }

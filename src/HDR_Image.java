@@ -1,10 +1,6 @@
 import Exceptions.InvalidPfmFileFormat;
-import Exceptions.InvalidPfmFileFormatException;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
@@ -13,14 +9,9 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static org.junit.Assert.assertTrue;
 public class HDR_Image {
-    public static int height;
-    public static int width;
+    public int height;
+    public int width;
     public Color[] pixels;
-    public HDR_Image() {
-        this.width = 0;
-        this.height = 0;
-        this.pixels = new Color[0];
-    }
 
     public HDR_Image(int width, int height) {
         this.width = width;
@@ -83,55 +74,32 @@ public class HDR_Image {
             }
             outputStream.write(nextByte);
         }
-        return new String(outputStream.toByteArray());
+        return outputStream.toString();
     }
 
-    /*public static String readLine(InputStream inputStream) throws IOException {
-        StringBuilder resultBuilder = new StringBuilder();
-        int curByte;
-        while ((curByte = inputStream.read()) != -1) {
-            curByte = inputStream.read();
-            if (curByte == -1 || curByte == '\n') {
-                return resultBuilder.toString();
-            }
-            resultBuilder.append((char) curByte);
-        }
-    }*/
-
-    protected static ByteArrayOutputStream read_float(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        float rif;
-        while ((rif = inputStream.read()) != -1) {
-            out.write((byte)rif);
-        }
-        return out;
-    }
-
-    public void parse_img_size(String line) throws InvalidPfmFileFormat {
-
-        int[] a = new int[2];
-        String[] c = line.split(" ");
-        if (c.length != 2)
-            throw new InvalidPfmFileFormat("invalid image size specification");
+    public static int[] parse_img_size(String line) throws InvalidPfmFileFormat {
+        String[] elements = line.split(" ");
+        if (elements.length != 2)
+            throw new InvalidPfmFileFormat("Invalid image size specification");
         try {
-            a[0] = Integer.parseInt(String.valueOf(c[0]));
-            a[1] = Integer.parseInt(String.valueOf(c[1]));
-            this.width=a[0];
-            this.height=a[1];
-
-        } catch (NumberFormatException e){
-            throw new InvalidPfmFileFormat("invalid width/height");
-            
+            int width = Integer.parseInt(elements[0]);
+            int height = Integer.parseInt(elements[1]);
+            if (width < 0 || height < 0) {
+                throw new NumberFormatException();
+            }
+            return new int[]{width, height};
         }
-
+        catch (NumberFormatException e){
+            throw new InvalidPfmFileFormat("Invalid width/height");
+        }
     }
 
-    protected static ByteOrder parse_endianness(String line) throws InvalidPfmFileFormatException, InvalidPfmFileFormat {
+    protected static ByteOrder parse_endianness(String line) throws InvalidPfmFileFormat {
         float value;
         try {
             value = Float.parseFloat(line);
         } catch (NumberFormatException e) {
-            throw new InvalidPfmFileFormatException("Missing endianness specification.");
+            throw new InvalidPfmFileFormat("Missing endianness specification.");
         }
         if (value > 0){
             return BIG_ENDIAN;
@@ -141,30 +109,45 @@ public class HDR_Image {
             throw new InvalidPfmFileFormat("Invalid endianness specification, it cannot be zero.");
         }
     }
-    
 
+    private static float readFloat(InputStream stream, ByteOrder endianness) throws InvalidPfmFileFormat {
+        byte[] floatBytes = new byte[4];
+        try {
+            // Read 4 bytes from the input stream
+            DataInputStream DataStream = new DataInputStream(stream);
+            DataStream.readFully(floatBytes);
 
-    /*protected void read_pfm_image(InputStream targetStream) throws IOException, InvalidPfmFileFormatException {
-        //Creo un ByteArrayOutputStream che converto in lista di byte
-        ByteArrayOutputStream magic = this.read_line(targetStream);
-        byte[] byteArray_magic = magic.toByteArray();
-
-        //Converto la stringa "PF" in byte e la storo in un ByteArrayOutputStream
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        outputStream.write("PF".getBytes());
-
-        //Se sono diversi i byte di outputStream e del magic raiso un'Exception
-        if (Functions_Constants.match(outputStream, byteArray_magic) == false) {
-            throw new InvalidPfmFileFormatException("Invalid magic in PFM file");
+            if (endianness == BIG_ENDIAN) {
+                return ByteBuffer.wrap(floatBytes).order(BIG_ENDIAN).getFloat();
+            }else {
+                return ByteBuffer.wrap(floatBytes).order(LITTLE_ENDIAN).getFloat();
+            }
+        } catch (IOException e) {
+            throw new InvalidPfmFileFormat("Impossible to read binary data from the file");
         }
+    }
 
-        ByteArrayOutputStream img_size = this.read_line(targetStream);
-        byte[] byteArray_img_size = magic.toByteArray();
+    protected static HDR_Image read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormat {
 
+        String magic = read_line(stream);
+        if (!magic.equals("PF")) throw new InvalidPfmFileFormat("Invalid magic in PFM file");
 
-        ByteArrayOutputStream endianness_line = this.read_line(targetStream);
-        byte[] byteArray_endianness_line = magic.toByteArray();
-        //endianness = this.parse_endianness(endianness_line);
-    }*/
+        String img_size = read_line(stream);
+        int [] dim = parse_img_size(img_size);
 
+        String endianness_line = read_line(stream);
+        ByteOrder endianness = parse_endianness(endianness_line);
+
+        HDR_Image result = new HDR_Image(dim[0], dim[1]);
+        float r, g, b;
+        for (int i = result.height - 1; i >= 0 ; --i) {
+            for (int j = 0; j < result.width; ++j) {
+                r = readFloat(stream, endianness);
+                g = readFloat(stream, endianness);
+                b = readFloat(stream, endianness);
+                result.set_pixel(j, i, new Color(r, g, b));
+            }
+        }
+        return result;
+    }
 }
