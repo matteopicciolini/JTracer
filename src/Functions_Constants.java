@@ -46,9 +46,6 @@ public class Functions_Constants {
                     }
                 }
             }
-
-
-
         return match;
     }
 
