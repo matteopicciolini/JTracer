@@ -69,11 +69,8 @@ class HDR_ImageTest {
     @Test
     void read_line() throws IOException {
         InputStream targetStream = new ByteArrayInputStream("Hello\nworld".getBytes());
-        String out1 = HDR_Image.read_line(targetStream);
-        assertEquals (out1, "Hello");
-        String out2 = HDR_Image.read_line(targetStream);
-        assertEquals (out2, "world");
-
+        assertEquals (HDR_Image.read_line(targetStream), "Hello");
+        assertEquals (HDR_Image.read_line(targetStream), "world");
 
     }
 
@@ -100,9 +97,32 @@ class HDR_ImageTest {
     @Test
     void parse_img_size() throws InvalidPfmFileFormat {
         HDR_Image img=new HDR_Image();
-        img.parse_img_size("3 2");
-        assertTrue(img.width==3);
-        assertTrue(img.height==2);
+        int [] a = new int[2];
+        a=img.parse_img_size("3 2");
+        assertTrue(a[0]==3);
+        assertTrue(a[1]==2);
+
+        try {
+            img.parse_img_size("0.0");
+            fail("Expected InvalidPfmFileFormatException was not thrown");
+        } catch (InvalidPfmFileFormat e) {
+            // Exception was thrown as expected
+        }
+
+        try {
+            img.parse_img_size("abc");
+            fail("Expected InvalidPfmFileFormatException was not thrown");
+        } catch (InvalidPfmFileFormat e) {
+            // Exception was thrown as expected
+        }
 
     }
+    @Test
+    void read_float() throws IOException {
+        InputStream targetStream = new ByteArrayInputStream("Hello\nworld".getBytes());
+        assertEquals (HDR_Image.read_line(targetStream), "Hello");
+        assertEquals (HDR_Image.read_line(targetStream), "world");
+
+    }
+
 }
