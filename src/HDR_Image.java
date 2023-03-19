@@ -85,16 +85,16 @@ public class HDR_Image {
         }
         return new String(outputStream.toByteArray());
     }
-    protected static ByteArrayOutputStream read_float(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        float rif;
-        while ((rif = inputStream.read()) != -1) {
-            out.write((byte)rif);
+    protected static int[] read_float(String line) throws IOException {
+        String[] c = line.split(" ");
+        int[] b=new int[c.length];
+        for (int i =0; i<c.length; i++){
+            b[i]= c[i].charAt(0);
         }
-        return out;
+        return b;
     }
 
-    public void parse_img_size(String line) throws InvalidPfmFileFormat {
+    public int [] parse_img_size(String line) throws InvalidPfmFileFormat {
 
         int[] a = new int[2];
         String[] c = line.split(" ");
@@ -105,7 +105,7 @@ public class HDR_Image {
             a[1] = Integer.parseInt(String.valueOf(c[1]));
             this.width=a[0];
             this.height=a[1];
-
+            return a;
         } catch (NumberFormatException e){
             throw new InvalidPfmFileFormat("invalid width/height");
             
