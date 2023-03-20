@@ -10,7 +10,7 @@ The rendering equation:
 
 $$
 \begin{aligned}
-L(x \rightarrow \Theta) = &amp;L_e(x \rightarrow \Theta) +\\
+L(x \rightarrow \Theta) = &amp;L_e(x \rightarrow \Theta) +
 &amp;\int_{\Omega_x} f_r(x, \Psi \rightarrow \Theta)\,L(x \leftarrow
 \Psi)\,\cos(N_x, \Psi)\,\mathrm{d}\omega_\Psi,
 \end{aligned}
