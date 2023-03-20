@@ -1,4 +1,4 @@
-##Ray Tracing project
+# Ray Tracing project
 
 This is a project developed by Matteo Picciolini and Francesco Villa to reproduce (we hope!) a 2-D photorealistic image by the end of the course we are attending in Unimi, called *Numeric calculus for photorealistic images generation*.
 
