@@ -10,8 +10,7 @@ The rendering equation:
 
 $$
 \begin{aligned}
-L(x \rightarrow \Theta) = &amp;L_e(x \rightarrow \Theta) +
-&amp;\int_{\Omega_x} f_r(x, \Psi \rightarrow \Theta)\,L(x \leftarrow
+L(x \rightarrow \Theta) = &amp;L_e(x \rightarrow \Theta) + \int_{\Omega_x} f_r(x, \Psi \rightarrow \Theta)\,L(x \leftarrow
 \Psi)\,\cos(N_x, \Psi)\,\mathrm{d}\omega_\Psi,
 \end{aligned}
 $$
@@ -26,4 +25,4 @@ So far, we have implemented the following topics
     -    PfmCreator Class used to build the read_pfm_image function containing 4 sub-functions used in the main function.
 
 
-we're going to upthate this repository gradually until the end of June. 
+We're going to upthate this repository gradually until the end of June. 
