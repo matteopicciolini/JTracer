@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -71,6 +73,9 @@ public class HDR_Image {
             cum_sum += log10(delta + pix.luminosity());
         }
         return (float) pow(10, cum_sum / pixels.length);
+    }
+    public float average_luminosity(){
+        return average_luminosity(1e-10f);
     }
 
 }
