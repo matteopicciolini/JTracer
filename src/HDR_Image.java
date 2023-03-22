@@ -56,6 +56,4 @@ public class HDR_Image {
         byte[] floatBytes = ByteBuffer.allocate(4).order(order).putFloat(value).array();
         stream.write(floatBytes);
     }
-
-
 }
