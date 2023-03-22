@@ -1,5 +1,4 @@
 import Exceptions.InvalidPfmFileFormat;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -10,6 +9,9 @@ import java.nio.ByteOrder;
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
+/**
+ * Class used to build the read_pfm_image function containing 4 sub-functions used in the main function.
+ */
 public class PfmCreator {
     public static String read_line(InputStream targetStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -74,6 +76,14 @@ public class PfmCreator {
         }
     }
 
+    /**
+     * The main function of PfmCreator Class. It reads separately every line from a pfm file, and create
+     * an HDR_Image object with the assigned instances.
+     * @param stream
+     * @return HDR_image
+     * @throws IOException
+     * @throws InvalidPfmFileFormat
+     */
     public static HDR_Image read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormat {
 
         String magic = read_line(stream);

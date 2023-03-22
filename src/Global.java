@@ -1,3 +1,8 @@
+/**
+ * This class contains the te hexadecimal data array present in the files
+ * reference_be and reference_le written in byte.
+ * LE array is written with little endian order whereas the BE array is inverted cause of using big endian order.
+ */
 public class Global {
     public static byte[] LE_reference_bytes;
     public static byte[] BE_reference_bytes;

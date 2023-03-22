@@ -3,9 +3,13 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.junit.Assert.assertTrue;
+
+/**
+ * Class used to build an HDR_Image object with the following public variables: number of rows & columns and
+ * the intensity of the three colors RGB for every pixel.
+ */
 public class HDR_Image {
     public int height;
     public int width;
@@ -37,11 +41,12 @@ public class HDR_Image {
     }
 
     public void write_pfm(OutputStream stream, ByteOrder order) throws IOException {
+
         String endianness_str = (order == LITTLE_ENDIAN) ?  "-1.0" :  "1.0";
         byte[] bytes = String.format("PF\n%d %d\n%s\n", this.width, this.height, endianness_str).getBytes(StandardCharsets.US_ASCII);
         stream.write(bytes, 0 , bytes.length);
-
         Color color;
+
         for (int i = this.height - 1; i >= 0 ; --i){
             for(int j = 0; j < this.width; ++j){
                 color = this.get_pixel(j, i);
@@ -55,5 +60,6 @@ public class HDR_Image {
     private void WriteFloatToStream(OutputStream stream, float value, ByteOrder order) throws IOException {
         byte[] floatBytes = ByteBuffer.allocate(4).order(order).putFloat(value).array();
         stream.write(floatBytes);
+
     }
 }
