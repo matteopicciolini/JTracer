@@ -72,8 +72,17 @@ public class HDR_Image {
         }
         return (float) pow(10, cum_sum / pixels.length);
     }
-    public void normalize_image(float factor, float luminosity){
-        luminosity=
+    public void normalize_image(float factor, Float luminosity){
+
+
+        for (int i =0; i<this.width*this.height; i++){
+            this.pixels[i].r=this.pixels[i].r*(factor/luminosity);
+            this.pixels[i].g=this.pixels[i].g*(factor/luminosity);
+            this.pixels[i].b=this.pixels[i].b*(factor/luminosity);
+        }
+    }
+    public void normalize_image(float factor) {
+        normalize_image(factor, average_luminosity(1e-5f));
+    }
     }
 
-}

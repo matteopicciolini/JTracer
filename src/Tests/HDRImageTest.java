@@ -60,4 +60,21 @@ class HDRImageTest {
         Assertions.assertEquals(PfmCreator.read_line(targetStream), "Hello");
         Assertions.assertEquals(PfmCreator.read_line(targetStream), "World");
     }
+    @Test
+    void normalize_image() throws IOException {
+        HDR_Image img=new HDR_Image(2, 1);
+        Color color1=new Color(5.0f, 10.0f, 15.0f);
+        Color color2=new Color(500.0f, 1000.0f, 1500.0f);
+        img.set_pixel(0, 0, color1);
+        img.set_pixel(1, 0, color2);
+        img.normalize_image(1000.0f, 100.0f);
+
+        Color final1=new Color(0.5e2f, 1.0e2f, 1.5e2f);
+        Color final2=new Color(0.5e4f, 1.0e4f, 1.5e4f);
+
+        Color r =img.get_pixel(0, 0);
+        Color v =img.get_pixel(1, 0);
+        Assertions.assertTrue( final1.is_close(img.get_pixel(0, 0)));
+        Assertions.assertTrue( final2.is_close(img.get_pixel(1, 0)));
+    }
 }
