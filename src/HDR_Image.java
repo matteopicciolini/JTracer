@@ -3,6 +3,9 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+
+import static java.lang.Math.log10;
+import static java.lang.Math.pow;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.junit.Assert.assertTrue;
 
@@ -60,6 +63,13 @@ public class HDR_Image {
     private void WriteFloatToStream(OutputStream stream, float value, ByteOrder order) throws IOException {
         byte[] floatBytes = ByteBuffer.allocate(4).order(order).putFloat(value).array();
         stream.write(floatBytes);
+    }
 
+    public float average_luminosity(float delta){
+        float cum_sum = 0.0f;
+        for (Color pix : this.pixels){
+            cum_sum += log10(delta + pix.luminosity());
+        }
+        return pow(10, cum_sum / pixels.length);
     }
 }
