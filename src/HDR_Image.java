@@ -113,7 +113,7 @@ public class HDR_Image {
                 int r = (int) (255 * Math.pow(cur_color.r / 255.0, 1.0 / gamma));
                 int g = (int) (255 * Math.pow(cur_color.g / 255.0, 1.0 / gamma));
                 int b = (int) (255 * Math.pow(cur_color.b  / 255.0, 1.0 / gamma));
-                img.setRGB(i, j, (r << 16) + (g << 8) + b);
+                img.setRGB(j, i, (r << 16) + (g << 8) + b);
             }
         }
         ImageIO.write(img, format, stream);
