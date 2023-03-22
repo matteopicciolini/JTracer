@@ -7,8 +7,8 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Class used to build an HDR image with the following public variables: number of rows & columns and
- * the intensity of the three colors RGB for every pixel
+ * Class used to build an HDR_Image object with the following public variables: number of rows & columns and
+ * the intensity of the three colors RGB for every pixel.
  */
 public class HDR_Image {
     public int height;
@@ -40,10 +40,6 @@ public class HDR_Image {
         this.pixels[this.pixel_offset(x, y)] = color;
     }
 
-    /**
-     * Metodo volto alla scrittura di un file pfm.
-     * Utilizza uno stream per scrivere il contenuto ndella stringa che si vuole scrivere in formato binario e
-     */
     public void write_pfm(OutputStream stream, ByteOrder order) throws IOException {
 
         String endianness_str = (order == LITTLE_ENDIAN) ?  "-1.0" :  "1.0";
