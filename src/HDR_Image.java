@@ -1,5 +1,12 @@
+import Exceptions.InvalidPfmFileFormat;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
@@ -72,6 +79,7 @@ public class HDR_Image {
         }
         return (float) pow(10, cum_sum / pixels.length);
     }
+
     public void normalize_image(float factor, Float luminosity){
 
 
@@ -84,5 +92,22 @@ public class HDR_Image {
     public void normalize_image(float factor) {
         normalize_image(factor, average_luminosity(1e-5f));
     }
+
+    public float average_luminosity(){
+        return average_luminosity(1e-10f);
     }
+
+    private float clamp(float x){
+        return x / (1 + x);
+    }
+
+    public void clamp_image(){
+        for (Color pixel : this.pixels) {
+            pixel.r = this.clamp(pixel.r);
+            pixel.g = this.clamp(pixel.g);
+            pixel.b = this.clamp(pixel.b);
+        }
+    }
+
+}
 
