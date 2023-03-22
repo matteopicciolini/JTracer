@@ -23,6 +23,7 @@ public class PfmCreator {
         return outputStream.toString();
     }
 
+
     public static int[] parse_img_size(String line) throws InvalidPfmFileFormat {
         String[] elements = line.split(" ");
         if (elements.length != 2)
