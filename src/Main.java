@@ -5,10 +5,10 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws IOException, InvalidPfmFileFormat {
 
-        parameters param=new parameters(Float.parseFloat(args[0]), Float.parseFloat(args[1]), args[2], args[3]);
+        Parameters param=new Parameters(Float.parseFloat(args[0]), Float.parseFloat(args[1]), args[2], args[3]);
         OutputStream out=new FileOutputStream(param.outputfilename);
         PfmCreator pfm=new PfmCreator();
-        InputStream str= new FileInputStream("C:/Users/Francesco/IdeaProjects/ray_tracing/reference_be.pfm");
+        InputStream str= new FileInputStream(param.inputfilename);
         HDR_Image img = pfm.read_pfm_image(str);
 
         img.normalize_image(param.factor);
