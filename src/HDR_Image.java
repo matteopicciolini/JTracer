@@ -78,4 +78,15 @@ public class HDR_Image {
         return average_luminosity(1e-10f);
     }
 
+    private float clamp(float x){
+        return x / (1 + x);
+    }
+
+    public void clamp_image(){
+        for(int i = 0; i < this.pixels.length; ++i){
+            this.pixels[i].r = this.clamp(this.pixels[i].r);
+            this.pixels[i].g = this.clamp(this.pixels[i].g);
+            this.pixels[i].b = this.clamp(this.pixels[i].b);
+        }
+    }
 }
