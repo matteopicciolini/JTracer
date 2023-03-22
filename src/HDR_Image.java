@@ -62,5 +62,8 @@ public class HDR_Image {
         stream.write(floatBytes);
 
     }
+    public void normalize_image(float factor, float luminosity){
+        luminosity=
+    }
 
 }
