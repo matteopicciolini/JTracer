@@ -25,6 +25,7 @@ public class PfmCreator {
         return outputStream.toString();
     }
 
+
     public static int[] parse_img_size(String line) throws InvalidPfmFileFormat {
         String[] elements = line.split(" ");
         if (elements.length != 2)
@@ -76,8 +77,8 @@ public class PfmCreator {
     }
 
     /**
-     * The main function of PfmCreator Class. It reads separately every line from the pfm file, and it assigns
-     * every pixel triad RGB read in the file to the HDR_image variable defined in the main.
+     * The main function of PfmCreator Class. It reads separately every line from a pfm file, and create
+     * an HDR_Image object with the assigned instances.
      * @param stream
      * @return HDR_image
      * @throws IOException
