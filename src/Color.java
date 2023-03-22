@@ -66,4 +66,10 @@ public class Color {
     public String toString() {
         return "<r: " + r + ", g: " + g + ", b: " + b + ">";
     }
+
+    public float luminosity(){
+
+
+        return ((Math.max(Math.max(this.r, this.g ), this.b))+Math.min(Math.min(this.r, this.g), this.b))/2.0f;
+    }
 }
