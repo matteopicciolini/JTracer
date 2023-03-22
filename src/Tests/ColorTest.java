@@ -45,5 +45,9 @@ class ColorTest {
     }
 
     @Test
-    void testToString() {}
+    void luminosity() {
+        Color color1= new Color(1.0F, 4.0f, 7.0f);
+        Assertions.assertEquals(color1.luminosity(), 4.0f, 1e-5);
+
+    }
 }
