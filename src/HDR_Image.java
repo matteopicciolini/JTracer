@@ -72,4 +72,5 @@ public class HDR_Image {
         }
         return pow(10, cum_sum / pixels.length);
     }
+
 }
