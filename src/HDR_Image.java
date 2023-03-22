@@ -70,7 +70,7 @@ public class HDR_Image {
         for (Color pix : this.pixels){
             cum_sum += log10(delta + pix.luminosity());
         }
-        return pow(10, cum_sum / pixels.length);
+        return (float) pow(10, cum_sum / pixels.length);
     }
 
 }
