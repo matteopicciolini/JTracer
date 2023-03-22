@@ -1,12 +1,7 @@
-import Exceptions.InvalidPfmFileFormat;
-
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
@@ -109,5 +104,19 @@ public class HDR_Image {
         }
     }
 
+
+    public void write_ldr_image(OutputStream stream, String format, float gamma) throws IOException {
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < this.height; ++i) {
+            for (int j = 0; j < this.width; ++j) {
+                Color cur_color = this.get_pixel(j, i);
+                int r = (int) (255 * Math.pow(cur_color.r / 255.0, 1.0 / gamma));
+                int g = (int) (255 * Math.pow(cur_color.g / 255.0, 1.0 / gamma));
+                int b = (int) (255 * Math.pow(cur_color.b  / 255.0, 1.0 / gamma));
+                img.setRGB(i, j, (r << 16) + (g << 8) + b);
+            }
+        }
+        ImageIO.write(img, format, stream);
+    }
 }
 

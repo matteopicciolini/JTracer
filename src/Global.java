@@ -7,6 +7,8 @@ public class Global {
     public static byte[] LE_reference_bytes;
     public static byte[] BE_reference_bytes;
 
+
+
     static {
         LE_reference_bytes = new byte[]{
                 (byte) 0x50, (byte) 0x46, (byte) 0x0a, (byte) 0x33, (byte) 0x20, (byte) 0x32,
@@ -39,6 +41,14 @@ public class Global {
                 (byte) 0x00, (byte) 0x42, (byte) 0x70, (byte) 0x00, (byte) 0x00, (byte) 0x42,
                 (byte) 0x8C, (byte) 0x00, (byte) 0x00, (byte) 0x42, (byte) 0xA0, (byte) 0x00,
                 (byte) 0x00, (byte) 0x42, (byte) 0xB4, (byte) 0x00, (byte) 0x00};
+    }
+
+    public void parameters() {
+        String imputfilename = "reference_be.pfm";
+        float factor = 0.2f;
+        float gamma = 1.0f;
+        String output_png_file_name = "saved.jpg";
+
     }
 
 }
