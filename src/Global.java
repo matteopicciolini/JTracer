@@ -40,4 +40,5 @@ public class Global {
                 (byte) 0x8C, (byte) 0x00, (byte) 0x00, (byte) 0x42, (byte) 0xA0, (byte) 0x00,
                 (byte) 0x00, (byte) 0x42, (byte) 0xB4, (byte) 0x00, (byte) 0x00};
     }
+
 }

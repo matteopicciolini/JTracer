@@ -66,4 +66,5 @@ public class HDR_Image {
         stream.write(floatBytes);
 
     }
+
 }
