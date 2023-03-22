@@ -1,5 +1,5 @@
-import org.junit.jupiter.api.Test;
-
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import static java.lang.Math.log10;
 import static java.lang.Math.pow;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static javax.imageio.ImageIO.createImageOutputStream;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -83,10 +84,24 @@ public class HDR_Image {
     }
 
     public void clamp_image(){
-        for(int i = 0; i < this.pixels.length; ++i){
-            this.pixels[i].r = this.clamp(this.pixels[i].r);
-            this.pixels[i].g = this.clamp(this.pixels[i].g);
-            this.pixels[i].b = this.clamp(this.pixels[i].b);
+        for (Color pixel : this.pixels) {
+            pixel.r = this.clamp(pixel.r);
+            pixel.g = this.clamp(pixel.g);
+            pixel.b = this.clamp(pixel.b);
         }
+    }
+
+    public void write_ldr_image(OutputStream stream, String format, float gamma) throws IOException {
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < this.height; ++i) {
+            for (int j = 0; j < this.width; ++j) {
+                Color cur_color = this.get_pixel(j, i);
+                int r = (int) (255 * Math.pow(cur_color.r / 255.0, 1.0 / gamma));
+                int g = (int) (255 * Math.pow(cur_color.g / 255.0, 1.0 / gamma));
+                int b = (int) (255 * Math.pow(cur_color.b  / 255.0, 1.0 / gamma));
+                img.setRGB(i, j, (r << 16) + (g << 8) + b);
+            }
+        }
+        ImageIO.write(img, format, stream);
     }
 }
