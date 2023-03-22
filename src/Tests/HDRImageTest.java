@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.ByteOrder;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 class HDRImageTest {
 
@@ -69,5 +70,18 @@ class HDRImageTest {
         img.set_pixel(0, 0, new Color(5.0f, 10.0f, 15.0f));
         img.set_pixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));
         assertEquals(100.0f, img.average_luminosity(0.0f), 1e-5);
+    }
+
+    @Test
+    void clamp_image() {
+        HDR_Image img = new HDR_Image(2, 1);
+        img.set_pixel(0, 0, new Color(5.0f, 10.0f, 15.0f));
+        img.set_pixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));
+        img.clamp_image();
+        for(Color pixel : img.pixels){
+            assertTrue(pixel.r >= 0 && pixel.r <= 1);
+            assertTrue(pixel.g >= 0 && pixel.g <= 1);
+            assertTrue(pixel.b >= 0 && pixel.b <= 1);
+        }
     }
 }
