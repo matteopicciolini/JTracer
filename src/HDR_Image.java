@@ -11,9 +11,13 @@ import static java.lang.Math.pow;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.junit.Assert.assertTrue;
 
+
 /**
- * Class used to build an HDR_Image object with the following public variables: number of rows & columns and
- * the intensity of the three colors RGB for every pixel.
+ * Class used to build an HDR_Image object with the following properties:
+ *  - [width] - Number of columns in the matrix of colors
+ *  - [height] - Number of rows in the matrix of colors
+ *  - [pixels] - 1D array representing the matrix of colors (RGB)
+ *  @See Color
  */
 public class HDR_Image {
     public int height;
@@ -104,16 +108,25 @@ public class HDR_Image {
         }
     }
 
-
+    /**
+     * This function is used to write a ldr (jpg or png) image.
+     * It writes in the buffer the entire pixels array and create a file jpg/png image using javax.imageIO.
+     * @param stream - output stream
+     * @param format - format of the image e.g. 'PNG', 'JPG'
+     * @param gamma - gamma function
+     * @throws IOException - throws IOException exception
+     */
     public void write_ldr_image(OutputStream stream, String format, float gamma) throws IOException {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < this.height; ++i) {
             for (int j = 0; j < this.width; ++j) {
                 Color cur_color = this.get_pixel(j, i);
-                int r = (int) (255 * Math.pow(cur_color.r / 255.0, 1.0 / gamma));
-                int g = (int) (255 * Math.pow(cur_color.g / 255.0, 1.0 / gamma));
-                int b = (int) (255 * Math.pow(cur_color.b  / 255.0, 1.0 / gamma));
+                int r = (int) (255 * Math.pow(cur_color.r , 1.0 / gamma));
+                int g = (int) (255 * Math.pow(cur_color.g , 1.0 / gamma));
+                int b = (int) (255 * Math.pow(cur_color.b , 1.0 / gamma));
+
                 img.setRGB(j, i, (r << 16) + (g << 8) + b);
+                //third parameter is an 32 bit int RGB with this representation: 00000000 rrrrrrrr gggggggg bbbbbbbb
             }
         }
         ImageIO.write(img, format, stream);

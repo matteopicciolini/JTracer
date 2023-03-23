@@ -62,7 +62,7 @@ class HDRImageTest {
     }
 
     @Test
-    void normalize_image() throws IOException {
+    void normalize_image() {
         HDR_Image img = new HDR_Image(2, 1);
         Color color1 = new Color(5.0f, 10.0f, 15.0f);
         Color color2 = new Color(500.0f, 1000.0f, 1500.0f);

@@ -77,15 +77,14 @@ public class PfmCreator {
     }
 
     /**
-     * The main function of PfmCreator Class. It reads separately every line from a pfm file, and create
+     * The main function of PfmCreator class. It reads separately every line from a pfm file, and create
      * an HDR_Image object with the assigned instances.
      * @param stream
-     * @return HDR_image
-     * @throws IOException
-     * @throws InvalidPfmFileFormat
+     * @return HDR_Image - return an HDR_Image object
+     * @throws IOException - read_line maybe throws IOException
+     * @throws InvalidPfmFileFormat - throws InvalidPfmFileFormat when file format have some problem
      */
     public static HDR_Image read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormat {
-
         String magic = read_line(stream);
         if (!magic.equals("PF")) throw new InvalidPfmFileFormat("Invalid magic in PFM file");
 
