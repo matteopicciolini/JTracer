@@ -44,12 +44,9 @@ public class Normal {
         Normal normal = new Normal(this.x * scal, this.y * scal, this.z * scal);
         return normal;
     }
-    public float prod(Normal normal1) {
-        Normal normal = new Normal();
-        normal.x = this.x * normal1.x;
-        normal.y = this.y * normal1.y;
-        normal.z = this.z * normal1.z;
-        return normal.x+normal.y+normal.z;
+    public float dot(Normal normal1) {
+
+        return x*normal1.x+y*normal1.y+z*normal1.z;
     }
 
     public float norm() {
@@ -61,10 +58,6 @@ public class Normal {
         return x * x + y * y + z * z;
     }
 
-    public float scalar_prod(Normal normal1) {
-        float angle = prod(normal1);
-        return (this.norm() * normal1.norm())*angle ;
-    }
     public Normal normalization() {
         Normal norm=new Normal(x, y, z);
         return norm.dilatation(1/norm.norm());
@@ -72,10 +65,15 @@ public class Normal {
     public Normal cross(Normal normal1) {
                 Normal normal2= new Normal(y * normal1.z - z * normal1.y, z * normal1.x - x * normal1.z, x* normal1.y - y * normal1.x);
                 return normal2;
+    }
+    public Normal cross(Vec vec) {
+        return cross(conversion(vec));
+
+    }
+    public Normal conversion(Vec vec){
+        Normal norm=new Normal(x= vec.x, y= vec.y, z= vec.z);
+        return norm;
 
     }
 
 }
-
-
-
