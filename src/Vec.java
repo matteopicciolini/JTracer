@@ -6,18 +6,17 @@ public class Vec implements Geometry{
     @Override
     public String toString() {return "Vec(%s, %s, %s)".formatted(x, y, z);}
 
-    public float get_x(){return this.x;};
-    public float get_y(){return this.y;};
-    public float get_z(){return this.z;};
-
-    public void set_x(float x){this.x = x;};
-    public void set_y(float y){this.y = y;};
-    public void set_z(float z){this.z = z;};
+    public float get_x(){return this.x;}
+    public float get_y(){return this.y;}
+    public float get_z(){return this.z;}
+    public void set_x(float x){this.x = x;}
+    public void set_y(float y){this.y = y;}
+    public void set_z(float z){this.z = z;}
 
     public Vec(){
-        this.x=0;
-        this.y=0;
-        this.z=0;
+        this.x = 0.f;
+        this.y = 0.f;
+        this.z = 0.f;
     }
 
     public Vec(float x, float y, float z){
@@ -39,6 +38,10 @@ public class Vec implements Geometry{
     }
     public Vec sum(Vec vector){
         return Geometry.sum(this, vector, Vec::new);
+    }
+
+    public float dot(Vec vector){
+        return Geometry.dot(this, vector);
     }
 
 }
