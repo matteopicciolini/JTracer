@@ -1,5 +1,5 @@
 /**
- * This class contains the parameters given by command line like factor, monitor's gamma and input/ output filename
+ * This class contains the parameters given by command line like factor, monitor's gamma a input/ output filename
  */
 public class Parameters {
     public float factor;
