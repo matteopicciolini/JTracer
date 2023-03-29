@@ -1,15 +1,4 @@
 import java.util.function.Supplier;
-
-interface Geometry {
-    public float get_x();
-    public float get_y();
-    public float get_z();
-
-    public float set_x(float x);
-    public float set_y(float y);
-    public float set_z(float z);
-}
-
 /**
  * This class contains the te hexadecimal data array present in the files
  * reference_be and reference_le written in byte.
@@ -56,14 +45,6 @@ public class Global {
     }
 
 
-    public <T extends Geometry, F extends Geometry, R extends Geometry> R difference(F template,
-                                                                                     T template_to_compare,
-                                                                                     Supplier<R> constructor) {
-        R diff = constructor.get();
-        diff.set_x(Math.abs(template.get_x() - template_to_compare.get_x()));
-        diff.set_y(Math.abs(template.get_y() - template_to_compare.get_y()));
-        diff.set_z(Math.abs(template.get_z() - template_to_compare.get_z()));
-        return diff;
-    }
+
 
 }
