@@ -11,31 +11,29 @@ public abstract class OrientedObject extends Geometry {
         super(x, y, z);
     }
 
-    protected Geometry neg() {
+    public Geometry neg() {
         return (createInstance(-this.x, -this.y, -this.z));
     }
 
-    protected float dot(OrientedObject other) {
+    public float dot(OrientedObject other) {
         return (this.x * other.x +
                 this.y * other.y +
                 this.z * other.z
         );
     }
-    protected float dot(float lambda) {
-        return (this.x * lambda +
-                this.y * lambda +
-                this.z * lambda
-        );
+
+    public Geometry dot(float lambda) {
+        return (createInstance(this.x * lambda, this.y * lambda, this.z * lambda));
     }
 
-    protected float norm(){
+    public float norm(){
         return (float) sqrt(this.squared_norm());
     }
-    protected float squared_norm(){
+    public float squared_norm(){
         return this.dot(this);
     }
 
-    protected void normalize(){
+    public void normalize(){
         float norm = this.norm();
         this.x /= norm;
         this.y /= norm;
@@ -46,7 +44,7 @@ public abstract class OrientedObject extends Geometry {
         try {
             T result = returnType.getDeclaredConstructor().newInstance();
             result.x = a.y * b.z - a.z * b.y;
-            result.y = a.y * b.z - a.z * b.y;
+            result.y = a.z * b.x - a.x * b.z;
             result.z = a.x * b.y - a.y * b.x;
             return result;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {

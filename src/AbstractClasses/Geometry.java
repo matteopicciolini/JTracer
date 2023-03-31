@@ -1,7 +1,5 @@
 package AbstractClasses;
-
 import java.lang.reflect.InvocationTargetException;
-
 import static java.lang.Math.abs;
 
 public abstract class Geometry{
@@ -51,7 +49,7 @@ public abstract class Geometry{
     public boolean is_close(Geometry other) {
         if (other.getClass() != this.getClass()){throw new IllegalArgumentException("Cannot compare different types");}
         float epsilon = 1e-5F;
-        Geometry diff = difference(this, other, Geometry.class);
+        Geometry diff = difference(this, other, this.getClass());
         assert diff != null;
         return (abs(diff.x) < epsilon &&
                 abs(diff.y) < epsilon &&
