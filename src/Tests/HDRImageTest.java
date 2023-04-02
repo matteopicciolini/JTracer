@@ -48,11 +48,11 @@ class HDRImageTest {
 
         ByteArrayOutputStream stream_lit = new ByteArrayOutputStream();
         img.writePfm(stream_lit, ByteOrder.LITTLE_ENDIAN);
-        Assertions.assertArrayEquals(stream_lit.toByteArray(), Global.LE_reference_bytes);
+        Assertions.assertArrayEquals(stream_lit.toByteArray(), Global.LE_ReferenceBytes);
 
         ByteArrayOutputStream stream_big = new ByteArrayOutputStream();
         img.writePfm(stream_big, ByteOrder.BIG_ENDIAN);
-        Assertions.assertArrayEquals(stream_big.toByteArray(), Global.BE_reference_bytes);
+        Assertions.assertArrayEquals(stream_big.toByteArray(), Global.BE_ReferenceBytes);
     }
     @Test
     void read_line() throws IOException {

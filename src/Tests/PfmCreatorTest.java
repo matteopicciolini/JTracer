@@ -54,8 +54,8 @@ class PfmCreatorTest {
     @Test
     void read_pfm_image() throws IOException, InvalidPfmFileFormat {
         byte[][] bytes_arrays = new byte[2][];
-        bytes_arrays[0] = Global.LE_reference_bytes;
-        bytes_arrays[1] = Global.BE_reference_bytes;
+        bytes_arrays[0] = Global.LE_ReferenceBytes;
+        bytes_arrays[1] = Global.BE_ReferenceBytes;
         for (byte [] bytes_array : bytes_arrays){
             HDRImage img = PfmCreator.read_pfm_image(new ByteArrayInputStream(bytes_array));
             Assertions.assertEquals(3, img.width);

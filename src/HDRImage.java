@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Class used to build an HDR_Image object with the following properties:
+ * Class used to build an HDRImage object with the following properties:
  *  - [width] - Number of columns in the matrix of colors
  *  - [height] - Number of rows in the matrix of colors
  *  - [pixels] - 1D array representing the matrix of colors (RGB)
@@ -116,15 +116,14 @@ public class HDRImage {
      * @param gamma - gamma function
      * @throws IOException - throws IOException exception
      */
-
     public void writeLdrImage(OutputStream stream, String format, float gamma) throws IOException {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < this.height; ++i) {
             for (int j = 0; j < this.width; ++j) {
                 Color cur_color = this.getPixel(j, i);
-                int r = (int) (255 * Math.pow(cur_color.r , 1.0 / gamma));
-                int g = (int) (255 * Math.pow(cur_color.g , 1.0 / gamma));
-                int b = (int) (255 * Math.pow(cur_color.b , 1.0 / gamma));
+                int r = (int) (255f * Math.pow(cur_color.r , 1.0f / gamma));
+                int g = (int) (255f * Math.pow(cur_color.g , 1.0f / gamma));
+                int b = (int) (255f * Math.pow(cur_color.b , 1.0f / gamma));
 
                 img.setRGB(j, i, (r << 16) + (g << 8) + b);
                 //third parameter is an 32 bit int RGB with this representation: 00000000 rrrrrrrr gggggggg bbbbbbbb
