@@ -116,6 +116,7 @@ public class HDRImage {
      * @param gamma - gamma function
      * @throws IOException - throws IOException exception
      */
+
     public void writeLdrImage(OutputStream stream, String format, float gamma) throws IOException {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < this.height; ++i) {
