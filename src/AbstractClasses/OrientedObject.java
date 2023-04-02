@@ -1,8 +1,7 @@
 package AbstractClasses;
-
 import java.lang.reflect.InvocationTargetException;
-
 import static java.lang.Math.sqrt;
+
 public abstract class OrientedObject extends Geometry {
     public OrientedObject() {
         super();
@@ -20,10 +19,6 @@ public abstract class OrientedObject extends Geometry {
                 this.y * other.y +
                 this.z * other.z
         );
-    }
-
-    public Geometry dot(float lambda) {
-        return (createInstance(this.x * lambda, this.y * lambda, this.z * lambda));
     }
 
     public float norm(){

@@ -18,7 +18,9 @@ public abstract class Geometry{
         this.z = z;
     }
     protected abstract Geometry createInstance(float x, float y, float z);
-
+    public Geometry dot(float lambda) {
+        return (createInstance(this.x * lambda, this.y * lambda, this.z * lambda));
+    }
     protected static <T extends Geometry> T difference(Geometry a, Geometry b, Class<T> returnType) {
         try {
             T result = returnType.getDeclaredConstructor().newInstance();
@@ -43,18 +45,17 @@ public abstract class Geometry{
         }
     }
 
-    @Override
-    public String toString() {return "%s(%s, %s, %s)".formatted(this.getClass().getName(), x, y, z);}
-
-    public boolean is_close(Geometry other) {
+    public boolean isClose(Geometry other) {
         if (other.getClass() != this.getClass()){throw new IllegalArgumentException("Cannot compare different types");}
         float epsilon = 1e-5F;
         Geometry diff = difference(this, other, this.getClass());
-        assert diff != null;
         return (abs(diff.x) < epsilon &&
                 abs(diff.y) < epsilon &&
                 abs(diff.z) < epsilon);
     }
+
+    @Override
+    public String toString() {return "%s(%s, %s, %s)".formatted(this.getClass().getName(), x, y, z);}
 }
 
 
