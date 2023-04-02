@@ -19,37 +19,37 @@ import static org.junit.Assert.assertTrue;
  *  - [pixels] - 1D array representing the matrix of colors (RGB)
  *  @See Color
  */
-public class HDR_Image {
+public class HDRImage {
     public int height;
     public int width;
     public Color[] pixels;
 
-    public HDR_Image(int width, int height) {
+    public HDRImage(int width, int height) {
         this.width = width;
         this.height = height;
         this.pixels = new Color[this.width * this.height];
     }
 
-    public boolean valid_coordinates(int x, int y){
+    public boolean validCoordinates(int x, int y){
         return ((x >= 0) && (x < this.width) &&
                 (y >= 0) && (y < this.height));
     }
 
-    public int pixel_offset(int x, int y){
+    public int pixelOffset(int x, int y){
         return y * this.width + x;
     }
 
-    public Color get_pixel(int x, int y) {
-        assertTrue(this.valid_coordinates(x, y));
-        return this.pixels[this.pixel_offset(x, y)];
+    public Color getPixel(int x, int y) {
+        assertTrue(this.validCoordinates(x, y));
+        return this.pixels[this.pixelOffset(x, y)];
     }
 
-    public void set_pixel(int x, int y, Color color) {
-        assertTrue(this.valid_coordinates(x, y));
-        this.pixels[this.pixel_offset(x, y)] = color;
+    public void setPixel(int x, int y, Color color) {
+        assertTrue(this.validCoordinates(x, y));
+        this.pixels[this.pixelOffset(x, y)] = color;
     }
 
-    public void write_pfm(OutputStream stream, ByteOrder order) throws IOException {
+    public void writePfm(OutputStream stream, ByteOrder order) throws IOException {
 
         String endianness_str = (order == LITTLE_ENDIAN) ?  "-1.0" :  "1.0";
         byte[] bytes = String.format("PF\n%d %d\n%s\n", this.width, this.height, endianness_str).getBytes(StandardCharsets.US_ASCII);
@@ -58,20 +58,20 @@ public class HDR_Image {
 
         for (int i = this.height - 1; i >= 0 ; --i){
             for(int j = 0; j < this.width; ++j){
-                color = this.get_pixel(j, i);
-                WriteFloatToStream(stream, color.r, order);
-                WriteFloatToStream(stream, color.g, order);
-                WriteFloatToStream(stream, color.b, order);
+                color = this.getPixel(j, i);
+                writeFloatToStream(stream, color.r, order);
+                writeFloatToStream(stream, color.g, order);
+                writeFloatToStream(stream, color.b, order);
             }
         }
     }
 
-    private void WriteFloatToStream(OutputStream stream, float value, ByteOrder order) throws IOException {
+    private void writeFloatToStream(OutputStream stream, float value, ByteOrder order) throws IOException {
         byte[] floatBytes = ByteBuffer.allocate(4).order(order).putFloat(value).array();
         stream.write(floatBytes);
     }
 
-    public float average_luminosity(float delta){
+    public float averageLuminosity(float delta){
         float cum_sum = 0.0f;
         for (Color pix : this.pixels){
             cum_sum += log10(delta + pix.luminosity());
@@ -79,7 +79,7 @@ public class HDR_Image {
         return (float) pow(10, cum_sum / pixels.length);
     }
 
-    public void normalize_image(float factor, Float luminosity){
+    public void normalizeImage(float factor, Float luminosity){
 
 
         for (int i =0; i<this.width*this.height; i++){
@@ -88,19 +88,19 @@ public class HDR_Image {
             this.pixels[i].b=this.pixels[i].b*(factor/luminosity);
         }
     }
-    public void normalize_image(float factor) {
-        normalize_image(factor, average_luminosity(1e-5f));
+    public void normalizeImage(float factor) {
+        normalizeImage(factor, averageLuminosity(1e-5f));
     }
 
-    public float average_luminosity(){
-        return average_luminosity(1e-10f);
+    public float averageLuminosity(){
+        return averageLuminosity(1e-10f);
     }
 
     private float clamp(float x){
         return x / (1 + x);
     }
 
-    public void clamp_image(){
+    public void clampImage(){
         for (Color pixel : this.pixels) {
             pixel.r = this.clamp(pixel.r);
             pixel.g = this.clamp(pixel.g);
@@ -116,11 +116,11 @@ public class HDR_Image {
      * @param gamma - gamma function
      * @throws IOException - throws IOException exception
      */
-    public void write_ldr_image(OutputStream stream, String format, float gamma) throws IOException {
+    public void writeLdrImage(OutputStream stream, String format, float gamma) throws IOException {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < this.height; ++i) {
             for (int j = 0; j < this.width; ++j) {
-                Color cur_color = this.get_pixel(j, i);
+                Color cur_color = this.getPixel(j, i);
                 int r = (int) (255 * Math.pow(cur_color.r , 1.0 / gamma));
                 int g = (int) (255 * Math.pow(cur_color.g , 1.0 / gamma));
                 int b = (int) (255 * Math.pow(cur_color.b , 1.0 / gamma));

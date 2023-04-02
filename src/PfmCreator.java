@@ -13,7 +13,7 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
  * Class used to build the read_pfm_image function containing 4 sub-functions used in the main function.
  */
 public class PfmCreator {
-    public static String read_line(InputStream targetStream) throws IOException {
+    public static String readLine(InputStream targetStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         int nextByte;
         while ((nextByte = targetStream.read()) != -1) {
@@ -26,7 +26,7 @@ public class PfmCreator {
     }
 
 
-    public static int[] parse_img_size(String line) throws InvalidPfmFileFormat {
+    public static int[] parseImgSize(String line) throws InvalidPfmFileFormat {
         String[] elements = line.split(" ");
         if (elements.length != 2)
             throw new InvalidPfmFileFormat("Invalid image size specification");
@@ -43,7 +43,7 @@ public class PfmCreator {
         }
     }
 
-    public static ByteOrder parse_endianness(String line) throws InvalidPfmFileFormat {
+    public static ByteOrder parseEndianness(String line) throws InvalidPfmFileFormat {
         float value;
         try {
             value = Float.parseFloat(line);
@@ -84,24 +84,24 @@ public class PfmCreator {
      * @throws IOException - read_line maybe throws IOException
      * @throws InvalidPfmFileFormat - throws InvalidPfmFileFormat when file format have some problem
      */
-    public static HDR_Image read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormat {
-        String magic = read_line(stream);
+    public static HDRImage read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormat {
+        String magic = readLine(stream);
         if (!magic.equals("PF")) throw new InvalidPfmFileFormat("Invalid magic in PFM file");
 
-        String img_size = read_line(stream);
-        int [] dim = parse_img_size(img_size);
+        String img_size = readLine(stream);
+        int [] dim = parseImgSize(img_size);
 
-        String endianness_line = read_line(stream);
-        ByteOrder endianness = parse_endianness(endianness_line);
+        String endianness_line = readLine(stream);
+        ByteOrder endianness = parseEndianness(endianness_line);
 
-        HDR_Image result = new HDR_Image(dim[0], dim[1]);
+        HDRImage result = new HDRImage(dim[0], dim[1]);
         float r, g, b;
         for (int i = result.height - 1; i >= 0 ; --i) {
             for (int j = 0; j < result.width; ++j) {
                 r = readFloat(stream, endianness);
                 g = readFloat(stream, endianness);
                 b = readFloat(stream, endianness);
-                result.set_pixel(j, i, new Color(r, g, b));
+                result.setPixel(j, i, new Color(r, g, b));
             }
         }
         return result;

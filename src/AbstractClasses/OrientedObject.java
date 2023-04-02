@@ -13,28 +13,24 @@ public abstract class OrientedObject extends Geometry {
     public Geometry neg() {
         return (createInstance(-this.x, -this.y, -this.z));
     }
-
     public float dot(OrientedObject other) {
         return (this.x * other.x +
                 this.y * other.y +
                 this.z * other.z
         );
     }
-
     public float norm(){
         return (float) sqrt(this.squared_norm());
     }
     public float squared_norm(){
         return this.dot(this);
     }
-
     public void normalize(){
         float norm = this.norm();
         this.x /= norm;
         this.y /= norm;
         this.z /= norm;
     }
-
     protected static <T extends OrientedObject> T cross(OrientedObject a, OrientedObject b, Class<T> returnType) {
         try {
             T result = returnType.getDeclaredConstructor().newInstance();
@@ -47,4 +43,3 @@ public abstract class OrientedObject extends Geometry {
         }
     }
 }
-
