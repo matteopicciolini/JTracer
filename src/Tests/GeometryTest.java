@@ -11,7 +11,7 @@ class GeometryTest {
 
         Point c = new Point(1.0f, 2.0f, 3.0f);
         Point d = new Point(4.0f, 6.0f, 8.0f);
-        assertTrue(c.isClose(d));
+        assertTrue(c.isClose(c));
         assertFalse(c.isClose(d));
     }
 }
