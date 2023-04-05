@@ -1,4 +1,4 @@
-package AbstractClasses;
+package org.mirrors;
 import java.lang.reflect.InvocationTargetException;
 import static java.lang.Math.abs;
 

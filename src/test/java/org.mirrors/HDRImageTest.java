@@ -1,5 +1,8 @@
-import org.junit.jupiter.api.Assertions;
+package org.mirrors;
+
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,19 +15,19 @@ class HDRImageTest {
     @Test
     void valid_coordinates() {
         HDRImage img = new HDRImage(7, 4);
-        Assertions.assertTrue(img.validCoordinates(0, 0));
-        Assertions.assertTrue(img.validCoordinates(6, 3));
-        Assertions.assertFalse(img.validCoordinates(-1, 0));
-        Assertions.assertFalse(img.validCoordinates(0, -1));
-        Assertions.assertFalse(img.validCoordinates(7, 0));
-        Assertions.assertFalse(img.validCoordinates(0, 4));
+        assertTrue(img.validCoordinates(0, 0));
+        assertTrue(img.validCoordinates(6, 3));
+        assertFalse(img.validCoordinates(-1, 0));
+        assertFalse(img.validCoordinates(0, -1));
+        assertFalse(img.validCoordinates(7, 0));
+        assertFalse(img.validCoordinates(0, 4));
     }
 
     @Test
     void pixel_offset() {
         HDRImage img = new HDRImage(7, 4);
-        Assertions.assertEquals(17, img.pixelOffset(3, 2));
-        Assertions.assertEquals(7 * 4 - 1, img.pixelOffset(6, 3));
+        assertEquals(17, img.pixelOffset(3, 2));
+        assertEquals(7 * 4 - 1, img.pixelOffset(6, 3));
     }
 
     @Test
@@ -32,7 +35,7 @@ class HDRImageTest {
         HDRImage img = new HDRImage(7, 4);
         Color color = new Color(1.0f, 2.0f, 3.0f);
         img.setPixel(3, 2, color);
-        Assertions.assertTrue(color.isClose(img.getPixel(3, 2)));
+        assertTrue(color.isClose(img.getPixel(3, 2)));
     }
 
     @Test
@@ -48,17 +51,17 @@ class HDRImageTest {
 
         ByteArrayOutputStream stream_lit = new ByteArrayOutputStream();
         img.writePfm(stream_lit, ByteOrder.LITTLE_ENDIAN);
-        Assertions.assertArrayEquals(stream_lit.toByteArray(), Global.LE_ReferenceBytes);
+        assertArrayEquals(stream_lit.toByteArray(), Global.LE_ReferenceBytes);
 
         ByteArrayOutputStream stream_big = new ByteArrayOutputStream();
         img.writePfm(stream_big, ByteOrder.BIG_ENDIAN);
-        Assertions.assertArrayEquals(stream_big.toByteArray(), Global.BE_ReferenceBytes);
+        assertArrayEquals(stream_big.toByteArray(), Global.BE_ReferenceBytes);
     }
     @Test
     void read_line() throws IOException {
         InputStream targetStream = new ByteArrayInputStream("Hello\nWorld".getBytes());
-        Assertions.assertEquals(PfmCreator.readLine(targetStream), "Hello");
-        Assertions.assertEquals(PfmCreator.readLine(targetStream), "World");
+        assertEquals(PfmCreator.readLine(targetStream), "Hello");
+        assertEquals(PfmCreator.readLine(targetStream), "World");
     }
 
     @Test
@@ -73,8 +76,8 @@ class HDRImageTest {
         Color final1 = new Color(0.5e2f, 1.0e2f, 1.5e2f);
         Color final2 = new Color(0.5e4f, 1.0e4f, 1.5e4f);
 
-        Assertions.assertTrue(final1.isClose(img.getPixel(0, 0)));
-        Assertions.assertTrue(final2.isClose(img.getPixel(1, 0)));
+        assertTrue(final1.isClose(img.getPixel(0, 0)));
+        assertTrue(final2.isClose(img.getPixel(1, 0)));
     }
 
     @Test
@@ -82,7 +85,7 @@ class HDRImageTest {
         HDRImage img = new HDRImage(2, 1);
         img.setPixel(0, 0, new Color(5.0f, 10.0f, 15.0f));
         img.setPixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));
-        Assertions.assertEquals(100.0f, img.averageLuminosity(0.0f), 1e-5);
+        assertEquals(100.0f, img.averageLuminosity(0.0f), 1e-5);
     }
 
     @Test
@@ -92,9 +95,9 @@ class HDRImageTest {
         img.setPixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));
         img.clampImage();
         for(Color pixel : img.pixels){
-            Assertions.assertTrue(pixel.r >= 0 && pixel.r <= 1);
-            Assertions.assertTrue(pixel.g >= 0 && pixel.g <= 1);
-            Assertions.assertTrue(pixel.b >= 0 && pixel.b <= 1);
+            assertTrue(pixel.r >= 0 && pixel.r <= 1);
+            assertTrue(pixel.g >= 0 && pixel.g <= 1);
+            assertTrue(pixel.b >= 0 && pixel.b <= 1);
         }
 
     }

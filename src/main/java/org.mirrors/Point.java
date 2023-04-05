@@ -1,4 +1,4 @@
-import AbstractClasses.Geometry;
+package org.mirrors;
 
 public class Point extends Geometry {
     protected Vec toVec(){

@@ -1,4 +1,4 @@
-import AbstractClasses.OrientedObject;
+package org.mirrors;
 
 public class Normal extends OrientedObject {
     public Normal() {

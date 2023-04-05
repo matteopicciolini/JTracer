@@ -1,4 +1,5 @@
-import Exceptions.InvalidPfmFileFormat;
+package org.mirrors;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;

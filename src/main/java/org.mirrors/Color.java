@@ -1,3 +1,5 @@
+package org.mirrors;
+
 /**
  * Class used to set the color of a single pixel of an image.
  * It contains many methods as sum, product and scalar product between two pixels RGB triad.

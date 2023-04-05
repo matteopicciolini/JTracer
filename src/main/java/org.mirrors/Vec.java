@@ -1,4 +1,4 @@
-import AbstractClasses.OrientedObject;
+package org.mirrors;
 
 public class Vec extends OrientedObject {
     public Vec() {

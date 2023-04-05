@@ -1,4 +1,4 @@
-import Exceptions.InvalidPfmFileFormat;
+package org.mirrors;
 
 import java.io.*;
 

@@ -1,3 +1,5 @@
+package org.mirrors;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -9,8 +11,6 @@ import java.nio.charset.StandardCharsets;
 import static java.lang.Math.log10;
 import static java.lang.Math.pow;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
-import static org.junit.Assert.assertTrue;
-
 
 /**
  * Class used to build an HDRImage object with the following properties:
@@ -40,12 +40,16 @@ public class HDRImage {
     }
 
     public Color getPixel(int x, int y) {
-        assertTrue(this.validCoordinates(x, y));
+        if(!validCoordinates(x, y)){
+            throw new RuntimeException("Invalid pixel coordinates");
+        }
         return this.pixels[this.pixelOffset(x, y)];
     }
 
     public void setPixel(int x, int y, Color color) {
-        assertTrue(this.validCoordinates(x, y));
+        if(!validCoordinates(x, y)){
+            throw new RuntimeException("Invalid pixel coordinates");
+        }
         this.pixels[this.pixelOffset(x, y)] = color;
     }
 

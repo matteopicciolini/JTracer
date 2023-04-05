@@ -1,4 +1,4 @@
-package Exceptions;
+package org.mirrors;
 
 /**
  * This class contains the exceptions for the invalid reading format of the PFM image that
