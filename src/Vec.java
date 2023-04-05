@@ -1,35 +1,20 @@
-public class Vec {
-    public float x;
-    public float y;
-    public float z;
+import AbstractClasses.OrientedObject;
+
+public class Vec extends OrientedObject {
+    public Vec() {
+        super();
+    }
+    public Vec(float x, float y, float z) {
+        super(x, y, z);
+    }
 
     @Override
-    public String toString() {return "Vec(%s, %s, %s)".formatted(x, y, z);}
-
-    public Vec(){
-        this.x=0;
-        this.y=0;
-        this.z=0;
+    public Vec createInstance(float x, float y, float z) {return new Vec(x, y, z);}
+    protected Vec minus(Vec other){return difference(this, other, Vec.class);}
+    public Vec sum(Vec other){
+        return sum(this, other, Vec.class);
     }
-    public Vec(float x, float y, float z){
-        this.x=x;
-        this.y=y;
-        this.z=z;
-    }
-
-    public Vec difference(Vec Vec1){
-        Vec vec = new Vec();
-        vec.x = Math.abs(this.x - Vec1.x);
-        vec.y = Math.abs(this.y - Vec1.y);
-        vec.z = Math.abs(this.z - Vec1.z);
-        return vec;
-    }
-
-    public boolean is_close(Vec vec1){
-        float epsilon = 1e-5F;
-        Vec vec_diff = this.difference(vec1);
-        return (vec_diff.x < epsilon &&
-                vec_diff.y < epsilon &&
-                vec_diff.z < epsilon);
+    public Vec cross(Vec other){
+        return cross(this, other, Vec.class);
     }
 }

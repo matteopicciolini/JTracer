@@ -1,32 +1,49 @@
 public class Transformation {
-    public float[] m;
-    public float[] m_i;
+    public float[] matrix;
+    public float[] invMatrix;
 
 
-    public Transformation() {
-        m = new float[]{1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f};
-        m_i = new float[]{1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f};
+    public Transformation(){
+        this.matrix = Global.IdentityMatrix;
+        this.invMatrix = Global.IdentityMatrix;
+    }
+    public Transformation(float[] matrix, float[] invMatrix){
+        this.matrix = matrix;
+        this.invMatrix = invMatrix;
+    }
+    public Transformation inverse() {
+        return new Transformation(invMatrix, matrix);
     }
 
-    public Transformation(float[] m, float[] m_i) {
-        this.m = m;
-        this.m_i = m_i;
+    public Transformation translation(Vec vec) {
+        float[] m = new float[]{
+                1.0f, 0.0f, 0.0f, vec.x,
+                0.0f, 1.0f, 0.0f, vec.y,
+                0.0f, 0.0f, 1.0f, vec.z,
+                0.0f, 0.0f, 0.0f, 1.0f
+        };
+        float[] inv = new float[]{
+                1.0f, 0.0f, 0.0f, -vec.x,
+                0.0f, 1.0f, 0.0f, -vec.y,
+                0.0f, 0.0f, 1.0f, -vec.z,
+                0.0f, 0.0f, 0.0f, 1.0f
+        };
+        return new Transformation(m, inv);
+    }
+
+    public Transformation scaling(Vec vec) {
+        float[] m = new float[]{
+                vec.x, 0.0f, 0.0f, 0.0f,
+                0.0f, vec.y, 0.0f, 0.0f,
+                0.0f, 0.0f, vec.z, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f};
+        float [] inv = new float[]{
+                1.f / vec.x, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.f / vec.y, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.f / vec.z, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f};
+        return new Transformation(m, inv);
+
     }
 }
-    /*
-    public Transformation matr_prod(float[] m1, float[] m2_i){
-        Float[] m3=new Float[m1.length];
-        for (int i = 4 - 1; i >= 0 ; --i) {
-            for (int j = 0; j < 4; ++j) {
-                r = readFloat(stream, endianness);
-                g = readFloat(stream, endianness);
-                b = readFloat(stream, endianness);
-                result.set_pixel(j, i, new Color(r, g, b));
-            }
-        }
-        return result;
-    }
 
-        return m3;
-    }
-}*/

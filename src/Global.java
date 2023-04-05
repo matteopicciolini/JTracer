@@ -1,28 +1,14 @@
-import java.util.function.Supplier;
-
-interface Geometry {
-    public float get_x();
-    public float get_y();
-    public float get_z();
-
-    public float set_x(float x);
-    public float set_y(float y);
-    public float set_z(float z);
-}
-
 /**
  * This class contains the te hexadecimal data array present in the files
  * reference_be and reference_le written in byte.
  * LE array is written with little endian order whereas the BE array is inverted cause of using big endian order.
  */
 public class Global {
-    public static byte[] LE_reference_bytes;
-    public static byte[] BE_reference_bytes;
-
-
-
+    public static byte[] LE_ReferenceBytes;
+    public static byte[] BE_ReferenceBytes;
+    public static float[] IdentityMatrix;
     static {
-        LE_reference_bytes = new byte[]{
+        LE_ReferenceBytes = new byte[]{
                 (byte) 0x50, (byte) 0x46, (byte) 0x0a, (byte) 0x33, (byte) 0x20, (byte) 0x32,
                 (byte) 0x0a, (byte) 0x2d, (byte) 0x31, (byte) 0x2e, (byte) 0x30, (byte) 0x0a,
                 (byte) 0x00, (byte) 0x00, (byte) 0xc8, (byte) 0x42, (byte) 0x00, (byte) 0x00,
@@ -38,7 +24,7 @@ public class Global {
                 (byte) 0x00, (byte) 0x00, (byte) 0x8c, (byte) 0x42, (byte) 0x00, (byte) 0x00,
                 (byte) 0xa0, (byte) 0x42, (byte) 0x00, (byte) 0x00, (byte) 0xb4, (byte) 0x42};
 
-        BE_reference_bytes = new byte[]{
+        BE_ReferenceBytes = new byte[]{
                 (byte) 0x50, (byte) 0x46, (byte) 0x0A, (byte) 0x33, (byte) 0x20, (byte) 0x32,
                 (byte) 0x0A, (byte) 0x31, (byte) 0x2E, (byte) 0x30, (byte) 0x0A, (byte) 0x42,
                 (byte) 0xC8, (byte) 0x00, (byte) 0x00, (byte) 0x43, (byte) 0x48, (byte) 0x00,
@@ -53,17 +39,12 @@ public class Global {
                 (byte) 0x00, (byte) 0x42, (byte) 0x70, (byte) 0x00, (byte) 0x00, (byte) 0x42,
                 (byte) 0x8C, (byte) 0x00, (byte) 0x00, (byte) 0x42, (byte) 0xA0, (byte) 0x00,
                 (byte) 0x00, (byte) 0x42, (byte) 0xB4, (byte) 0x00, (byte) 0x00};
+
+        IdentityMatrix = new float[]{
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
+        };
     }
-
-
-    public <T extends Geometry, F extends Geometry, R extends Geometry> R difference(F template,
-                                                                                     T template_to_compare,
-                                                                                     Supplier<R> constructor) {
-        R diff = constructor.get();
-        diff.set_x(Math.abs(template.get_x() - template_to_compare.get_x()));
-        diff.set_y(Math.abs(template.get_y() - template_to_compare.get_y()));
-        diff.set_z(Math.abs(template.get_z() - template_to_compare.get_z()));
-        return diff;
-    }
-
 }

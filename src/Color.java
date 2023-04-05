@@ -54,7 +54,7 @@ public class Color {
         color.b = Math.abs(this.b - color1.b);
         return color;
     }
-    public boolean is_close(Color color1){
+    public boolean isClose(Color color1){
         float epsilon = 1e-5F;
         Color color_diff = this.difference(color1);
         return (color_diff.r < epsilon &&
