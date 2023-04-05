@@ -16,5 +16,6 @@ sourceSets {
     }
 }
 dependencies {
-    compile 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
