@@ -55,34 +55,34 @@ public class Transformation {
         if (other instanceof Vec){
             return new Vec(
                     other.x * this.matrix.getMatrixElement(0,0) +
-                            other.y * this.matrix.getMatrixElement(1,0) +
-                            other.z * this.matrix.getMatrixElement(2,0),
-                    other.x * this.matrix.getMatrixElement(0,1) +
+                            other.y * this.matrix.getMatrixElement(0,1) +
+                            other.z * this.matrix.getMatrixElement(0,2),
+                    other.x * this.matrix.getMatrixElement(1,0) +
                             other.y * this.matrix.getMatrixElement(1,1) +
-                            other.z * this.matrix.getMatrixElement(2,1),
-                    other.x * this.matrix.getMatrixElement(0,2) +
-                            other.y * this.matrix.getMatrixElement(1,2) +
+                            other.z * this.matrix.getMatrixElement(1,2),
+                    other.x * this.matrix.getMatrixElement(2,0) +
+                            other.y * this.matrix.getMatrixElement(2,1) +
                             other.z * this.matrix.getMatrixElement(2,2)
             );
         }
         else if (other instanceof Point){
             Point point = new Point(
                     this.matrix.getMatrixElement(0,0) * other.x +
-                            this.matrix.getMatrixElement(1,0) * other.y +
-                            this.matrix.getMatrixElement(2,0) * other.z +
-                            this.matrix.getMatrixElement(3,0),
-                    this.matrix.getMatrixElement(0,1) * other.x +
+                            this.matrix.getMatrixElement(0,1) * other.y +
+                            this.matrix.getMatrixElement(0,2) * other.z +
+                            this.matrix.getMatrixElement(0,3),
+                    this.matrix.getMatrixElement(1,0) * other.x +
                             this.matrix.getMatrixElement(1,1) * other.y +
-                            this.matrix.getMatrixElement(2,1) * other.z +
-                            this.matrix.getMatrixElement(3,1),
-                    this.matrix.getMatrixElement(0,2) * other.x +
-                            this.matrix.getMatrixElement(1,2) * other.y +
+                            this.matrix.getMatrixElement(1,2) * other.z +
+                            this.matrix.getMatrixElement(1,3),
+                    this.matrix.getMatrixElement(2,0) * other.x +
+                            this.matrix.getMatrixElement(2,1) * other.y +
                             this.matrix.getMatrixElement(2,2) * other.z +
-                            this.matrix.getMatrixElement(3,2)
+                            this.matrix.getMatrixElement(2,3)
             );
-            float lambda = this.matrix.getMatrixElement(0,3) * other.x +
-                    this.matrix.getMatrixElement(1,3) * other.y +
-                    this.matrix.getMatrixElement(2,3) * other.z +
+            float lambda = this.matrix.getMatrixElement(3,0) * other.x +
+                    this.matrix.getMatrixElement(3,1) * other.y +
+                    this.matrix.getMatrixElement(3,2) * other.z +
                     this.matrix.getMatrixElement(3,3);
 
             if (Math.abs(lambda - 1.0f) < 1e-5) {
@@ -96,10 +96,10 @@ public class Transformation {
                     other.x * this.invMatrix.getMatrixElement(0,0) +
                             other.y * this.invMatrix.getMatrixElement(0,1) +
                             other.z * this.invMatrix.getMatrixElement(0,2),
-                    other.x * this.invMatrix.getMatrixElement(0,1) +
+                    other.x * this.invMatrix.getMatrixElement(1,0) +
                             other.y * this.invMatrix.getMatrixElement(1,1) +
                             other.z * this.invMatrix.getMatrixElement(1,2),
-                    other.x * this.invMatrix.getMatrixElement(0,2) +
+                    other.x * this.invMatrix.getMatrixElement(2,0) +
                             other.y * this.invMatrix.getMatrixElement(2,1) +
                             other.z * this.invMatrix.getMatrixElement(2,2));
         }

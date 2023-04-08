@@ -11,22 +11,23 @@ public class Matrix4x4 {
             this.matrix[i] = a;
         }
     }
-    @Override
-    public String toString(){
-        StringBuilder str = new StringBuilder("Matrix4x4: \n");
-        for(int i = 0; i < 4; ++i){
-            for (int j = 0; j < 4; ++j){
-                str.append("   ").append(this.getMatrixElement(j, i));
-            }
-            str.append("\n");
-        }
-        return str.toString();
-    }
     public Matrix4x4(float[] matrix) throws InvalidMatrix {
         if(matrix.length != 16){
             throw new InvalidMatrix("Invalid 4x4 matrix.");
         }
         this.matrix = matrix;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder("Matrix4x4: \n");
+        for(int i = 0; i < 4; ++i){
+            for (int j = 0; j < 4; ++j){
+                str.append("   ").append(this.getMatrixElement(i, j));
+            }
+            str.append("\n");
+        }
+        return str.toString();
     }
 
     public void setMatrixElement(int row, int col, float value) {
@@ -43,9 +44,9 @@ public class Matrix4x4 {
             for (int j = 0; j < 4; ++j) {
                 float sum = 0.0f;
                 for (int k = 0; k < 4; ++k) {
-                    sum += this.getMatrixElement(k, i) * b.getMatrixElement(j, k);
+                    sum += this.getMatrixElement(i, k) * b.getMatrixElement(k, j);
                 }
-                matrix_prod.setMatrixElement(j, i, sum);
+                matrix_prod.setMatrixElement(i, j, sum);
             }
         }
         return matrix_prod;
