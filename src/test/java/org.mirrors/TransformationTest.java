@@ -83,14 +83,13 @@ class TransformationTest {
         assertTrue(t.isConsistent());
 
         Vec expectedV = new Vec(14.0f, 38.0f, 51.0f);
-        //assertTrue(expectedV.isClose(t.times(new Vec(1.0f, 2.0f, 3.0f))));
+        assertTrue(expectedV.isClose(t.times(new Vec(1.0f, 2.0f, 3.0f))));
 
         Point expectedP = new Point(18.0f, 46.0f, 58.0f);
-        //assertTrue(expectedP.isClose(t.times(new Point(1.0f, 2.0f, 3.0f))));
+        assertTrue(expectedP.isClose(t.times(new Point(1.0f, 2.0f, 3.0f))));
 
         Normal expectedN = new Normal(-8.75f, 7.75f, -3.0f);
-        System.out.println(t.times(new Normal(3.0f, 2.0f, 4.0f)));
-        //assertTrue(expectedN.isClose(t.times(new Normal(3.0f, 2.0f, 4.0f))));
+        assertTrue(expectedN.isClose(t.times(new Normal(3.0f, 2.0f, 4.0f))));
     }
 
     @Test
