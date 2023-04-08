@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class Matrix4x4Test {
 
     @Test
-    void cross() throws InvalidMatrix {
+    void cross() throws InvalidMatrixException {
         Matrix4x4 a = new Matrix4x4(new float[]{
                 1.0f, 2.0f, 3.0f, 4.0f,
                 5.0f, 6.0f, 7.0f, 8.0f,

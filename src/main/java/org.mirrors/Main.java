@@ -11,6 +11,7 @@ public class Main {
         img.normalize_image(param.factor);
         img.clamp_image();
         img.write_ldr_image(out, "PNG", param.gamma);*/
+
         Vec vec = new Vec(3.f, 4.f,5.f);
         Vec vec1 = new Vec(6.f, 4.f,5.f);
         System.out.println(vec.cross(vec1));

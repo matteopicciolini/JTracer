@@ -7,11 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransformationTest {
 
     @Test
-    void isConsistent() {
-    }
-
-    @Test
-    void inverse() throws InvalidMatrix {
+    void inverse() throws InvalidMatrixException {
         Matrix4x4 matrix = new Matrix4x4(new float[]{
                 1.0f, 2.0f, 3.0f, 4.0f,
                 5.0f, 6.0f, 7.0f, 8.0f,
@@ -35,7 +31,7 @@ class TransformationTest {
     }
 
     @Test
-    void translation() throws InvalidMatrix {
+    void translation() throws InvalidMatrixException {
         Transformation tr1 = Transformation.translation(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(tr1.isConsistent());
 
@@ -49,7 +45,7 @@ class TransformationTest {
     }
 
     @Test
-    void scaling() throws InvalidMatrix {
+    void scaling() throws InvalidMatrixException {
         Transformation tr1 = Transformation.scaling(new Vec(2.0f, 5.0f, 10.0f));
         assertTrue(tr1.isConsistent());
 
@@ -63,7 +59,7 @@ class TransformationTest {
     }
 
     @Test
-    void testTimes() throws InvalidMatrix {
+    void testTimes() throws InvalidMatrixException {
         Transformation t = new Transformation(
                 new Matrix4x4(new float[]{
                     1.0f, 2.0f, 3.0f, 4.0f,
@@ -88,14 +84,11 @@ class TransformationTest {
         assertTrue(expectedP.isClose(t.times(new Point(1.0f, 2.0f, 3.0f))));
 
         Normal expectedN = new Normal(-8.75f, 7.75f, -3.0f);
-
-        System.out.println(t.times(new Normal(3.0f, 2.0f, 4.0f)));
-
         assertTrue(expectedN.isClose(t.times(new Normal(3.0f, 2.0f, 4.0f))));
     }
 
     @Test
-    void isClose() throws InvalidMatrix {
+    void isClose() throws InvalidMatrixException {
         Transformation t1 = new Transformation(
                 new Matrix4x4(new float[]{
                         1.0f, 2.0f, 3.0f, 4.0f,
@@ -146,9 +139,7 @@ class TransformationTest {
     }
 
     @Test
-    void rotation() throws InvalidMatrix {
-
-
+    void rotation() throws InvalidMatrixException {
         assertTrue(Transformation.rotationX(30.0f).isConsistent());
         assertTrue(Transformation.rotationY(30.0f).isConsistent());
         assertTrue(Transformation.rotationZ(30.0f).isConsistent());
@@ -165,8 +156,8 @@ class TransformationTest {
 
 
     @Test
-    void multiplication() throws InvalidMatrix {
-        Transformation m1 = new Transformation(
+    void multiplication() throws InvalidMatrixException {
+        Transformation t1 = new Transformation(
                 new Matrix4x4(new float[]{
                         1.0f, 2.0f, 3.0f, 4.0f,
                         5.0f, 6.0f, 7.0f, 8.0f,
@@ -179,8 +170,9 @@ class TransformationTest {
                         0.5f, 0.5f, -1.0f, 1.0f,
                         -1.375f, 0.875f, 0.0f, -0.5f
                 }));
-        assertTrue(m1.isConsistent());
-        Transformation m2 = new Transformation(
+        assertTrue(t1.isConsistent());
+
+        Transformation t2 = new Transformation(
                 new Matrix4x4(new float[]{
                         3.0f, 5.0f, 2.0f, 4.0f,
                         4.0f, 1.0f, 0.0f, 5.0f,
@@ -193,7 +185,7 @@ class TransformationTest {
                         -5.55f, 3.15f, -0.4f, 6.45f,
                         -0.9f, 0.7f, -0.2f, 1.1f,
                 }));
-        assertTrue(m2.isConsistent());
+        assertTrue(t2.isConsistent());
 
         Transformation expected = new Transformation(
                 new Matrix4x4(new float[]{
@@ -208,8 +200,11 @@ class TransformationTest {
                         25.525f, -22.025f, 12.25f, -5.2f,
                         4.825f, -4.325f, 2.5f, -1.1f
                 }));
-        //assertTrue(expected.isConsistent());
-        assertTrue(expected.matrix.isClose(m1.matrix.cross(m2.matrix)));
-        //assertTrue(expected.invMatrix.isClose(m1.invMatrix.cross(m2.invMatrix)));
+
+        assertTrue(expected.isConsistent());
+        Transformation prod = t1.times(t2);
+
+        assertTrue(expected.matrix.isClose(prod.matrix));
+        assertTrue(expected.invMatrix.isClose(prod.invMatrix));
     }
 }

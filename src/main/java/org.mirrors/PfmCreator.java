@@ -11,9 +11,18 @@ import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
 /**
- * Class used to build the read_pfm_image function containing 4 sub-functions used in the main function.
+ * This class provides utility functions for reading and parsing Portable FloatMap (PFM) files
+ * and creating an HDR image object from the data.
  */
 public class PfmCreator {
+
+    /**
+     * Reads a line of text from an input stream and returns it as a String.
+     *
+     * @param targetStream The input stream to read from.
+     * @return The line of text as a String.
+     * @throws IOException if an I/O error occurs while reading from the stream.
+     */
     public static String readLine(InputStream targetStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         int nextByte;
@@ -26,7 +35,14 @@ public class PfmCreator {
         return outputStream.toString();
     }
 
-
+    /**
+     * Parses the image size specification string and returns an integer array containing the width
+     * and height of the image.
+     *
+     * @param line The image size specification string.
+     * @return An integer array containing the width and height of the image.
+     * @throws InvalidPfmFileFormatException if the image size specification is invalid.
+     */
     public static int[] parseImgSize(String line) throws InvalidPfmFileFormatException {
         String[] elements = line.split(" ");
         if (elements.length != 2)
@@ -44,6 +60,13 @@ public class PfmCreator {
         }
     }
 
+    /**
+     * Parses the endianness specification string and returns the corresponding ByteOrder enum value.
+     *
+     * @param line The endianness specification string.
+     * @return The corresponding ByteOrder enum value.
+     * @throws InvalidPfmFileFormatException if the endianness specification is invalid or missing.
+     */
     public static ByteOrder parseEndianness(String line) throws InvalidPfmFileFormatException {
         float value;
         try {
@@ -60,6 +83,14 @@ public class PfmCreator {
         }
     }
 
+    /**
+     * Reads a single floating point value from an input stream using the specified endianness.
+     *
+     * @param stream The input stream to read from.
+     * @param endianness The endianness to use.
+     * @return The floating point value.
+     * @throws InvalidPfmFileFormatException if the binary data cannot be read from the stream.
+     */
     private static float readFloat(InputStream stream, ByteOrder endianness) throws InvalidPfmFileFormatException {
         byte[] floatBytes = new byte[4];
         try {
@@ -78,12 +109,13 @@ public class PfmCreator {
     }
 
     /**
-     * The main function of PfmCreator class. It reads separately every line from a pfm file, and create
-     * an HDR_Image object with the assigned instances.
-     * @param stream
-     * @return HDR_Image - return an HDR_Image object
-     * @throws IOException - read_line maybe throws IOException
-     * @throws InvalidPfmFileFormatException - throws InvalidPfmFileFormat when file format have some problem
+     * The main function of PfmCreator class.
+     * Reads a PFM image file from an input stream and returns the corresponding HDRImage object.
+     *
+     * @param stream The input stream to read from.
+     * @return An HDRImage object containing the image data.
+     * @throws IOException if an I/O error occurs while reading from the stream.
+     * @throws InvalidPfmFileFormatException if the PFM file format is invalid.
      */
     public static HDRImage read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormatException {
         String magic = readLine(stream);
