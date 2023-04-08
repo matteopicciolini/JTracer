@@ -148,16 +148,13 @@ class TransformationTest {
 
     @Test
     void rotation() throws InvalidMatrix {
-        Transformation tr1 = new Transformation();
-        Vec v1= (Vec) (tr1.rotation_x(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v1= (Vec) (Transformation.rotation_x(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v1.isClose(new Vec(1.0f, -2.0f, -3.0f)));
 
-        Transformation tr2 = new Transformation();
-        Vec v2= (Vec) (tr2.rotation_y(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v2= (Vec) (Transformation.rotation_y(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v2.isClose(new Vec(-1.0f, 2.0f, -3.0f)));
-
-        Transformation tr3 = new Transformation();
-        Vec v3= (Vec) (tr3.rotation_z(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        
+        Vec v3= (Vec) (Transformation.rotation_z(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v3.isClose(new Vec(-1.0f, -2.0f, 3.0f)));
 
     }
