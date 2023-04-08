@@ -30,10 +30,10 @@ public class Matrix4x4 {
     }
 
     public void setMatrixElement(int row, int col, float value) {
-        this.matrix[col * 4 + row] = value;
+        this.matrix[row * 4 + col] = value;
     }
     public float getMatrixElement(int row, int col) {
-        return this.matrix[col * 4 + row];
+        return this.matrix[row * 4 + col];
     }
 
     public Matrix4x4 cross(Matrix4x4 b){

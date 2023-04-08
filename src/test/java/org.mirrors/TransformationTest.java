@@ -85,8 +85,6 @@ class TransformationTest {
         Vec expectedV = new Vec(14.0f, 38.0f, 51.0f);
         assertTrue(expectedV.isClose(t.times(new Vec(1.0f, 2.0f, 3.0f))));
 
-
-
         Point expectedP = new Point(18.0f, 46.0f, 58.0f);
         assertTrue(expectedP.isClose(t.times(new Point(1.0f, 2.0f, 3.0f))));
 
@@ -148,12 +146,17 @@ class TransformationTest {
 
     @Test
     void rotation() throws InvalidMatrix {
+
+        assertTrue(Transformation.rotation_x(30.0f).isConsistent());
+        assertTrue(Transformation.rotation_y(30.0f).isConsistent());
+        assertTrue(Transformation.rotation_z(30.0f).isConsistent());
+
         Vec v1= (Vec) (Transformation.rotation_x(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v1.isClose(new Vec(1.0f, -2.0f, -3.0f)));
 
         Vec v2= (Vec) (Transformation.rotation_y(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v2.isClose(new Vec(-1.0f, 2.0f, -3.0f)));
-        
+
         Vec v3= (Vec) (Transformation.rotation_z(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v3.isClose(new Vec(-1.0f, -2.0f, 3.0f)));
 
