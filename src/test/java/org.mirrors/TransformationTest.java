@@ -62,7 +62,6 @@ class TransformationTest {
         assertTrue(expected.isClose(prod));
     }
 
-
     @Test
     void testTimes() throws InvalidMatrix {
         Transformation t = new Transformation(
@@ -145,13 +144,13 @@ class TransformationTest {
 
     @Test
     void rotation() throws InvalidMatrix {
-        Vec v1 = (Vec) Transformation.rotation_x(180.0f).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v1 = (Vec) Transformation.rotationX(180.0f).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v1.isClose(new Vec(1.0f, -2.0f, -3.0f)));
 
-        Vec v2 = (Vec) (Transformation.rotation_y(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v2 = (Vec) (Transformation.rotationY(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v2.isClose(new Vec(-1.0f, 2.0f, -3.0f)));
         
-        Vec v3 = (Vec) (Transformation.rotation_z(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v3 = (Vec) (Transformation.rotationZ(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v3.isClose(new Vec(-1.0f, -2.0f, 3.0f)));
     }
 }
