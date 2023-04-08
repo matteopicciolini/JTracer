@@ -17,6 +17,11 @@ public class Transformation {
         Matrix4x4 prod = this.matrix.cross(this.invMatrix);
         return prod.isClose(new Matrix4x4());
     }
+
+    public boolean isClose(Transformation other){
+        return this.matrix.isClose(other.matrix) && this.invMatrix.isClose(other.invMatrix);
+    }
+
     public Transformation inverse() {
         return new Transformation(invMatrix, matrix);
     }
@@ -94,13 +99,13 @@ public class Transformation {
         else if(other instanceof Normal){
             return new Normal(
                     other.x * this.invMatrix.getMatrixElement(0,0) +
-                            other.y * this.invMatrix.getMatrixElement(0,1) +
-                            other.z * this.invMatrix.getMatrixElement(0,2),
-                    other.x * this.invMatrix.getMatrixElement(1,0) +
+                            other.y * this.invMatrix.getMatrixElement(1,0) +
+                            other.z * this.invMatrix.getMatrixElement(2,0),
+                    other.x * this.invMatrix.getMatrixElement(0,1) +
                             other.y * this.invMatrix.getMatrixElement(1,1) +
-                            other.z * this.invMatrix.getMatrixElement(1,2),
-                    other.x * this.invMatrix.getMatrixElement(2,0) +
-                            other.y * this.invMatrix.getMatrixElement(2,1) +
+                            other.z * this.invMatrix.getMatrixElement(2,1),
+                    other.x * this.invMatrix.getMatrixElement(0,2) +
+                            other.y * this.invMatrix.getMatrixElement(1,2) +
                             other.z * this.invMatrix.getMatrixElement(2,2));
         }
         else{
@@ -114,56 +119,52 @@ public class Transformation {
         return new Transformation(matrix, invMatrix);
     }
 
-    public boolean isClose(Transformation other){
-        return this.matrix.isClose(other.matrix) && this.invMatrix.isClose(other.invMatrix);
-    }
-
-    public static Transformation rotation_x(float angle) throws InvalidMatrix {
-
+    public static Transformation rotationX(float angle) throws InvalidMatrix {
         float sin = (float) Math.sin(Math.toRadians(angle));
         float cos = (float) Math.cos(Math.toRadians(angle));
+
         Matrix4x4 m = new Matrix4x4(new float[]{
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, cos, -sin, 0.0f,
                 0.0f, sin, cos, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f});
-        Matrix4x4 invm = new Matrix4x4(new float[]{
+        Matrix4x4 invM = new Matrix4x4(new float[]{
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, cos, sin, 0.0f,
                 0.0f, -sin, cos, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f});
-        return new Transformation(m, invm);
+        return new Transformation(m, invM);
     }
-    public static Transformation rotation_y(float angle) throws InvalidMatrix {
-
+    public static Transformation rotationY(float angle) throws InvalidMatrix {
         float sin = (float) Math.sin(Math.toRadians(angle));
         float cos = (float) Math.cos(Math.toRadians(angle));
+
         Matrix4x4 m = new Matrix4x4(new float[]{
                 cos, 0.0f, sin, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
                 -sin, 0.0f, cos, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f});
-        Matrix4x4 invm = new Matrix4x4(new float[]{
+        Matrix4x4 invM = new Matrix4x4(new float[]{
                 cos, 0.0f, -sin, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
                 sin, 0.0f, cos, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f});
-        return new Transformation(m, invm);
+        return new Transformation(m, invM);
     }
-    public static Transformation rotation_z(float angle) throws InvalidMatrix {
-
+    public static Transformation rotationZ(float angle) throws InvalidMatrix {
         float sin = (float) Math.sin(Math.toRadians(angle));
         float cos = (float) Math.cos(Math.toRadians(angle));
+
         Matrix4x4 m = new Matrix4x4(new float[]{
                 cos, -sin, 0.0f, 0.0f,
                 sin, cos, 0.0f, 0.0f,
                 0.0f, 0.0f, 1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f});
-        Matrix4x4 invm = new Matrix4x4(new float[]{
+        Matrix4x4 invM = new Matrix4x4(new float[]{
                 cos, sin, 0.0f, 0.0f,
                 -sin, cos, 0.0f, 0.0f,
                 0.0f, 0.0f, 1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f});
-        return new Transformation(m, invm);
+        return new Transformation(m, invM);
     }
 }

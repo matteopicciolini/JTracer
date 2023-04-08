@@ -62,7 +62,6 @@ class TransformationTest {
         assertTrue(expected.isClose(prod));
     }
 
-
     @Test
     void testTimes() throws InvalidMatrix {
         Transformation t = new Transformation(
@@ -85,12 +84,13 @@ class TransformationTest {
         Vec expectedV = new Vec(14.0f, 38.0f, 51.0f);
         assertTrue(expectedV.isClose(t.times(new Vec(1.0f, 2.0f, 3.0f))));
 
-
         Point expectedP = new Point(18.0f, 46.0f, 58.0f);
         assertTrue(expectedP.isClose(t.times(new Point(1.0f, 2.0f, 3.0f))));
 
         Normal expectedN = new Normal(-8.75f, 7.75f, -3.0f);
+
         System.out.println(t.times(new Normal(3.0f, 2.0f, 4.0f)));
+
         assertTrue(expectedN.isClose(t.times(new Normal(3.0f, 2.0f, 4.0f))));
     }
 
@@ -148,17 +148,68 @@ class TransformationTest {
     @Test
     void rotation() throws InvalidMatrix {
 
-        assertTrue(Transformation.rotation_x(30.0f).isConsistent());
-        assertTrue(Transformation.rotation_y(30.0f).isConsistent());
-        assertTrue(Transformation.rotation_z(30.0f).isConsistent());
 
-        Vec v1 = (Vec) Transformation.rotation_x(180.0f).times(new Vec(1.0f, 2.0f, 3.0f));
+        assertTrue(Transformation.rotationX(30.0f).isConsistent());
+        assertTrue(Transformation.rotationY(30.0f).isConsistent());
+        assertTrue(Transformation.rotationZ(30.0f).isConsistent());
+
+        Vec v1 = (Vec) Transformation.rotationX(180.0f).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v1.isClose(new Vec(1.0f, -2.0f, -3.0f)));
 
-        Vec v2 = (Vec) (Transformation.rotation_y(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v2 = (Vec) (Transformation.rotationY(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v2.isClose(new Vec(-1.0f, 2.0f, -3.0f)));
 
-        Vec v3 = (Vec) (Transformation.rotation_z(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
+        Vec v3 = (Vec) (Transformation.rotationZ(180.0f)).times(new Vec(1.0f, 2.0f, 3.0f));
         assertTrue(v3.isClose(new Vec(-1.0f, -2.0f, 3.0f)));
+    }
+
+
+    @Test
+    void multiplication() throws InvalidMatrix {
+        Transformation m1 = new Transformation(
+                new Matrix4x4(new float[]{
+                        1.0f, 2.0f, 3.0f, 4.0f,
+                        5.0f, 6.0f, 7.0f, 8.0f,
+                        9.0f, 9.0f, 8.0f, 7.0f,
+                        6.0f, 5.0f, 4.0f, 1.0f,
+                }),
+                new Matrix4x4(new float[]{
+                        -3.75f, 2.75f, -1, 0,
+                        4.375f, -3.875f, 2.0f, -0.5f,
+                        0.5f, 0.5f, -1.0f, 1.0f,
+                        -1.375f, 0.875f, 0.0f, -0.5f
+                }));
+        assertTrue(m1.isConsistent());
+        Transformation m2 = new Transformation(
+                new Matrix4x4(new float[]{
+                        3.0f, 5.0f, 2.0f, 4.0f,
+                        4.0f, 1.0f, 0.0f, 5.0f,
+                        6.0f, 3.0f, 2.0f, 0.0f,
+                        1.0f, 4.0f, 2.0f, 1.0f,
+                }),
+                new Matrix4x4(new float[]{
+                        0.4f, -0.2f, 0.2f, -0.6f,
+                        2.9f, -1.7f, 0.2f, -3.1f,
+                        -5.55f, 3.15f, -0.4f, 6.45f,
+                        -0.9f, 0.7f, -0.2f, 1.1f,
+                }));
+        assertTrue(m2.isConsistent());
+
+        Transformation expected = new Transformation(
+                new Matrix4x4(new float[]{
+                        33.0f, 32.0f, 16.0f, 18.0f,
+                        89.0f, 84.0f, 40.0f, 58.0f,
+                        118.0f, 106.0f, 48.0f, 88.0f,
+                        63.0f, 51.0f, 22.0f, 50.0f
+                }),
+                new Matrix4x4(new float[]{
+                        -1.45f, 1.45f, -1.0f, 0.6f,
+                        -13.95f, 11.95f, -6.5f, 2.6f,
+                        25.525f, -22.025f, 12.25f, -5.2f,
+                        4.825f, -4.325f, 2.5f, -1.1f
+                }));
+        //assertTrue(expected.isConsistent());
+        assertTrue(expected.matrix.isClose(m1.matrix.cross(m2.matrix)));
+        //assertTrue(expected.invMatrix.isClose(m1.invMatrix.cross(m2.invMatrix)));
     }
 }
