@@ -84,12 +84,10 @@ public class HDRImage {
     }
 
     public void normalizeImage(float factor, Float luminosity){
-
-
-        for (int i =0; i<this.width*this.height; i++){
-            this.pixels[i].r=this.pixels[i].r*(factor/luminosity);
-            this.pixels[i].g=this.pixels[i].g*(factor/luminosity);
-            this.pixels[i].b=this.pixels[i].b*(factor/luminosity);
+        for (int i = 0; i < this.width * this.height; ++i){
+            this.pixels[i].r = this.pixels[i].r * (factor/luminosity);
+            this.pixels[i].g = this.pixels[i].g * (factor/luminosity);
+            this.pixels[i].b = this.pixels[i].b * (factor/luminosity);
         }
     }
     public void normalizeImage(float factor) {

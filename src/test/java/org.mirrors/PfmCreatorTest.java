@@ -12,27 +12,27 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
 class PfmCreatorTest {
     @Test
-    void parse_endianness() throws InvalidPfmFileFormat {
+    void parse_endianness() throws InvalidPfmFileFormatException {
         assertSame(PfmCreator.parseEndianness(("1.0")), BIG_ENDIAN);
         assertSame(PfmCreator.parseEndianness(("-1.0")), LITTLE_ENDIAN);
 
         try {
             PfmCreator.parseEndianness("0.0");
             fail("Expected InvalidPfmFileFormat was not thrown");
-        } catch (InvalidPfmFileFormat e) {
+        } catch (InvalidPfmFileFormatException e) {
             // Exception was thrown as expected
         }
 
         try {
             PfmCreator.parseEndianness("abc");
             fail("Expected InvalidPfmFileFormat was not thrown");
-        } catch (InvalidPfmFileFormat e) {
+        } catch (InvalidPfmFileFormatException e) {
             // Exception was thrown as expected
         }
     }
 
     @Test
-    void parse_img_size() throws InvalidPfmFileFormat {
+    void parse_img_size() throws InvalidPfmFileFormatException {
 
         int[] expectedSize = {3, 2};
         int[] actualSize = PfmCreator.parseImgSize("3 2");
@@ -41,20 +41,20 @@ class PfmCreatorTest {
         try {
             PfmCreator.parseImgSize("-1 3");
             fail("Expected InvalidPfmFileFormat was not thrown");
-        } catch (InvalidPfmFileFormat e) {
+        } catch (InvalidPfmFileFormatException e) {
             // Exception was thrown as expected
         }
 
         try {
             PfmCreator.parseImgSize("3 2 1");
             fail("Expected InvalidPfmFileFormat was not thrown");
-        } catch (InvalidPfmFileFormat e) {
+        } catch (InvalidPfmFileFormatException e) {
             // Exception was thrown as expected
         }
     }
 
     @Test
-    void read_pfm_image() throws IOException, InvalidPfmFileFormat {
+    void read_pfm_image() throws IOException, InvalidPfmFileFormatException {
         byte[][] bytes_arrays = new byte[2][];
         bytes_arrays[0] = Global.LE_ReferenceBytes;
         bytes_arrays[1] = Global.BE_ReferenceBytes;
@@ -78,7 +78,7 @@ class PfmCreatorTest {
         try {
             PfmCreator.read_pfm_image(new ByteArrayInputStream("PF\n3 2\n-1.0\nstop".getBytes()));
             fail("Expected InvalidPfmFileFormat was not thrown");
-        } catch (InvalidPfmFileFormat e) {
+        } catch (InvalidPfmFileFormatException e) {
             // Exception was thrown as expected
         }
     }

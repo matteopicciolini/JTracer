@@ -27,10 +27,10 @@ public class PfmCreator {
     }
 
 
-    public static int[] parseImgSize(String line) throws InvalidPfmFileFormat {
+    public static int[] parseImgSize(String line) throws InvalidPfmFileFormatException {
         String[] elements = line.split(" ");
         if (elements.length != 2)
-            throw new InvalidPfmFileFormat("Invalid image size specification");
+            throw new InvalidPfmFileFormatException("Invalid image size specification");
         try {
             int width = Integer.parseInt(elements[0]);
             int height = Integer.parseInt(elements[1]);
@@ -40,27 +40,27 @@ public class PfmCreator {
             return new int[]{width, height};
         }
         catch (NumberFormatException e){
-            throw new InvalidPfmFileFormat("Invalid width/height");
+            throw new InvalidPfmFileFormatException("Invalid width/height");
         }
     }
 
-    public static ByteOrder parseEndianness(String line) throws InvalidPfmFileFormat {
+    public static ByteOrder parseEndianness(String line) throws InvalidPfmFileFormatException {
         float value;
         try {
             value = Float.parseFloat(line);
         } catch (NumberFormatException e) {
-            throw new InvalidPfmFileFormat("Missing endianness specification.");
+            throw new InvalidPfmFileFormatException("Missing endianness specification.");
         }
         if (value > 0){
             return BIG_ENDIAN;
         } else if (value < 0) {
             return LITTLE_ENDIAN;
         } else{
-            throw new InvalidPfmFileFormat("Invalid endianness specification, it cannot be zero.");
+            throw new InvalidPfmFileFormatException("Invalid endianness specification, it cannot be zero.");
         }
     }
 
-    private static float readFloat(InputStream stream, ByteOrder endianness) throws InvalidPfmFileFormat {
+    private static float readFloat(InputStream stream, ByteOrder endianness) throws InvalidPfmFileFormatException {
         byte[] floatBytes = new byte[4];
         try {
             // Read 4 bytes from the input stream
@@ -73,7 +73,7 @@ public class PfmCreator {
                 return ByteBuffer.wrap(floatBytes).order(LITTLE_ENDIAN).getFloat();
             }
         } catch (IOException e) {
-            throw new InvalidPfmFileFormat("Impossible to read binary data from the file");
+            throw new InvalidPfmFileFormatException("Impossible to read binary data from the file");
         }
     }
 
@@ -83,11 +83,11 @@ public class PfmCreator {
      * @param stream
      * @return HDR_Image - return an HDR_Image object
      * @throws IOException - read_line maybe throws IOException
-     * @throws InvalidPfmFileFormat - throws InvalidPfmFileFormat when file format have some problem
+     * @throws InvalidPfmFileFormatException - throws InvalidPfmFileFormat when file format have some problem
      */
-    public static HDRImage read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormat {
+    public static HDRImage read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormatException {
         String magic = readLine(stream);
-        if (!magic.equals("PF")) throw new InvalidPfmFileFormat("Invalid magic in PFM file");
+        if (!magic.equals("PF")) throw new InvalidPfmFileFormatException("Invalid magic in PFM file");
 
         String img_size = readLine(stream);
         int [] dim = parseImgSize(img_size);

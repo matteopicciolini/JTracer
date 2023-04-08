@@ -11,9 +11,9 @@ public class Color {
     public float b;
 
     public Color(){
-        this.r = 0.0F;
-        this.g = 0.0F;
-        this.b = 0.0F;
+        this.r = 0.0f;
+        this.g = 0.0f;
+        this.b = 0.0f;
     }
     public Color(float r, float g, float b){
         if (r >= 0 && g >= 0 && b >= 0){
