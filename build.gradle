@@ -1,8 +1,8 @@
 plugins {
-    id 'java'
+    id 'application'
 }
 
-group 'org.example'
+group 'org.mirrors'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -16,4 +16,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass = 'org.mirrors.Main'
 }
