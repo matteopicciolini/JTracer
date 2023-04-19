@@ -17,6 +17,6 @@ public class PerspectioveCamera extends Camera {
     public Ray fireRay(float u, float v){
         Point origin = new Point(-this.distance, 0.f, 0.f);
         Vec direction = new Vec(this.distance, (1.f - 2.f * u) * this.aspectRatio, 2.f * v - 1.f);
-        return new Ray(origin, Global.VecX).transform(this.transformation);
+        return new Ray(origin, direction).transform(this.transformation);
     }
 }
