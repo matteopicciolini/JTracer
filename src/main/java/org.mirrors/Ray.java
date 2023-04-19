@@ -7,14 +7,19 @@ public class Ray {
     float tmax = Float.POSITIVE_INFINITY;
     int depth = 0;
 
+    public Ray() {}
     public Ray(Point origin, Vec dir, int depth) {
-        this.origin=origin;
-        this.dir=dir;
-        this.depth=depth;
+        this.origin = origin;
+        this.dir = dir;
+        this.depth = depth;
+    }
+    public Ray(Point origin, Vec dir) {
+        this.origin = origin;
+        this.dir = dir;
     }
 
     public Point at(float t) throws InvalidMatrixException {
-        Transformation trans=new Transformation();
+        Transformation trans = new Transformation();
         return (Point) (trans.translation((Vec) this.dir.dot(t))).times(this.origin);
     }
 
@@ -30,7 +35,7 @@ public class Ray {
 
     }
     public Ray transform(Transformation trans){
-        Ray ray=new Ray((Point) trans.times(this.origin), (Vec) trans.times(this.dir), this.depth);
+        Ray ray =new Ray((Point) trans.times(this.origin), (Vec) trans.times(this.dir), this.depth);
         return ray;
     }
 }
