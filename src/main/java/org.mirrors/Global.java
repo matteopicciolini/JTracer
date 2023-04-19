@@ -5,7 +5,7 @@ package org.mirrors;
  * reference_be and reference_le written in byte.
  * LE array is written with little endian order whereas the BE array is inverted cause of using big endian order.
  */
-public class Global {
+public record Global() {
     public static byte[] LE_ReferenceBytes;
     public static byte[] BE_ReferenceBytes;
     public static float[] IdentityMatrix;

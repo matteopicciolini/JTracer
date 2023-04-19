@@ -1,15 +1,15 @@
 package org.mirrors;
 
-public class PerspectioveCamera extends Camera {
+public class PerspectiveCamera extends Camera {
     public float distance;
 
-    public PerspectioveCamera(float distance, float aspectRatio){
+    public PerspectiveCamera(float distance, float aspectRatio){
         this.distance = distance;
         this.aspectRatio = aspectRatio;
         this.transformation = new Transformation();
     }
 
-    public PerspectioveCamera(float distance, float aspectRatio, Transformation transformation){
+    public PerspectiveCamera(float distance, float aspectRatio, Transformation transformation){
         this.distance = distance;
         this.aspectRatio = aspectRatio;
         this.transformation = transformation;

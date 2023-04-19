@@ -1,10 +1,11 @@
 package org.mirrors;
+import static org.mirrors.Transformation.translation;
 
 public class Ray {
     Point origin = new Point();
     Vec dir = new Vec();
-    float tmin = 1e-5f;
-    float tmax = Float.POSITIVE_INFINITY;
+    float tMin = 1e-5f;
+    float tMax = Float.POSITIVE_INFINITY;
     int depth = 0;
 
     public Ray() {}
@@ -19,23 +20,15 @@ public class Ray {
     }
 
     public Point at(float t) throws InvalidMatrixException {
-        Transformation trans = new Transformation();
-        return (Point) (trans.translation((Vec) this.dir.dot(t))).times(this.origin);
+        return (Point) (translation((Vec) this.dir.dot(t))).times(this.origin);
     }
-
 
     public boolean isClose(Ray ray1) {
         boolean b1 = ray1.origin.isClose(this.origin);
         boolean b2 = ray1.dir.isClose(this.dir);
-        if (b1 == true && b2 == true) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return b1 && b2;
     }
     public Ray transform(Transformation trans){
-        Ray ray =new Ray((Point) trans.times(this.origin), (Vec) trans.times(this.dir), this.depth);
-        return ray;
+        return new Ray((Point) trans.times(this.origin), (Vec) trans.times(this.dir), this.depth);
     }
 }
