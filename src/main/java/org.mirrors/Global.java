@@ -9,6 +9,12 @@ public class Global {
     public static byte[] LE_ReferenceBytes;
     public static byte[] BE_ReferenceBytes;
     public static float[] IdentityMatrix;
+
+    public static Vec VecX;
+    public static Vec VecY;
+    public static Vec VecZ;
+
+
     static {
         LE_ReferenceBytes = new byte[]{
                 (byte) 0x50, (byte) 0x46, (byte) 0x0a, (byte) 0x33, (byte) 0x20, (byte) 0x32,
@@ -48,5 +54,9 @@ public class Global {
                 0.0f, 0.0f, 1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f
         };
+
+        VecX = new Vec(1.f, 0.f, 0.f);
+        VecY = new Vec(0.f, 1.f, 0.f);
+        VecZ = new Vec(0.f, 0.f, 1.f);
     }
 }
