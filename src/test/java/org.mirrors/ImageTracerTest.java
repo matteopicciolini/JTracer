@@ -2,7 +2,7 @@ package org.mirrors;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-public class imageTracerTest {
+public class ImageTracerTest {
 
     @Test
     void ImageTracer() {
@@ -10,7 +10,7 @@ public class imageTracerTest {
 
         HDRImage image = new HDRImage(4, 2);
         PerspectiveCamera cam = new PerspectiveCamera(1, 2);
-        imageTracer tracer = new imageTracer(image, cam);
+        ImageTracer tracer = new ImageTracer(image, cam);
         Ray ray1 = tracer.fire_ray(0, 0, 2.5f, 1.5f);
         Ray ray2 = tracer.fire_ray(2, 1, 0.5f, 0.5f);
 
