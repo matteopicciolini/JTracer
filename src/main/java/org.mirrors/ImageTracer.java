@@ -35,8 +35,7 @@ public class ImageTracer {
     /**
      Fire a ray for each pixel in the image and set its color according to the returned value from a given function.
      */
-    public void fire_all_rays(){
-        myfunc f = new myfunc();
+    public void fire_all_rays(RayToColor f){
         for(int i = 0; i < this.image.width; ++i){
             for(int j = 0; j < this.image.height; ++j){
                 Ray ray = this.fire_ray(i, j, 0.5f, 0.5f);
