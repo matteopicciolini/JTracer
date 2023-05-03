@@ -2,7 +2,7 @@ package org.mirrors;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-public class imageTracerTest {
+public class ImageTracerTest {
 
     @Test
     void ImageTracer() {
