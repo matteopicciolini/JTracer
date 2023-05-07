@@ -18,7 +18,7 @@ class VecTest {
         assertEquals(a.dot(b), 40.0f, 1e-5);
         assertTrue(a.cross(b).isClose(new Vec(-2.0f, 4.0f, -2.0f)));
         assertTrue(b.cross(a).isClose(new Vec(2.0f, -4.0f, 2.0f)));
-        assertEquals(a.squared_norm(), 14.0f, 1e-5);
+        assertEquals(a.squaredNorm(), 14.0f, 1e-5);
         assertEquals(pow(a.norm(), 2), 14.0f, 1e-5);
     }
 }

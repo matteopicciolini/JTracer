@@ -6,17 +6,18 @@ package org.mirrors;
  * LE array is written with little endian order whereas the BE array is inverted cause of using big endian order.
  */
 public record Global() {
-    public static byte[] LE_ReferenceBytes;
-    public static byte[] BE_ReferenceBytes;
+    public static byte[] LEReferenceBytes;
+    public static byte[] BEReferenceBytes;
     public static float[] IdentityMatrix;
 
     public static Vec VecX;
     public static Vec VecY;
     public static Vec VecZ;
+    public static Vec InvVecZ;
 
 
     static {
-        LE_ReferenceBytes = new byte[]{
+        LEReferenceBytes = new byte[]{
                 (byte) 0x50, (byte) 0x46, (byte) 0x0a, (byte) 0x33, (byte) 0x20, (byte) 0x32,
                 (byte) 0x0a, (byte) 0x2d, (byte) 0x31, (byte) 0x2e, (byte) 0x30, (byte) 0x0a,
                 (byte) 0x00, (byte) 0x00, (byte) 0xc8, (byte) 0x42, (byte) 0x00, (byte) 0x00,
@@ -32,7 +33,7 @@ public record Global() {
                 (byte) 0x00, (byte) 0x00, (byte) 0x8c, (byte) 0x42, (byte) 0x00, (byte) 0x00,
                 (byte) 0xa0, (byte) 0x42, (byte) 0x00, (byte) 0x00, (byte) 0xb4, (byte) 0x42};
 
-        BE_ReferenceBytes = new byte[]{
+        BEReferenceBytes = new byte[]{
                 (byte) 0x50, (byte) 0x46, (byte) 0x0A, (byte) 0x33, (byte) 0x20, (byte) 0x32,
                 (byte) 0x0A, (byte) 0x31, (byte) 0x2E, (byte) 0x30, (byte) 0x0A, (byte) 0x42,
                 (byte) 0xC8, (byte) 0x00, (byte) 0x00, (byte) 0x43, (byte) 0x48, (byte) 0x00,
@@ -58,5 +59,7 @@ public record Global() {
         VecX = new Vec(1.f, 0.f, 0.f);
         VecY = new Vec(0.f, 1.f, 0.f);
         VecZ = new Vec(0.f, 0.f, 1.f);
+        InvVecZ = new Vec(0.f, 0.f, -1.f);
     }
+
 }

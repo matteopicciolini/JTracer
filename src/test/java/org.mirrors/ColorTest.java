@@ -40,7 +40,7 @@ class ColorTest {
     }
 
     @Test
-    void is_close () {
+    void isClose() {
         Color color1 = new Color(1.0f, 2.0f, 3.0f);
         Color color2 = new Color(2.0f, 3.0f, 4.0f);
         assertFalse(color1.isClose(color2));

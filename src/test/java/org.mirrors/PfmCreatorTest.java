@@ -12,7 +12,7 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
 class PfmCreatorTest {
     @Test
-    void parse_endianness() throws InvalidPfmFileFormatException {
+    void parseEndianness() throws InvalidPfmFileFormatException {
         assertSame(PfmCreator.parseEndianness(("1.0")), BIG_ENDIAN);
         assertSame(PfmCreator.parseEndianness(("-1.0")), LITTLE_ENDIAN);
 
@@ -32,7 +32,7 @@ class PfmCreatorTest {
     }
 
     @Test
-    void parse_img_size() throws InvalidPfmFileFormatException {
+    void parseImgSize() throws InvalidPfmFileFormatException {
 
         int[] expectedSize = {3, 2};
         int[] actualSize = PfmCreator.parseImgSize("3 2");
@@ -54,12 +54,12 @@ class PfmCreatorTest {
     }
 
     @Test
-    void read_pfm_image() throws IOException, InvalidPfmFileFormatException {
+    void readPfmImage() throws IOException, InvalidPfmFileFormatException {
         byte[][] bytes_arrays = new byte[2][];
-        bytes_arrays[0] = Global.LE_ReferenceBytes;
-        bytes_arrays[1] = Global.BE_ReferenceBytes;
+        bytes_arrays[0] = Global.LEReferenceBytes;
+        bytes_arrays[1] = Global.BEReferenceBytes;
         for (byte [] bytes_array : bytes_arrays){
-            HDRImage img = PfmCreator.read_pfm_image(new ByteArrayInputStream(bytes_array));
+            HDRImage img = PfmCreator.readPfmImage(new ByteArrayInputStream(bytes_array));
             assertEquals(3, img.width);
             assertEquals(2, img.height);
 
@@ -74,9 +74,9 @@ class PfmCreatorTest {
     }
 
     @Test
-    void read_pfm_image_wrong() throws IOException {
+    void readPfmImageWrong() throws IOException {
         try {
-            PfmCreator.read_pfm_image(new ByteArrayInputStream("PF\n3 2\n-1.0\nstop".getBytes()));
+            PfmCreator.readPfmImage(new ByteArrayInputStream("PF\n3 2\n-1.0\nstop".getBytes()));
             fail("Expected InvalidPfmFileFormat was not thrown");
         } catch (InvalidPfmFileFormatException e) {
             // Exception was thrown as expected

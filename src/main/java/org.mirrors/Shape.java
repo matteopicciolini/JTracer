@@ -1,12 +1,13 @@
 package org.mirrors;
 
 public abstract class Shape {
-    public Transformation tras;
-    public Shape(Transformation tras){
-        this.tras=tras;
-    }
-    public void ray_intersection(){
+    public Transformation trans;
 
+    public Shape(){
+        this.trans = new Transformation();
     }
-
+    public Shape(Transformation trans){
+        this.trans = trans;
+    }
+    public abstract HitRecord rayIntersection(Ray ray) throws InvalidMatrixException;
 }

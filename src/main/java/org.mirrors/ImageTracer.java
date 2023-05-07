@@ -22,23 +22,23 @@ public class ImageTracer {
      Fire a ray from the camera through a pixel in the image.
      @param col the column index of the pixel in the image.
      @param row the row index of the pixel in the image.
-     @param u_pixel the x offset of the pixel center from the pixel's top-left corner, in pixels.
-     @param v_pixel the y offset of the pixel center from the pixel's top-left corner, in pixels.
+     @param uPixel the x offset of the pixel center from the pixel's top-left corner, in pixels.
+     @param vPixel the y offset of the pixel center from the pixel's top-left corner, in pixels.
      @return the ray that passes through the specified pixel.
      */
-    public Ray fire_ray(int col, int row, float u_pixel, float v_pixel){
-        float u = (col + u_pixel) / this.image.width;
-        float v = 1.f - (row + v_pixel) / this.image.height;
+    public Ray fireRay(int col, int row, float uPixel, float vPixel){
+        float u = (col + uPixel) / this.image.width;
+        float v = 1.f - (row + vPixel) / this.image.height;
         return this.camera.fireRay(u, v);
     }
 
     /**
      Fire a ray for each pixel in the image and set its color according to the returned value from a given function.
      */
-    public void fire_all_rays(RayToColor f){
+    public void fireAllRays(RayToColor f){
         for(int i = 0; i < this.image.width; ++i){
             for(int j = 0; j < this.image.height; ++j){
-                Ray ray = this.fire_ray(i, j, 0.5f, 0.5f);
+                Ray ray = this.fireRay(i, j, 0.5f, 0.5f);
                 Color color = f.func(ray);
                 this.image.setPixel(i, j, color);
             }
