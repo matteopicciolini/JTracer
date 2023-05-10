@@ -82,10 +82,12 @@ public class Matrix4x4 {
 
     /**
      * Computes the matrix product of this matrix and another 4x4 matrix.
+     * Remember that the result will be the product B*A instead of A*B
      *
      * @param b The matrix to multiply this matrix by.
      * @return The matrix product of this matrix and b.
      */
+
     public Matrix4x4 cross(Matrix4x4 b){
         Matrix4x4 matrix_prod = new Matrix4x4(0.f);
 

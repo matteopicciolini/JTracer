@@ -60,7 +60,7 @@ public class Tracer {
                 pfm2image(factor, gamma, inputFile, outputFile);
             }
 
-            if(cmd.hasOption("d")){
+            if (cmd.hasOption("d")) {
                 String[] dArgs = cmd.getOptionValues("d");
 
                 int width = 1920;
@@ -80,14 +80,13 @@ public class Tracer {
                 }
                 demo(width, height, angleDeg, orthogonal);
             }
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             System.err.println("Error: " + e.getMessage());
             formatter.printHelp("Tracer", options);
             throw new RuntimeException(e);
         } catch (IOException | InvalidPfmFileFormatException e) {
             throw new RuntimeException(e);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             formatter.printHelp("Tracer", options);
             throw new RuntimeException(e);
         } catch (InvalidMatrixException e) {
@@ -124,6 +123,7 @@ public class Tracer {
         Camera camera = orthogonal == true ?
                 new OrthogonalCamera(16.f / 9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f))) :
                 new PerspectiveCamera(1.f, 16.f / 9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f)));
+
         ImageTracer tracer = new ImageTracer(image, camera);
         tracer.fireAllRays(
                 ray -> {
@@ -139,4 +139,5 @@ public class Tracer {
         pfm2image(0.18f, 2.2f, "image.pfm", "image.png");
     }
 }
+
 

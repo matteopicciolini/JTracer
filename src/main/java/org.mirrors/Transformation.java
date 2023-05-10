@@ -102,10 +102,9 @@ public class Transformation {
                 0.0f, 0.0f, 0.0f, 1.0f});
         return new Transformation(m, inv);
     }
-
     /**
      * Transform the given geometry object by this transformation.
-     *
+     * PLease remember this method returns the product B*A instead of A*B
      * @param other the geometry object to be transformed
      * @return a new geometry object representing the transformed object
      * @throws IllegalArgumentException if the given geometry object is not a Vec, Point, or Normal
