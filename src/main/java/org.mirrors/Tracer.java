@@ -78,7 +78,6 @@ public class Tracer {
                         formatter.printHelp("Tracer", options);
                     }
                 }
-
                 demo(width, height, angleDeg, orthogonal);
             }
         }
@@ -120,13 +119,18 @@ public class Tracer {
         world.addShape(new Sphere(Transformation.translation(new Vec(0.f, 0.f, -0.5f)).times(Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f)))));
         world.addShape(new Sphere(Transformation.translation(new Vec(0.f, 0.5f, 0.f)).times(Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f)))));
 
+
         HDRImage image = new HDRImage(width, height);
-        PerspectiveCamera camera = new PerspectiveCamera(1.f, 16.f/9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f)));
+        Camera camera = orthogonal == true ?
+                new OrthogonalCamera(16.f / 9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f))) :
+                new PerspectiveCamera(1.f, 16.f / 9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f)));
         ImageTracer tracer = new ImageTracer(image, camera);
-        tracer.fireAllRays((ray) -> {
+        tracer.fireAllRays(
+                ray -> {
             try {
                 return world.rayIntersection(ray) != null ? new Color(1.f, 1.f, 1.f) : new Color(0f, 0.f, 0.f);
-            } catch (InvalidMatrixException e) {
+            }
+            catch (InvalidMatrixException e) {
                 throw new RuntimeException(e);
             }
         });
