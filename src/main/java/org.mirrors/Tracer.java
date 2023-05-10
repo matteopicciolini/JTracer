@@ -10,7 +10,7 @@ public class Tracer {
         options.addOption("h", "help", false, "display help information");
 
         options.addOption(Option.builder("p")
-                .argName("fileInput.pfm> <[fileOutput.png]> <gamma> <factor")
+                .argName("fileInput.pfm> <[fileOutput.png]> <[gamma]> <[factor]")
                 .hasArgs()
                 .longOpt("pfm2image")
                 .valueSeparator(' ')
@@ -43,7 +43,6 @@ public class Tracer {
 
             if (cmd.hasOption("p")) {
                 String[] files = cmd.getOptionValues("p");
-                System.out.println(files.length);
                 String inputFile = files[0];
                 String outputFile = inputFile.substring(0, inputFile.length() - 3) + "png";
                 float gamma = 2.2f;
@@ -52,7 +51,7 @@ public class Tracer {
                 if (files.length >= 2 && files.length <= 4) outputFile = files[1];
                 if (files.length >= 3 && files.length <= 4) gamma = parseFloat(files[2]);
                 if (files.length == 4) factor = parseFloat(files[3]);
-                if (files.length == 0 || files.length > 4) {
+                if (files.length > 4) {
                     System.err.println("Error: ");
                     formatter.printHelp("Tracer", options);
                 }
@@ -68,11 +67,9 @@ public class Tracer {
             System.err.println("Error: " + e.getMessage());
             formatter.printHelp("Tracer", options);
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (IOException | InvalidPfmFileFormatException e) {
             throw new RuntimeException(e);
-        } catch (InvalidPfmFileFormatException e) {
-            throw new RuntimeException(e);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e){
             formatter.printHelp("Tracer", options);
             throw new RuntimeException(e);
         }
@@ -89,4 +86,5 @@ public class Tracer {
         img.clampImage();
         img.writeLdrImage(out, "PNG", param.gamma);
     }
+
 }
