@@ -22,10 +22,3 @@ test {
 application {
     mainClass = 'org.mirrors.Tracer'
 }
-
-jar {
-    archiveFileName = "Tracer.jar"
-    manifest {
-        attributes 'Main-Class': application.mainClass
-    }
-}

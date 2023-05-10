@@ -22,7 +22,7 @@ public class Tracer {
                 .build());
 
         options.addOption(Option.builder("d")
-                .argName("width> <height> <angle-deg> <orthogonal")
+                .argName("[width]> <[height]> <[angle-deg]> <[orthogonal]> <[output.pfm]")
                 .hasArgs()
                 .longOpt("demo")
                 .valueSeparator(' ')
@@ -67,18 +67,20 @@ public class Tracer {
                 int height = 1080;
                 float angleDeg = 0.f;
                 boolean orthogonal = false;
+                String fileOutput = "fileOutput";
 
                 if (dArgs != null) {
-                    if (dArgs.length >= 1 && dArgs.length <= 4) width = parseInt(dArgs[0]);
-                    if (dArgs.length >= 2 && dArgs.length <= 4) height = parseInt(dArgs[1]);
-                    if (dArgs.length >= 3 && dArgs.length <= 4) angleDeg = parseInt(dArgs[2]);
-                    if (dArgs.length == 4) orthogonal = parseBoolean(dArgs[3]);
-                    if (dArgs.length > 4) {
+                    if (dArgs.length >= 1 && dArgs.length <= 5) width = parseInt(dArgs[0]);
+                    if (dArgs.length >= 2 && dArgs.length <= 5) height = parseInt(dArgs[1]);
+                    if (dArgs.length >= 3 && dArgs.length <= 5) angleDeg = parseInt(dArgs[2]);
+                    if (dArgs.length >= 4 && dArgs.length <= 5) orthogonal = parseBoolean(dArgs[3]);
+                    if (dArgs.length == 5) fileOutput = dArgs[4];
+                    if (dArgs.length > 5) {
                         System.err.println("Error: ");
                         formatter.printHelp("Tracer", options);
                     }
                 }
-                demo(width, height, angleDeg, orthogonal);
+                demo(width, height, angleDeg, orthogonal, fileOutput);
             }
         } catch (ParseException e) {
             System.err.println("Error: " + e.getMessage());
@@ -94,7 +96,7 @@ public class Tracer {
         }
     }
 
-    private static void pfm2image(float factor, float gamma, String inputFile, String outputFile) throws IOException, InvalidPfmFileFormatException {
+    public static void pfm2image(float factor, float gamma, String inputFile, String outputFile) throws IOException, InvalidPfmFileFormatException {
         Parameters param = new Parameters(factor, gamma, inputFile, outputFile);
         OutputStream out = new FileOutputStream(param.outputFileName);
         InputStream str = new FileInputStream(param.inputFileName);
@@ -106,23 +108,30 @@ public class Tracer {
         img.writeLdrImage(out, "PNG", param.gamma);
     }
 
-    private static void demo(int width, int height, float angleDeg, boolean orthogonal) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+        Transformation rotation = Transformation.rotationZ(angleDeg);
+        Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
         for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
             for (float j = -0.5f; j <= 0.5f; j += 1.0f) {
                 for (float k = -0.5f; k <= 0.5f; k += 1.0f) {
-                    world.addShape(new Sphere(Transformation.translation(new Vec(i, j, k)).times(Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f)))));
+                    Transformation trans = Transformation.translation(new Vec(i, j, k));
+                    world.addShape(new Sphere(rotation.times(trans.times(rescale))));
                 }
             }
         }
-        world.addShape(new Sphere(Transformation.translation(new Vec(0.f, 0.f, -0.5f)).times(Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f)))));
-        world.addShape(new Sphere(Transformation.translation(new Vec(0.f, 0.5f, 0.f)).times(Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f)))));
+
+        Transformation trans = Transformation.translation(new Vec(0.f, 0.f, -0.5f));
+        world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+
+        trans = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
+        world.addShape(new Sphere(rotation.times(trans.times(rescale))));
 
 
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal == true ?
-                new OrthogonalCamera(16.f / 9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f))) :
-                new PerspectiveCamera(1.f, 16.f / 9.f, Transformation.translation(new Vec(-1.0f, -0.0f, 0.0f)));
+                new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f))) :
+                new PerspectiveCamera(1.f, (float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
         tracer.fireAllRays(
@@ -135,8 +144,9 @@ public class Tracer {
             }
         });
 
-        image.writePfm(new FileOutputStream("image.pfm"), LITTLE_ENDIAN);
-        pfm2image(0.18f, 2.2f, "image.pfm", "image.png");
+        image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
+        String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
+        pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
     }
 }
 
