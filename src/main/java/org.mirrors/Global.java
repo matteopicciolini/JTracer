@@ -14,6 +14,7 @@ public record Global() {
     public static Vec VecY;
     public static Vec VecZ;
     public static Vec InvVecZ;
+    public static Vec InvVecX;
 
 
     static {
@@ -60,6 +61,7 @@ public record Global() {
         VecY = new Vec(0.f, 1.f, 0.f);
         VecZ = new Vec(0.f, 0.f, 1.f);
         InvVecZ = new Vec(0.f, 0.f, -1.f);
+        InvVecX = new Vec(-1.f, 0.f, 0.f);
     }
 
 }

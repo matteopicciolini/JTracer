@@ -53,9 +53,9 @@ public class Sphere extends Shape{
     }
 
     private Vec2d spherePointToUV(Point point){
-        float u = (float) (atan2(point.y, point.x) / (2.0 * PI));
+        float u = (float) (atan2(point.y, point.x) / (2.f * PI));
         return new Vec2d(
-                u >= 0.0 ? u : (float) (u + 1.0),
+                u >= 0.f ? u : u + 1.f,
                 (float) (acos(point.z) / PI)
         );
     }

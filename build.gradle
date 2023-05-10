@@ -12,6 +12,7 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'commons-cli:commons-cli:1.4'
 }
 
 test {
@@ -19,5 +20,12 @@ test {
 }
 
 application {
-    mainClass = 'org.mirrors.Main'
+    mainClass = 'org.mirrors.Tracer'
+}
+
+jar {
+    archiveFileName = "Tracer.jar"
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
 }
