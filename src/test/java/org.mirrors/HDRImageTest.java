@@ -11,7 +11,7 @@ import java.nio.ByteOrder;
 class HDRImageTest {
 
     @Test
-    void valid_coordinates() {
+    void validCoordinates() {
         HDRImage img = new HDRImage(7, 4);
         assertTrue(img.validCoordinates(0, 0));
         assertTrue(img.validCoordinates(6, 3));
@@ -22,14 +22,14 @@ class HDRImageTest {
     }
 
     @Test
-    void pixel_offset() {
+    void pixelOffset() {
         HDRImage img = new HDRImage(7, 4);
         assertEquals(17, img.pixelOffset(3, 2));
         assertEquals(7 * 4 - 1, img.pixelOffset(6, 3));
     }
 
     @Test
-    void get_set_pixel() {
+    void getSetPixel() {
         HDRImage img = new HDRImage(7, 4);
         Color color = new Color(1.0f, 2.0f, 3.0f);
         img.setPixel(3, 2, color);
@@ -37,7 +37,7 @@ class HDRImageTest {
     }
 
     @Test
-    void write_pfm() throws IOException {
+    void writePfm() throws IOException {
         HDRImage img = new HDRImage(3, 2);
 
         img.setPixel(0, 0, new Color(1.0e1f, 2.0e1f, 3.0e1f));
@@ -49,21 +49,21 @@ class HDRImageTest {
 
         ByteArrayOutputStream stream_lit = new ByteArrayOutputStream();
         img.writePfm(stream_lit, ByteOrder.LITTLE_ENDIAN);
-        assertArrayEquals(stream_lit.toByteArray(), Global.LE_ReferenceBytes);
+        assertArrayEquals(stream_lit.toByteArray(), Global.LEReferenceBytes);
 
         ByteArrayOutputStream stream_big = new ByteArrayOutputStream();
         img.writePfm(stream_big, ByteOrder.BIG_ENDIAN);
-        assertArrayEquals(stream_big.toByteArray(), Global.BE_ReferenceBytes);
+        assertArrayEquals(stream_big.toByteArray(), Global.BEReferenceBytes);
     }
     @Test
-    void read_line() throws IOException {
+    void readLine() throws IOException {
         InputStream targetStream = new ByteArrayInputStream("Hello\nWorld".getBytes());
         assertEquals(PfmCreator.readLine(targetStream), "Hello");
         assertEquals(PfmCreator.readLine(targetStream), "World");
     }
 
     @Test
-    void normalize_image() {
+    void normalizeImage() {
         HDRImage img = new HDRImage(2, 1);
         Color color1 = new Color(5.0f, 10.0f, 15.0f);
         Color color2 = new Color(500.0f, 1000.0f, 1500.0f);
@@ -79,7 +79,7 @@ class HDRImageTest {
     }
 
     @Test
-    void average_luminosity() {
+    void averageLuminosity() {
         HDRImage img = new HDRImage(2, 1);
         img.setPixel(0, 0, new Color(5.0f, 10.0f, 15.0f));
         img.setPixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));
@@ -87,7 +87,7 @@ class HDRImageTest {
     }
 
     @Test
-    void clamp_image() {
+    void clampImage() {
         HDRImage img = new HDRImage(2, 1);
         img.setPixel(0, 0, new Color(5.0f, 10.0f, 15.0f));
         img.setPixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));

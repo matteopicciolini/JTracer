@@ -117,7 +117,7 @@ public class PfmCreator {
      * @throws IOException if an I/O error occurs while reading from the stream.
      * @throws InvalidPfmFileFormatException if the PFM file format is invalid.
      */
-    public static HDRImage read_pfm_image(InputStream stream) throws IOException, InvalidPfmFileFormatException {
+    public static HDRImage readPfmImage(InputStream stream) throws IOException, InvalidPfmFileFormatException {
         String magic = readLine(stream);
         if (!magic.equals("PF")) throw new InvalidPfmFileFormatException("Invalid magic in PFM file");
 

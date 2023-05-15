@@ -14,9 +14,9 @@ class OrthogonalCameraTest {
         Ray ray3 = cam.fireRay(0.f, 1.f);
         Ray ray4 = cam .fireRay(1.f, 1.f);
 
-        assertEquals(0.f, ray1.dir.cross(ray2.dir).squared_norm(), 1e-5);
-        assertEquals(0.f, ray1.dir.cross(ray3.dir).squared_norm(), 1e-5);
-        assertEquals(0.f, ray1.dir.cross(ray4.dir).squared_norm(), 1e-5);
+        assertEquals(0.f, ray1.dir.cross(ray2.dir).squaredNorm(), 1e-5);
+        assertEquals(0.f, ray1.dir.cross(ray3.dir).squaredNorm(), 1e-5);
+        assertEquals(0.f, ray1.dir.cross(ray4.dir).squaredNorm(), 1e-5);
 
         assertTrue(ray1.at(1.f).isClose(new Point(0.f, 2.f, -1.f)));
         assertTrue(ray2.at(1.f).isClose(new Point(0.f, -2.f, -1.f)));
