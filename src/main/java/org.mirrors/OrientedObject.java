@@ -56,7 +56,7 @@ public abstract class OrientedObject extends Geometry {
      * @return The Euclidean norm (magnitude) of the current OrientedObject.
      */
     public float norm(){
-        return (float) sqrt(this.squared_norm());
+        return (float) sqrt(this.squaredNorm());
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class OrientedObject extends Geometry {
      *
      * @return The squared Euclidean norm of the current OrientedObject.
      */
-    public float squared_norm(){
+    public float squaredNorm(){
         return this.dot(this);
     }
 

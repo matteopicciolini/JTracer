@@ -20,8 +20,6 @@ class PerspectiveCameraTest {
         assertTrue(ray1.origin.isClose(ray3.origin));
         assertTrue(ray1.origin.isClose(ray4.origin));
 
-        System.out.println(ray1.at(1.f));
-
         assertTrue(ray1.at(1.f).isClose(new Point(0.f, 2.f, -1.f)));
         assertTrue(ray2.at(1.f).isClose(new Point(0.f, -2.f, -1.f)));
         assertTrue(ray3.at(1.f).isClose(new Point(0.f, 2.f, 1.f)));
