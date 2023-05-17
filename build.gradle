@@ -4,7 +4,9 @@ plugins {
 
 group 'org.mirrors'
 version '1.0-SNAPSHOT'
-
+compileJava {
+    options.debug = false
+}
 repositories {
     mavenCentral()
 }
