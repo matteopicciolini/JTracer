@@ -30,14 +30,9 @@ public class Color {
      * @throws InvalidParameterException if any of the components are negative.
      */
     public Color(float r, float g, float b){
-        if (r >= 0 && g >= 0 && b >= 0){
-            this.r = r;
-            this.g = g;
-            this.b = b;
-        }
-        else{
-            throw new InvalidParameterException("Class Color can't have negative parameters.");
-        }
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
 
     /**

@@ -15,6 +15,8 @@ public record Global() {
     public static Vec VecZ;
     public static Vec InvVecZ;
     public static Vec InvVecX;
+    public static Color White;
+    public static Color Black;
 
 
     static {
@@ -62,6 +64,8 @@ public record Global() {
         VecZ = new Vec(0.f, 0.f, 1.f);
         InvVecZ = new Vec(0.f, 0.f, -1.f);
         InvVecX = new Vec(-1.f, 0.f, 0.f);
+        White = new Color(0.f, 0.f, 0.f);
+        Black = new Color(1.f, 1.f, 1.f);
     }
 
 }

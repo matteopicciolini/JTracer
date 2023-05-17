@@ -7,12 +7,14 @@ package org.mirrors;
  */
 public abstract class Shape {
     public Transformation trans;
+    public Material material;
 
-    /**
-     * Initializes a new Shape object with an identity transformation matrix.
-     */
     public Shape(){
         this.trans = new Transformation();
+    }
+    public Shape(Material material){
+        this.trans = new Transformation();
+        this.material = new Material();
     }
 
     /**

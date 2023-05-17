@@ -15,6 +15,9 @@ public class Sphere extends Shape{
     public Sphere() {
         super();
     }
+    public Sphere(Material material) {
+        super(material);
+    }
 
     /**
      * Initializes a new Sphere object with the specified transformation matrix.
@@ -63,7 +66,7 @@ public class Sphere extends Shape{
                 (Normal) this.trans.times(sphereNormal(hitPoint, invRay.dir)),
                 spherePointToUV(hitPoint),
                 firstHit,
-                ray);
+                ray, new Material());
     }
 
     /**

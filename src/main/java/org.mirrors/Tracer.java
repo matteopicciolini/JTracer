@@ -6,6 +6,8 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static org.mirrors.Global.White;
+import static org.mirrors.Global.Black;
 
 public class Tracer {
     public static void main(String[] args) {
@@ -139,7 +141,7 @@ public class Tracer {
         tracer.fireAllRays(
                 ray -> {
             try {
-                return world.rayIntersection(ray) != null ? new Color(1.f, 1.f, 1.f) : new Color(0f, 0.f, 0.f);
+                return world.rayIntersection(ray) != null ? Black : White;
             }
             catch (InvalidMatrixException e) {
                 throw new RuntimeException(e);
