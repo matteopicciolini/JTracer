@@ -97,6 +97,7 @@ public class Tracer {
     }
 
     public static void pfm2image(float factor, float gamma, String inputFile, String outputFile) throws IOException, InvalidPfmFileFormatException {
+
         Parameters param = new Parameters(factor, gamma, inputFile, outputFile);
         OutputStream out = new FileOutputStream(param.outputFileName);
         InputStream str = new FileInputStream(param.inputFileName);
@@ -109,6 +110,7 @@ public class Tracer {
     }
 
     public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+        long time = System.currentTimeMillis();
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
@@ -147,6 +149,8 @@ public class Tracer {
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
         pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
+        long time2 = System.currentTimeMillis();
+        System.out.println(time2-time);
     }
 }
 
