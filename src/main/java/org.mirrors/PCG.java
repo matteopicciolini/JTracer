@@ -14,9 +14,13 @@ public class PCG {
     public long random(){
         long oldState = this.state;
         this.state = ((oldState * 6364136223846793005l) + this.inc);
-        int xorshifted = (int)(((oldState >>> 18) ^ oldState) >>> 27);
+        int xorShifted = (int)(((oldState >>> 18) ^ oldState) >>> 27);
 
         int rot = (int)(oldState >>> 59);
-        return Integer.rotateRight(xorshifted, rot) & 0xffffffffL;
+        return Integer.rotateRight(xorShifted, rot) & 0xffffffffL;
+    }
+
+    public float random_float(){
+        return this.random() / 0xffffffff;
     }
 }
