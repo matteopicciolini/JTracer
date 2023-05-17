@@ -1,23 +1,22 @@
 package org.mirrors;
 
 public class PCG {
+    public long state;
+    public long inc;
 
-
-    public class PGC {
-        public int state=0;
-        public int inc =0;
-        public PGC(int init_state, int init_seq){
-            this.inc=(init_seq << 1) | 1;
-            random();
-            this.state= this.state + init_state;
-            random();
-
-        }
-        public long random(){
-            long old_state=this.state;
-            this.state = ((old_state * 6364136223846793005) + this.inc);
-            return 0;
-        }
+    public PCG(int initState, int initSeq){
+        this.state = 0;
+        this.inc = (initSeq << 1) | 1;
+        this.random();
+        this.state += initState;
+        this.random();
     }
+    public long random(){
+        long oldState = this.state;
+        this.state = ((oldState * 6364136223846793005l) + this.inc);
+        int xorshifted = (int)(((oldState >>> 18) ^ oldState) >>> 27);
 
+        int rot = (int)(oldState >>> 59);
+        return Integer.rotateRight(xorshifted, rot) & 0xffffffffL;
+    }
 }
