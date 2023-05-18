@@ -64,8 +64,8 @@ public record Global() {
         VecZ = new Vec(0.f, 0.f, 1.f);
         InvVecZ = new Vec(0.f, 0.f, -1.f);
         InvVecX = new Vec(-1.f, 0.f, 0.f);
-        White = new Color(0.f, 0.f, 0.f);
-        Black = new Color(1.f, 1.f, 1.f);
+        White = new Color(1.f, 1.f, 1.f);
+        Black = new Color(0.f, 0.f, 0.f);
     }
 
 }

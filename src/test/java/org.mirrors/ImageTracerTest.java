@@ -33,7 +33,7 @@ public class ImageTracerTest {
     }
 
     @Test
-    void testImageCoverage(){
+    void testImageCoverage() throws InvalidMatrixException {
         tracer.fireAllRays((ray) -> new Color(1.f, 2.f, 3.f));
         for(int i = 0; i < this.image.height; ++i){
             for(int j = 0; j < this.image.width; ++j){

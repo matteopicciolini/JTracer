@@ -35,11 +35,11 @@ public class ImageTracer {
     /**
      Fire a ray for each pixel in the image and set its color according to the returned value from a given function.
      */
-    public void fireAllRays(RayToColor f){
+    public void fireAllRays(RayToColor f) throws InvalidMatrixException {
         for(int i = 0; i < this.image.width; ++i){
             for(int j = 0; j < this.image.height; ++j){
                 Ray ray = this.fireRay(i, j, 0.5f, 0.5f);
-                Color color = f.func(ray);
+                Color color = f.call(ray);
                 this.image.setPixel(i, j, color);
             }
         }

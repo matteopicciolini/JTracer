@@ -66,7 +66,7 @@ public class Sphere extends Shape{
                 (Normal) this.trans.times(sphereNormal(hitPoint, invRay.dir)),
                 spherePointToUV(hitPoint),
                 firstHit,
-                ray, new Material());
+                ray, this);
     }
 
     /**

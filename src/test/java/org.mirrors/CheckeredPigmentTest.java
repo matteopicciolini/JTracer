@@ -16,6 +16,5 @@ class CheckeredPigmentTest {
         assertTrue(pigment.getColor(new Vec2d(0.75f, 0.25f)).isClose(color2));
         assertTrue(pigment.getColor(new Vec2d(0.25f, 0.75f)).isClose(color2));
         assertTrue(pigment.getColor(new Vec2d(0.75f, 0.75f)).isClose(color1));
-
     }
 }

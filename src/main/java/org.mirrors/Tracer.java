@@ -138,21 +138,13 @@ public class Tracer {
                 new PerspectiveCamera(1.f, (float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
-        tracer.fireAllRays(
-                ray -> {
-            try {
-                return world.rayIntersection(ray) != null ? Black : White;
-            }
-            catch (InvalidMatrixException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        tracer.fireAllRays(new OnOffRenderer(world));
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
         pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
         long time2 = System.currentTimeMillis();
-        System.out.println(time2-time);
+        System.out.println(time2 - time);
     }
 }
 
