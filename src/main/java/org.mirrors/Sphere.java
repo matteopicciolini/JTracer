@@ -15,16 +15,10 @@ public class Sphere extends Shape{
     public Sphere() {
         super();
     }
-    public Sphere(Material material) {
-        super(material);
-    }
 
-    /**
-     * Initializes a new Sphere object with the specified transformation matrix.
-     * @param trans The transformation matrix for the sphere.
-     */
-    public Sphere(Transformation trans) {
-        super(trans);
+
+    public Sphere(Transformation transformation, Material material) {
+        super(transformation, material);
     }
 
     /**
@@ -36,7 +30,7 @@ public class Sphere extends Shape{
      */
     @Override
     public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
-        Ray invRay = ray.transform(this.trans.inverse());
+        Ray invRay = ray.transform(this.transformation.inverse());
         Vec originVec = invRay.origin.toVec();
         float a = invRay.dir.squaredNorm();
         float b = originVec.dot(invRay.dir);
@@ -62,8 +56,8 @@ public class Sphere extends Shape{
         }
 
         Point hitPoint = invRay.at(firstHit);
-        return new HitRecord((Point) this.trans.times(hitPoint),
-                (Normal) this.trans.times(sphereNormal(hitPoint, invRay.dir)),
+        return new HitRecord((Point) this.transformation.times(hitPoint),
+                (Normal) this.transformation.times(sphereNormal(hitPoint, invRay.dir)),
                 spherePointToUV(hitPoint),
                 firstHit,
                 ray, this);

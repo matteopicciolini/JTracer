@@ -106,30 +106,40 @@ public class Tracer {
 
         HDRImage img = PfmCreator.readPfmImage(str);
 
-        img.normalizeImage(param.factor);
+        //img.normalizeImage(param.factor);
+        img.normalizeImage(param.factor, 0.5f);
         img.clampImage();
         img.writeLdrImage(out, "PNG", param.gamma);
     }
 
     public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
         long time = System.currentTimeMillis();
+
+        Material sphereMaterial = new Material(new DiffuseBRDF(new UniformPigment(new Color(1f, 0.2f, 0.2f)), 1.f));
+        var checkeredMaterial = new Material(
+                new DiffuseBRDF(
+                        new CheckeredPigment(
+                                new Color(1f, 0.5f, 0.5f),
+                                new Color(1f, 0.2f, 0.2f),5
+                        ), 1.f)
+        );
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
         for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
             for (float j = -0.5f; j <= 0.5f; j += 1.0f) {
                 for (float k = -0.5f; k <= 0.5f; k += 1.0f) {
-                    Transformation trans = Transformation.translation(new Vec(i, j, k));
-                    world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+                    Transformation translation = Transformation.translation(new Vec(i, j, k));
+                    world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial));
                 }
             }
         }
 
-        Transformation trans = Transformation.translation(new Vec(0.f, 0.f, -0.5f));
-        world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, -0.5f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
 
-        trans = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
-        world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
 
 
         HDRImage image = new HDRImage(width, height);
@@ -138,7 +148,7 @@ public class Tracer {
                 new PerspectiveCamera(1.f, (float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
-        tracer.fireAllRays(new OnOffRenderer(world));
+        tracer.fireAllRays(new FlatRenderer(world));
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";

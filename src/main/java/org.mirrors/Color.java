@@ -121,6 +121,6 @@ public class Color {
      * @return The luminosity of this color.
      */
     public float luminosity(){
-        return ((Math.max(Math.max(this.r, this.g ), this.b))+Math.min(Math.min(this.r, this.g), this.b))/2.0f;
+        return ((Math.max(Math.max(this.r, this.g ), this.b)) + Math.min(Math.min(this.r, this.g), this.b))/2.0f;
     }
 }

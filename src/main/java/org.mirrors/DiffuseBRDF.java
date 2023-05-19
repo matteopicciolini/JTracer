@@ -12,6 +12,8 @@ public class DiffuseBRDF extends BRDF {
         super(new UniformPigment(Black));
         this.reflectance = 1.f;
     }
+
+
     public Color eval(Normal norm, Vec dir, Vec2d uv){
         return this.pigment.getColor(uv).prod((float) (this.reflectance / Math.PI));
     }

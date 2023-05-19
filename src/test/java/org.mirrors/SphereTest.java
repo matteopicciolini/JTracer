@@ -41,7 +41,7 @@ class SphereTest {
 
     @Test
     void sphereTransformation() throws InvalidMatrixException {
-        Sphere sphere = new Sphere(Transformation.translation(new Vec(10.f,0.f,0.f)));
+        Sphere sphere = new Sphere(Transformation.translation(new Vec(10.f,0.f,0.f)), new Material());
 
         Ray ray1 = new Ray(new Point(10.f, 0.f, 2.f), InvVecZ);
         HitRecord intersection1 = sphere.rayIntersection(ray1);
