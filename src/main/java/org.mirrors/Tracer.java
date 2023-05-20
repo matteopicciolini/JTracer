@@ -6,6 +6,7 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import java.io.File;
 import static org.mirrors.Global.White;
 import static org.mirrors.Global.Black;
 
@@ -116,36 +117,40 @@ public class Tracer {
         long time = System.currentTimeMillis();
 
         Material sphereMaterial = new Material(new DiffuseBRDF(new UniformPigment(new Color(1f, 0.2f, 0.2f)), 1.f));
-        var checkeredMaterial = new Material(
+        Material checkeredMaterial = new Material(
                 new DiffuseBRDF(
                         new CheckeredPigment(
                                 new Color(1f, 0.5f, 0.5f),
                                 new Color(1f, 0.2f, 0.2f),5
                         ), 1.f)
         );
+
+        InputStream str = new FileInputStream("skymap.pfm");
+        HDRImage worldImage = PfmCreator.readPfmImage(str);
+        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
-        for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
+        /*for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
             for (float j = -0.5f; j <= 0.5f; j += 1.0f) {
                 for (float k = -0.5f; k <= 0.5f; k += 1.0f) {
                     Transformation translation = Transformation.translation(new Vec(i, j, k));
                     world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial));
                 }
             }
-        }
+        }*/
 
-        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, -0.5f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
+        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
+        world.addShape(new Sphere(rotation.times(translation.times(Transformation.scaling(new Vec(0.6f, 0.6f, 0.6f)))), worldSphere));
 
-        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
+        //translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
+        //world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
 
 
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal == true ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1.f, (float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f)));
+                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(-1.f, 0.0f, 0.0f)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
         tracer.fireAllRays(new FlatRenderer(world));
@@ -153,9 +158,33 @@ public class Tracer {
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
         pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
+        RemoveFile(fileOutputPFM);
         long time2 = System.currentTimeMillis();
         System.out.println(time2 - time);
     }
+
+
+    public static void RemoveFile(String fileName) {
+        File file = new File(fileName);
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("The file " + fileName + " has been successfully deleted.");
+            } else {
+                System.out.println("Unable to delete the file " + fileName +".");
+            }
+        } else {
+            System.out.println("The file " + fileName + "does not exist.");
+        }
+    }
+
+
+
+
+
+
+
+
 }
 
 
