@@ -25,7 +25,7 @@ public class Tracer {
                 .build());
 
         options.addOption(Option.builder("d")
-                .argName("[width]> <[height]> <[angle-deg]> <[orthogonal]> <[output.pfm]")
+                .argName("[width]> <[height]> <[angle-deg]> <[orthogonal]> <[output.pfm]> <[algorithm]")
                 .hasArgs()
                 .longOpt("demo")
                 .valueSeparator(' ')
@@ -71,19 +71,21 @@ public class Tracer {
                 float angleDeg = 0.f;
                 boolean orthogonal = false;
                 String fileOutput = "fileOutput";
+                String algorithm = "flat";
 
                 if (dArgs != null) {
-                    if (dArgs.length >= 1 && dArgs.length <= 5) width = parseInt(dArgs[0]);
-                    if (dArgs.length >= 2 && dArgs.length <= 5) height = parseInt(dArgs[1]);
-                    if (dArgs.length >= 3 && dArgs.length <= 5) angleDeg = parseInt(dArgs[2]);
-                    if (dArgs.length >= 4 && dArgs.length <= 5) orthogonal = parseBoolean(dArgs[3]);
-                    if (dArgs.length == 5) fileOutput = dArgs[4];
-                    if (dArgs.length > 5) {
+                    if (dArgs.length >= 1 && dArgs.length <= 6) width = parseInt(dArgs[0]);
+                    if (dArgs.length >= 2 && dArgs.length <= 6) height = parseInt(dArgs[1]);
+                    if (dArgs.length >= 3 && dArgs.length <= 6) angleDeg = parseInt(dArgs[2]);
+                    if (dArgs.length >= 4 && dArgs.length <= 6) orthogonal = parseBoolean(dArgs[3]);
+                    if (dArgs.length >= 5 && dArgs.length <= 6) fileOutput = dArgs[4];;
+                    if (dArgs.length == 6) algorithm = dArgs[5];
+                    if (dArgs.length > 6) {
                         System.err.println("Error: ");
                         formatter.printHelp("Tracer", options);
                     }
                 }
-                demo(width, height, angleDeg, orthogonal, fileOutput);
+                demo(width, height, angleDeg, orthogonal, fileOutput, algorithm);
             }
         } catch (ParseException e) {
             System.err.println("Error: " + e.getMessage());
@@ -113,7 +115,7 @@ public class Tracer {
         img.writeLdrImage(out, "PNG", param.gamma);
     }
 
-    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM, String algorithm) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
         long time = System.currentTimeMillis();
 
         Material sphereMaterial = new Material(new DiffuseBRDF(new UniformPigment(new Color(1f, 0.2f, 0.2f)), 1.f));
@@ -125,26 +127,26 @@ public class Tracer {
                         ), 1.f)
         );
 
-        InputStream str = new FileInputStream("skymap.pfm");
+        InputStream str = new FileInputStream("Plank.pfm");
         HDRImage worldImage = PfmCreator.readPfmImage(str);
         Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
-        /*for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
+        for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
             for (float j = -0.5f; j <= 0.5f; j += 1.0f) {
                 for (float k = -0.5f; k <= 0.5f; k += 1.0f) {
                     Transformation translation = Transformation.translation(new Vec(i, j, k));
                     world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial));
                 }
             }
-        }*/
+        }
 
-        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
-        world.addShape(new Sphere(rotation.times(translation.times(Transformation.scaling(new Vec(0.6f, 0.6f, 0.6f)))), worldSphere));
+        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, -0.5f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
-        //translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
-        //world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
+        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
 
 
         HDRImage image = new HDRImage(width, height);
@@ -153,7 +155,12 @@ public class Tracer {
                 new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(-1.f, 0.0f, 0.0f)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
-        tracer.fireAllRays(new FlatRenderer(world));
+        if(algorithm.equals("flat")){
+            tracer.fireAllRays(new FlatRenderer(world));
+        }
+        else if (algorithm.equals("onOff")){
+            tracer.fireAllRays(new OnOffRenderer(world));
+        }
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
@@ -177,14 +184,6 @@ public class Tracer {
             System.out.println("The file " + fileName + "does not exist.");
         }
     }
-
-
-
-
-
-
-
-
 }
 
 
