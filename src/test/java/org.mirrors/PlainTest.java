@@ -2,8 +2,6 @@ package org.mirrors;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.function.BooleanSupplier;
-
 class PlainTest {
     public Vec VEC_X = new Vec(1.0f, 0.0f, 0.0f);
     public Vec VEC_Y = new Vec(0.0f, 1.0f, 0.0f);
@@ -25,6 +23,7 @@ class PlainTest {
                 1.0f,
                 ray1,
                 plane))));
+
 
         Ray ray2 = new Ray(new Point(0f, 0f, 1f), VEC_Z);
         HitRecord intersection2 = plane.rayIntersection(ray2);
