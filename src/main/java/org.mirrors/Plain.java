@@ -17,7 +17,7 @@ public class Plain extends Shape{
 
         float t = -inv_ray.origin.z / inv_ray.dir.z;
 
-        if ((t <= inv_ray.tMin) | (t >= inv_ray.tMax))
+        if ((t <= inv_ray.tMin) || (t >= inv_ray.tMax))
         return null;
 
         Point hit_point = inv_ray.at(t);
