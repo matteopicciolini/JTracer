@@ -4,6 +4,14 @@ public class PCG {
     public long state;
     public long inc;
 
+    public PCG(){
+        this.state = 0;
+        this.inc = (54 << 1) | 1;
+        this.random();
+        this.state += 42;
+        this.random();
+    };
+
     public PCG(int initState, int initSeq) {
         this.state = 0;
         this.inc = (initSeq << 1) | 1;

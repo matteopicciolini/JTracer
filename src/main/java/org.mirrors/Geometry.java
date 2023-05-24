@@ -106,7 +106,7 @@ public abstract class Geometry{
      * @throws IllegalArgumentException If the input Geometry object is of a different class than the current object.
      */
     public boolean isClose(Geometry other) {
-        if (other.getClass() != this.getClass()){throw new IllegalArgumentException("Cannot compare different types");}
+        //if (other.getClass() != this.getClass()){throw new IllegalArgumentException("Cannot compare different types");}
         float epsilon = 1e-5F;
         Geometry diff = difference(this, other, this.getClass());
         return (abs(diff.x) < epsilon &&
