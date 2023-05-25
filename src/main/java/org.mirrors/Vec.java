@@ -59,11 +59,6 @@ public class Vec extends OrientedObject {
         return sum(this, b, Vec.class);
     }
 
-    // Normalizza un vettore dividendo ogni elemento per la norma
-
-
-
-
 /**
  * Returns a new Vec object that represents the cross product of the current Vec and the input Vec.
  *
