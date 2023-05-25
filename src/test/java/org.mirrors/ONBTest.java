@@ -14,8 +14,6 @@ class ONBTest {
             normal.normalize();
 
             ONB onb = new ONB(normal);
-            System.out.println(onb.e3);
-            System.out.println(normal);
             assertTrue(onb.e3.isClose(normal));
 
             assertEquals(onb.e1.squaredNorm(), 1.f, 1e-5);

@@ -125,6 +125,14 @@ public class HDRImage {
         byte[] floatBytes = ByteBuffer.allocate(4).order(order).putFloat(value).array();
         stream.write(floatBytes);
     }
+    /*
+    private void writeFloatToStream(OutputStream stream, float value, ByteOrder order) throws IOException {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream(4);
+        ByteBuffer buffer = ByteBuffer.allocate(4).order(order).putFloat(value);
+        byteStream.write(buffer.array());
+        byteStream.writeTo(stream);
+    }
+    */
 
     /**
      * Calculates the average luminosity of the image using the specified delta value.

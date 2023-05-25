@@ -2,12 +2,10 @@ package org.mirrors;
 
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mirrors.Global.Black;
-import static org.mirrors.Transformation.scaling;
 import static org.mirrors.Global.White;
+import static org.mirrors.Transformation.scaling;
 
 class OnOffRendererTest {
     @Test
