@@ -13,7 +13,6 @@ public class DiffuseBRDF extends BRDF {
         this.reflectance = 1.f;
     }
 
-
     public Color eval(Normal norm, Vec dir, Vec2d uv){
         return this.pigment.getColor(uv).prod((float) (this.reflectance / Math.PI));
     }
@@ -24,11 +23,13 @@ public class DiffuseBRDF extends BRDF {
         float cos_theta= (float) Math.sqrt(cos_theta_sq);
         float sin_theta = (float) Math.sqrt(1.0 - cos_theta_sq);
         float phi = (float) (2.0 * Math.PI * pcg.random_float());
-
-        return Ray(interactionPoint,
-                1 * Math.cos(phi) * cos_theta + onb.e2 * Math.sin(phi) * cos_theta + onb.e3 * sin_theta,
-                1.0e-3,
-                Float.POSITIVE_INFINITY,
+        float sincos = (float) Math.sin(phi)*(cos_theta);
+        Vec e1 = (Vec) onb.e3.dot(sin_theta);
+        Vec e2= (Vec) onb.e2.dot(sincos);
+        Vec Sum =e2.sum(e1);
+        float ris=1f * (float) Math.cos(phi) * cos_theta;
+        return new Ray(interactionPoint,
+                Sum.sum(ris),
                 depth);
-}
+    }
 }
