@@ -30,7 +30,7 @@ public class PCG {
     }
 
     public float randomFloat() {
-        return this.random() / 0xffffffff;
+        //return this.random() / 0xffffffff;
+        return (float) (this.random() / (double) 0xffffffffL);
     }
 }
-
