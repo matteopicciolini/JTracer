@@ -49,6 +49,14 @@ public class Color {
         return color;
     }
 
+    public Color sum(float lambda){
+        Color color = new Color();
+        color.r = this.r + lambda;
+        color.g = this.g + lambda;
+        color.b = this.b + lambda;
+        return color;
+    }
+
     /**
      * Multiplies this color by the specified scalar and returns the result.
      *

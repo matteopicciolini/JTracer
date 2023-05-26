@@ -24,6 +24,7 @@ public class SpecularBRDF extends BRDF{
             return new Color(0.0f, 0.0f, 0.0f);
     }
 
+    @Override
     public Ray scatterRay(PCG pcg, Vec inDir, Point interPoint, Normal normal, int depth) {
         Vec rayDir = new Vec(inDir.x, inDir.y, inDir.z);
         rayDir.normalize();
