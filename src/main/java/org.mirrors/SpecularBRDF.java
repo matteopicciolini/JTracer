@@ -4,7 +4,7 @@ import static org.mirrors.Global.Black;
 
 public class SpecularBRDF extends BRDF{
     public float thresholdAngle = (float) (Math.PI/180.0f);
-    public SpecularBRDF(Pigment pigment, float reflectance){
+    public SpecularBRDF(Pigment pigment){
             super(pigment);
     }
     public SpecularBRDF(){
