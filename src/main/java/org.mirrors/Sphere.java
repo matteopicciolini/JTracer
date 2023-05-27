@@ -15,8 +15,12 @@ public class Sphere extends Shape{
     public Sphere() {
         super();
     }
-
-
+    public Sphere(Transformation transformation) {
+        super(transformation);
+    }
+    public Sphere(Material material) {
+        super(material);
+    }
     public Sphere(Transformation transformation, Material material) {
         super(transformation, material);
     }

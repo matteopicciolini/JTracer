@@ -10,7 +10,7 @@ class ONBTest {
         PCG pcg = new PCG();
 
         for (int i = 0; i < 100; ++i){
-            Normal normal = new Normal(pcg.random_float(), pcg.random_float(), pcg.random_float());
+            Normal normal = new Normal(pcg.randomFloat(), pcg.randomFloat(), pcg.randomFloat());
             normal.normalize();
 
             ONB onb = new ONB(normal);

@@ -29,8 +29,8 @@ public class PCG {
         return Integer.rotateRight(xorShifted, rot) & 0xffffffffL;
     }
 
-    public float random_float() {
-        return this.random() / 0xffffffff;
+    public float randomFloat() {
+        //return this.random() / 0xffffffff;
+        return (float) (this.random() / (double) 0xffffffffL);
     }
 }
-
