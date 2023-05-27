@@ -89,11 +89,6 @@ public abstract class Geometry{
         }
     }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9c0e3f567217732a92ae926079bfda8647b89c70
     /**
      * Returns a new instance of the specified subclass with coordinates equal to the sum of the coordinates of the two input Geometry objects.
      *

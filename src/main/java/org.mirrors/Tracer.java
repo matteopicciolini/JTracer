@@ -116,19 +116,23 @@ public class Tracer {
     public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM, String algorithm) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
         long time = System.currentTimeMillis();
 
-        Material sphereMaterial = new Material(new DiffuseBRDF(new UniformPigment(new Color(1f, 0.2f, 0.2f)), 1.f));
+        Material sky = new Material(new DiffuseBRDF(new UniformPigment(new Color(0f, 0.f, 0.f)), 0.f),
+                                    new UniformPigment(new Color(1.0f, 0.9f, 0.5f)));
+        Material mirror= new Material(new SpecularBRDF());
+        Material sphere_material = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.3f, 0.4f, 0.8f))));
+
         Material checkeredMaterial = new Material(
                 new DiffuseBRDF(
                         new CheckeredPigment(
                                 new Color(1f, 0.5f, 0.5f),
-                                new Color(1f, 0.2f, 0.2f),5
+                                new Color(1f, 0.2f, 0.2f),15
                         ), 1.f
                 )
         );
 
         InputStream str = new FileInputStream("Plank.pfm");
         HDRImage worldImage = PfmCreator.readPfmImage(str);
-        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
+        Material worldSphere = new Material(new DiffuseBRDF(new UniformPigment(new Color (1, 1, 1)), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(100f, 100f, 100f));
         World world = new World();
@@ -141,12 +145,19 @@ public class Tracer {
             }
         }*/
 
-        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
+        //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
+        //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
-        /*translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), checkeredMaterial));
-        */
+        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), sky));
+
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), mirror));
+
+        rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
+        translation = Transformation.translation(new Vec(0.f, 0.f, 0.5f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphere_material));
 
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
