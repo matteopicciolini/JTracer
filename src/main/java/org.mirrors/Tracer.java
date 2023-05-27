@@ -177,7 +177,7 @@ public class Tracer {
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
                 new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(0.1f, 0.0f, 0.0f)).times(Transformation.rotationY(3)));
 
-        ImageTracer tracer = new ImageTracer(image, camera);
+        ImageTracer tracer = new ImageTracer(image, camera, 4, new PCG());
         if(algorithm.equals("flat")){
             tracer.fireAllRays(new FlatRenderer(world));
         }
