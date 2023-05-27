@@ -16,8 +16,9 @@ public class SpecularBRDF extends BRDF{
     }
 
         //ho scritto il metodo normalize che non ho finito e di conseguenza non funziona nulla
-    public Color eval(Normal norm, Vec inDir,Vec outDir, Vec2d uv){
-        float theta_in = (float) Math.acos(norm.dot(inDir).normalize());
+    @Override
+    public Color eval(Normal norm, Vec inDir, Vec outDir, Vec2d uv){
+        float theta_in = (float) Math.acos(norm.dot(inDir).normalize);
         float theta_out = (float) Math.acos(norm.dot(outDir));
 
         if (Math.abs(theta_in - theta_out) < this.thresholdAngle)

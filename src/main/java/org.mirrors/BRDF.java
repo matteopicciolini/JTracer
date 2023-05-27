@@ -6,5 +6,5 @@ public abstract class BRDF {
     public BRDF(Pigment pigment){
         this.pigment = pigment;
     }
-    public abstract Color eval(Normal norm, Vec ind_dir, Vec2d uv);
+    public abstract Color eval(Normal norm, Vec ind_dir, Vec out,  Vec2d uv);
 }

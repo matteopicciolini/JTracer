@@ -89,18 +89,7 @@ public abstract class Geometry{
         }
     }
 
-    protected static <T extends Geometry> T normalize(Geometry vector, Class<T> returnType) {
-    try {
-        T normalizedVector = returnType.getDeclaredConstructor().newInstance();
-        float norm = (float) Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-        normalizedVector.x = (float) (vector.x / norm);
-        normalizedVector.y = (float) (vector.y / norm);
-        normalizedVector.z = (float) (vector.z / norm);
 
-        return normalizedVector;
-        } catch(InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-        throw new RuntimeException(e);
-    }
 
     /**
      * Returns a new instance of the specified subclass with coordinates equal to the sum of the coordinates of the two input Geometry objects.
