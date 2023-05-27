@@ -1,5 +1,7 @@
 package org.mirrors;
 
+import java.util.Objects;
+
 import static org.mirrors.Global.Black;
 
 public class FlatRenderer extends Renderer{
@@ -14,7 +16,7 @@ public class FlatRenderer extends Renderer{
     @Override
     public Color call(Ray ray) throws InvalidMatrixException {
         HitRecord hit = this.world.rayIntersection(ray);
-        if(hit == null){
+        if(Objects.isNull(hit)){
             return this.backgroundColor;
         }
         Material material = hit.shape.material;

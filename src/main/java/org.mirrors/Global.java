@@ -17,7 +17,9 @@ public record Global() {
     public static Vec InvVecX;
     public static Color White;
     public static Color Black;
-
+    public static Color Navy, SkyBlue, Silver, Crimson, DarkCyan, Olive, Pink,
+            DarkRed, Tomato, Gold, LimeGreen, Green, DarkOrange, Purple,
+            Brown, Red, Gray, DarkGray, DimGray, SaddleBrown, DarkBrown, Yellow;
 
     static {
         LEReferenceBytes = new byte[]{
@@ -66,6 +68,28 @@ public record Global() {
         InvVecX = new Vec(-1.f, 0.f, 0.f);
         White = new Color(1.f, 1.f, 1.f);
         Black = new Color(0.f, 0.f, 0.f);
+        Navy = new Color(0.0F, 0.0F, 0.5F);
+        SkyBlue = new Color(0.5294117647F, 0.80784313725F, 0.92156862745F);
+        Silver = new Color(0.75294117647F, 0.75294117647F, 0.75294117647F);
+        Crimson = new Color(0.86274509803F, 0.07843137254F, 0.23529411764F);
+        DarkCyan = new Color(0.0F, 0.54509803921F, 0.54509803921F);
+        Olive = new Color(0.50196078431F, 0.50196078431F, 0.0F);
+        Pink = new Color (1.0F, 0.75294117647F, 0.79607843137F );
+        DarkRed = new Color (0.54509803921F, 0.0F, 0.0F);
+        Tomato =  new Color (1.0F, 0.38823529411F, 0.27843137254F);
+        Gold = new Color (1.0F, 0.8431372549F, 0.0F);
+        LimeGreen = new Color(0.19607843137F, 0.80392156862F,0.19607843137F);
+        Green = new Color (0.0F, 0.50196078431F, 0.0F);
+        DarkOrange = new Color(1.0F, 0.54901960784F, 0.0F);
+        Purple = new Color(0.50196078431F, 0.0F, 0.50196078431F);
+        Brown = new Color(0.64705882352F,0.16470588235F, 0.16470588235F);
+        Red = new Color(1.0F, 0F, 0F);
+        Gray = new Color(0.50196078431F, 0.50196078431F, 0.50196078431F);
+        DarkGray = new Color(0.66274509803F, 0.66274509803F, 0.66274509803F);
+        DimGray = new Color(0.41176470588F, 0.41176470588F, 0.41176470588F);
+        SaddleBrown = new Color(0.54509803921F, 0.27058823529F, 0.07450980392F);
+        DarkBrown = new Color(0.32156862745F, 0.16862745098F, 0.05882352941F);
+        Yellow = new Color (1.0F, 1.0F, 0.0F);
     }
 
 }

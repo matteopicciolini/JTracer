@@ -20,7 +20,6 @@ public class DiffuseBRDF extends BRDF {
 
     @Override
     public Color eval(Normal norm, Vec dir, Vec outDir, Vec2d uv){
-
         return this.pigment.getColor(uv).prod((float) (this.reflectance / Math.PI));
     }
 
