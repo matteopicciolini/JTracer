@@ -122,7 +122,7 @@ public class Tracer {
                 new DiffuseBRDF(new UniformPigment(new Color())),
                 new UniformPigment(new Color(0.1f, 0.5f, 0.9f))
         );
-        //Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(new Color(0.6f, 0.2f, 0.3f))));
+        Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(new Color(0.6f, 0.2f, 0.3f))));
         Material sphereMaterial = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.3f, 0.4f, 0.8f))));
 
         /*Material checkeredMaterial = new Material(
@@ -157,7 +157,7 @@ public class Tracer {
 
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         translation = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), mirrorMaterial));
 
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(0.f, 0.f, 0.5f));

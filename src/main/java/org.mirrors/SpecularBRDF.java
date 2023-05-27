@@ -30,12 +30,13 @@ public class SpecularBRDF extends BRDF{
     public Ray scatterRay(PCG pcg, Vec inDir, Point interPoint, Normal normal, int depth) {
         Vec rayDir = new Vec(inDir.x, inDir.y, inDir.z);
         rayDir.normalize();
-        normal.normalize();
-        float dotProd = normal.dot(rayDir);
+        Vec normalVec = normal.toVec();
+        normalVec.normalize();
+        float dotProd = normalVec.dot(rayDir);
 
         return new Ray(
                 interPoint,
-                rayDir.minus((Vec) normal.dot( 2.f * dotProd)),
+                rayDir.minus((Vec) normalVec.dot( 2.f * dotProd)),
                 depth);
     }
 }
