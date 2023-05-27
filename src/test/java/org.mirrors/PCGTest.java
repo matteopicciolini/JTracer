@@ -9,11 +9,10 @@ class PCGTest {
     void testRandom(){
         PCG pcg = new PCG(42, 54);
 
-        assertEquals(pcg.state, 1753877967969059832l);
-        assertEquals(pcg.inc, 109l);
+        assertEquals(pcg.state, 1753877967969059832L);
+        assertEquals(pcg.inc, 109L);
 
-
-        long correctList [] = new long[] {2707161783l, 2068313097l, 3122475824l, 2211639955l, 3215226955l, 3421331566l};
+        long[] correctList = new long[] {2707161783L, 2068313097L, 3122475824L, 2211639955L, 3215226955L, 3421331566L};
         for(int i = 0; i < 6; ++i){
             assertEquals(correctList[i], pcg.random());
         }

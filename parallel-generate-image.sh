@@ -10,4 +10,6 @@ readonly angleNNN=$(printf "%03d" $angle)
 readonly pfmfile=image$angleNNN.pfm
 readonly pngfile=image$angleNNN.png
 
-time ./build/install/raytracing/bin/raytracing -d 3600 3600 $angle true $pfmfile
+time ./build/install/raytracing/bin/raytracing -d 460 460 $angle false $pfmfile flat
+
+#parallel -j NUM_OF_CORES ./generate-image.sh '{}' ::: $(seq 0 359)

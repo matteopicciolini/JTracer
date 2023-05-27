@@ -13,6 +13,14 @@ public abstract class Shape {
         this.transformation = new Transformation();
         this.material = new Material();
     }
+    public Shape(Material material){
+        this.transformation = new Transformation();
+        this.material = material;
+    }
+    public Shape(Transformation transformation){
+        this.transformation = transformation;
+        this.material = new Material();
+    }
     public Shape(Transformation transformation, Material material){
         this.transformation = transformation;
         this.material = material;

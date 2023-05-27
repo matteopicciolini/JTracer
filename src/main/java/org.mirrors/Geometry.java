@@ -77,6 +77,17 @@ public abstract class Geometry{
             throw new RuntimeException(e);
         }
     }
+    protected static <T extends Geometry> T sum(Geometry a, float b, Class<T> returnType) {
+        try {
+            T result = returnType.getDeclaredConstructor().newInstance();
+            result.x = a.x + b;
+            result.y = a.y + b;
+            result.z = a.z + b;
+            return result;
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Returns a new instance of the specified subclass with coordinates equal to the sum of the coordinates of the two input Geometry objects.
@@ -106,7 +117,7 @@ public abstract class Geometry{
      * @throws IllegalArgumentException If the input Geometry object is of a different class than the current object.
      */
     public boolean isClose(Geometry other) {
-        if (other.getClass() != this.getClass()){throw new IllegalArgumentException("Cannot compare different types");}
+        //if (other.getClass() != this.getClass()){throw new IllegalArgumentException("Cannot compare different types");}
         float epsilon = 1e-5F;
         Geometry diff = difference(this, other, this.getClass());
         return (abs(diff.x) < epsilon &&
