@@ -28,6 +28,14 @@ public class Ray {
         this.depth = depth;
     }
 
+    public Ray(Point origin, Vec dir, float tMin, float tMax, int depth) {
+        this.origin = origin;
+        this.dir = dir;
+        this.tMin = tMin;
+        this.tMax = tMax;
+        this.depth = depth;
+    }
+
     /**
      Constructor for Ray class.
      @param origin the origin point of the ray.

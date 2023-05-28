@@ -118,18 +118,18 @@ public class Tracer {
 
 
         Material skyMaterial = new Material(
-                new DiffuseBRDF(new UniformPigment(new Color())),
+                new DiffuseBRDF(new UniformPigment(Black)),
                 new UniformPigment(White)
         );
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
-        Material sphereMaterial1 = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.3f, 0.4f, 0.8f))));
+        Material sphereMaterial1 = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.3f, 0.4f, 0.8f))), new UniformPigment(Black));
         Material groundMaterial = new Material(
                 new DiffuseBRDF(
                         new CheckeredPigment(
-                                new Color(0.3f, 0.5f, 0.1f),
-                                new Color(0.1f, 0.2f, 0.5f), 16
+                                new Color(0.f, 0.5f, 0.f),
+                                new Color(1f, 1f, 1f), 16
                         )
-                )
+                ), new UniformPigment(Black)
         );
         /*Material checkeredMaterial = new Material(
                 new DiffuseBRDF(
@@ -154,7 +154,7 @@ public class Tracer {
                 }
             }
         }*/
-        Transformation translation = Transformation.translation(new Vec(0f, 0f, -0.25f));
+        Transformation translation = Transformation.translation(new Vec(0f, 0f, 0f));
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial1));
 
@@ -163,9 +163,9 @@ public class Tracer {
 
 
         rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
-        translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), skyMaterial));
-        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.5f)), groundMaterial));
+        translation = Transformation.translation(new Vec(0.f, 0.f, 50.f));
+        world.addShape(new Plain(rotation.times(translation.times(rescale)), skyMaterial));
+        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.3f)), groundMaterial));
 
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(0.f, 0.5f, -0.5f));
