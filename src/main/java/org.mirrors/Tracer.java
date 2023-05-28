@@ -154,20 +154,20 @@ public class Tracer {
                 }
             }
         }*/
-        Transformation translation = Transformation.translation(new Vec(0f, 0f, 0f));
+        Transformation translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
+        //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
-        //world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
-        //        rotation.times(translation), sphereMaterial1));
+        world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
+                rotation.times(translation.times(Transformation.rotationX(45).times(Transformation.rotationY(45)))), sphereMaterial1));
 
-        //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
+        translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
         //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
 
         rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
-        translation = Transformation.translation(new Vec(0.f, 0.f, 50.f));
-        world.addShape(new Plain(rotation.times(translation.times(rescale)), skyMaterial));
+        translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), skyMaterial));
         world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.3f)), groundMaterial));
 
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
@@ -178,7 +178,7 @@ public class Tracer {
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(-1f, 0.0f, 0.0f)).times(Transformation.rotationY(3)));
+                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(0f, 0.0f, 0f)).times(Transformation.rotationY(3)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
         if(algorithm.equals("flat")){
