@@ -122,7 +122,7 @@ public class Tracer {
                 new UniformPigment(White)
         );
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
-        Material sphereMaterial1 = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.3f, 0.4f, 0.8f))), new UniformPigment(Black));
+        Material sphereMaterial1 = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.1f, 0.2f, 1f))), new UniformPigment(Black));
         Material groundMaterial = new Material(
                 new DiffuseBRDF(
                         new CheckeredPigment(
@@ -140,9 +140,9 @@ public class Tracer {
                 )
         );*/
 
-        //InputStream str = new FileInputStream("Plank.pfm");
-        //HDRImage worldImage = PfmCreator.readPfmImage(str);
-        //Material worldSphere = new Material(new DiffuseBRDF(new UniformPigment(new Color (1, 1, 1)), 1.f));
+        InputStream str = new FileInputStream("Plank.pfm");
+        HDRImage worldImage = PfmCreator.readPfmImage(str);
+        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
@@ -156,7 +156,7 @@ public class Tracer {
         }*/
         Transformation translation = Transformation.translation(new Vec(0f, 0f, 0f));
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial1));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
         //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
         //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
@@ -190,7 +190,7 @@ public class Tracer {
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
-        pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
+        pfm2image(0.18f, 2.5f, fileOutputPFM, fileOutputPNG);
         RemoveFile(fileOutputPFM);
         long time2 = System.currentTimeMillis();
         System.out.println(time2 - time);
