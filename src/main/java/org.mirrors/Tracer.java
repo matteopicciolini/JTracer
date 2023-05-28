@@ -158,6 +158,9 @@ public class Tracer {
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
+        //world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
+        //        rotation.times(translation), sphereMaterial1));
+
         //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
         //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
@@ -175,7 +178,7 @@ public class Tracer {
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(0.1f, 0.0f, 0.0f)).times(Transformation.rotationY(3)));
+                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(-1f, 0.0f, 0.0f)).times(Transformation.rotationY(3)));
 
         ImageTracer tracer = new ImageTracer(image, camera);
         if(algorithm.equals("flat")){

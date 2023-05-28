@@ -178,6 +178,15 @@ public class Transformation {
         return new Transformation(matrix, invMatrix);
     }
 
+    public Ray times(Ray ray){
+        return new Ray(
+                (Point) this.times(ray.origin),
+                (Vec) this.times(ray.dir),
+                ray.tMin,
+                ray.tMax,
+                ray.depth
+        );
+    }
     /**
      * Returns a new Transformation object representing a rotation around the x-axis by the given angle.
      *

@@ -131,4 +131,17 @@ public abstract class Geometry{
      */
     @Override
     public String toString() {return "%s(%s, %s, %s)".formatted(this.getClass().getName(), x, y, z);}
+
+    public float get(int i) {
+        switch (i) {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            default:
+                throw new IndexOutOfBoundsException();
+        }
+    }
 }
