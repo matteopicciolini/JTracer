@@ -185,7 +185,7 @@ public class Tracer {
             tracer.fireAllRays(new OnOffRenderer(world));
         }
         else if (algorithm.equals("pathTracer")){
-            tracer.fireAllRaysParallel(new PathTracer(world));
+            tracer.fireAllRaysParallel(new PathTracer(world), 2);
         }
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);

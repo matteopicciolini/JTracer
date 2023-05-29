@@ -78,66 +78,58 @@ public class ImageTracer {
         }
     }
 
-    public void fireAllRaysParallel(RayToColor f) throws InvalidMatrixException {
+
+    public void fireAllRaysParallel(RayToColor f, int numThreads) throws InvalidMatrixException {
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        AtomicInteger progress = new AtomicInteger(0);
         int totalPixels = this.image.width * this.image.height;
-        int numThreads = Runtime.getRuntime().availableProcessors(); // Ottieni il numero di core disponibili
-        int pixelsPerThread = totalPixels / numThreads;
-        int remainingPixels = totalPixels % numThreads;
-        System.out.println(totalPixels);
-        System.out.println(pixelsPerThread);
-        System.out.println(remainingPixels);
+        int theadProgress[] =  {0, 0, 0, 0};
 
-        ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
-        AtomicInteger processedPixels = new AtomicInteger(0);
+        for (int i = 0; i < this.image.width; ++i) {
+            for (int j = 0; j < this.image.height; ++j) {
+                final int pixelX = i;
+                final int pixelY = j;
 
-        // Creazione della progress bar
-        ProgressBar progressBar = new ProgressBar(totalPixels);
-
-        for (int t = 0; t < numThreads; t++) {
-            final int threadIndex = t;
-            int startPixel = threadIndex * pixelsPerThread;
-            int endPixel = startPixel + pixelsPerThread;
-
-            if (threadIndex == numThreads - 1) {
-                endPixel += remainingPixels; // L'ultimo thread gestisce i pixel rimanenti
-            }
-
-            int finalEndPixel = endPixel;
-            executorService.submit(() -> {
-                for (int pixelIndex = startPixel; pixelIndex < finalEndPixel; pixelIndex++) {
-                    int i = pixelIndex % this.image.width;
-                    int j = pixelIndex / this.image.width;
-
+                executor.execute(() -> {
                     Color cumColor = Black;
-
                     if (this.samplesPerSide > 0) { // Antialiasing
                         for (int interPixelRow = 0; interPixelRow < this.samplesPerSide; ++interPixelRow) {
                             for (int interPixelCol = 0; interPixelCol < this.samplesPerSide; ++interPixelCol) {
                                 float uPixel = (interPixelCol + this.pcg.randomFloat()) / this.samplesPerSide;
                                 float vPixel = (interPixelRow + this.pcg.randomFloat()) / this.samplesPerSide;
-                                Ray ray = this.fireRay(i, j, uPixel, vPixel);
-                                cumColor = cumColor.sum(f.call(ray));
+                                Ray ray = this.fireRay(pixelX, pixelY, uPixel, vPixel);
+                                try {
+                                    cumColor = cumColor.sum(f.call(ray));
+                                } catch (InvalidMatrixException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
-                        this.image.setPixel(i, j, cumColor.prod(1f / (float) Math.pow(this.samplesPerSide, 2)));
+                        this.image.setPixel(pixelX, pixelY, cumColor.prod(1f / (float) Math.pow(this.samplesPerSide, 2)));
                     } else {
-                        Ray ray = this.fireRay(i, j, 0.5f, 0.5f);
-                        Color color = f.call(ray);
-                        this.image.setPixel(i, j, color);
+                        Ray ray = this.fireRay(pixelX, pixelY, 0.5f, 0.5f);
+                        Color color = null;
+                        try {
+                            color = f.call(ray);
+                        } catch (InvalidMatrixException e) {
+                            throw new RuntimeException(e);
+                        }
+                        this.image.setPixel(pixelX, pixelY, color);
                     }
 
-                    int processed = processedPixels.incrementAndGet();
-                    float progress = (float) processed / totalPixels;
-                    progressBar.update(progress); // Aggiorna la progress bar con il progresso attuale
-                }
-            });
+
+                    int completedPixels = progress.incrementAndGet();
+                    int percentComplete = (int) (((float) completedPixels / totalPixels) * 100);
+                    System.out.print("\rThread " + Thread.currentThread().getName()+ " - Progress: " + percentComplete + "%");
+                });
+            }
         }
 
-        executorService.shutdown();
-        while (!executorService.isTerminated()) {
-            // Attendere il completamento di tutti i thread
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+            // Aspetta la fine dell'esecuzione di tutti i thread
         }
-
-        progressBar.complete(); // Completa la progress bar
     }
+
+
 }
