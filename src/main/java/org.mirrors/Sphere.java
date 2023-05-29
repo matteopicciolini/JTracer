@@ -37,20 +37,20 @@ public class Sphere extends Shape{
         Ray invRay = ray.transform(this.transformation.inverse());
         Vec originVec = invRay.origin.toVec();
         float a = invRay.dir.squaredNorm();
-        float b = originVec.dot(invRay.dir);
+        float b = 2.f * originVec.dot(invRay.dir);
         float c = originVec.squaredNorm() - 1.f;
-        float delta4 = b * b - a * c;
-        if (delta4 <= 0.f){
+        float delta = b * b - 4 * a * c;
+        if (delta <= 0.f){
             return null;
         }
 
-        float sqrtDelta4 = (float) sqrt(delta4);
-        float tMin = (-b - sqrtDelta4) / a;
-        float tMax = (-b + sqrtDelta4) / a;
+        float sqrtDelta = (float) sqrt(delta);
+        float tMin = (-b - sqrtDelta) / (2 * a);
+        float tMax = (-b + sqrtDelta) / (2 * a);
 
         float firstHit;
         if ((tMin > invRay.tMin) && (tMin < invRay.tMax)){
-                firstHit = tMin;
+            firstHit = tMin;
         }
         else if ((tMax > invRay.tMin) && (tMax < invRay.tMax)){
             firstHit = tMax;
