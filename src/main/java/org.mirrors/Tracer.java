@@ -164,6 +164,7 @@ public class Tracer {
         Transformation translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
 
+
         //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
         world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
@@ -171,6 +172,14 @@ public class Tracer {
 
         translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
         //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
+
+
+
+
+        //translation = Transformation.translation(new Vec(0.f, 0.f, 0.3f));
+        //world.addShape(new Plain(rotation.times(translation), groundMaterial));
+        //translation = Transformation.translation(new Vec(0.f, 0.f, -0.3f));
+        //world.addShape(new Plain(rotation.times(translation), sphereMaterial2));
 
 
 
