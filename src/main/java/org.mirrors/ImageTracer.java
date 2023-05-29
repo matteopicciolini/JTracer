@@ -1,5 +1,13 @@
 package org.mirrors;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import static java.lang.Math.pow;
 import static org.mirrors.Global.Black;
 import static org.mirrors.Global.White;
@@ -68,5 +76,68 @@ public class ImageTracer {
                 }
             }
         }
+    }
+
+    public void fireAllRaysParallel(RayToColor f) throws InvalidMatrixException {
+        int totalPixels = this.image.width * this.image.height;
+        int numThreads = Runtime.getRuntime().availableProcessors(); // Ottieni il numero di core disponibili
+        int pixelsPerThread = totalPixels / numThreads;
+        int remainingPixels = totalPixels % numThreads;
+        System.out.println(totalPixels);
+        System.out.println(pixelsPerThread);
+        System.out.println(remainingPixels);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
+        AtomicInteger processedPixels = new AtomicInteger(0);
+
+        // Creazione della progress bar
+        ProgressBar progressBar = new ProgressBar(totalPixels);
+
+        for (int t = 0; t < numThreads; t++) {
+            final int threadIndex = t;
+            int startPixel = threadIndex * pixelsPerThread;
+            int endPixel = startPixel + pixelsPerThread;
+
+            if (threadIndex == numThreads - 1) {
+                endPixel += remainingPixels; // L'ultimo thread gestisce i pixel rimanenti
+            }
+
+            int finalEndPixel = endPixel;
+            executorService.submit(() -> {
+                for (int pixelIndex = startPixel; pixelIndex < finalEndPixel; pixelIndex++) {
+                    int i = pixelIndex % this.image.width;
+                    int j = pixelIndex / this.image.width;
+
+                    Color cumColor = Black;
+
+                    if (this.samplesPerSide > 0) { // Antialiasing
+                        for (int interPixelRow = 0; interPixelRow < this.samplesPerSide; ++interPixelRow) {
+                            for (int interPixelCol = 0; interPixelCol < this.samplesPerSide; ++interPixelCol) {
+                                float uPixel = (interPixelCol + this.pcg.randomFloat()) / this.samplesPerSide;
+                                float vPixel = (interPixelRow + this.pcg.randomFloat()) / this.samplesPerSide;
+                                Ray ray = this.fireRay(i, j, uPixel, vPixel);
+                                cumColor = cumColor.sum(f.call(ray));
+                            }
+                        }
+                        this.image.setPixel(i, j, cumColor.prod(1f / (float) Math.pow(this.samplesPerSide, 2)));
+                    } else {
+                        Ray ray = this.fireRay(i, j, 0.5f, 0.5f);
+                        Color color = f.call(ray);
+                        this.image.setPixel(i, j, color);
+                    }
+
+                    int processed = processedPixels.incrementAndGet();
+                    float progress = (float) processed / totalPixels;
+                    progressBar.update(progress); // Aggiorna la progress bar con il progresso attuale
+                }
+            });
+        }
+
+        executorService.shutdown();
+        while (!executorService.isTerminated()) {
+            // Attendere il completamento di tutti i thread
+        }
+
+        progressBar.complete(); // Completa la progress bar
     }
 }

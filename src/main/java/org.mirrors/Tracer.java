@@ -158,7 +158,7 @@ public class Tracer {
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial1));
 
-        //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));
+        //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));f
         //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
 
 
@@ -168,7 +168,7 @@ public class Tracer {
         world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.5f)), groundMaterial));
 
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
-        translation = Transformation.translation(new Vec(0.f, 0.5f, -0.5f));
+        translation = Transformation.translation(new Vec(-0.1f, 0.5f, -0.3f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), mirrorMaterial));
 
 
@@ -185,7 +185,7 @@ public class Tracer {
             tracer.fireAllRays(new OnOffRenderer(world));
         }
         else if (algorithm.equals("pathTracer")){
-            tracer.fireAllRays(new PathTracer(world));
+            tracer.fireAllRaysParallel(new PathTracer(world));
         }
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
