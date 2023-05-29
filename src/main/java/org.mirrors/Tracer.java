@@ -72,20 +72,26 @@ public class Tracer {
                 boolean orthogonal = false;
                 String fileOutput = "fileOutput";
                 String algorithm = "flat";
+                boolean antialiasing = false;
+                boolean parallelAntialiasing = false;
+                int nThreads = 4;
 
                 if (dArgs != null) {
-                    if (dArgs.length >= 1 && dArgs.length <= 6) width = parseInt(dArgs[0]);
-                    if (dArgs.length >= 2 && dArgs.length <= 6) height = parseInt(dArgs[1]);
-                    if (dArgs.length >= 3 && dArgs.length <= 6) angleDeg = parseInt(dArgs[2]);
-                    if (dArgs.length >= 4 && dArgs.length <= 6) orthogonal = parseBoolean(dArgs[3]);
-                    if (dArgs.length >= 5 && dArgs.length <= 6) fileOutput = dArgs[4];
-                    if (dArgs.length == 6) algorithm = dArgs[5];
-                    if (dArgs.length > 6) {
+                    if (dArgs.length >= 1 && dArgs.length <= 9) width = parseInt(dArgs[0]);
+                    if (dArgs.length >= 2 && dArgs.length <= 9) height = parseInt(dArgs[1]);
+                    if (dArgs.length >= 3 && dArgs.length <= 9) angleDeg = parseInt(dArgs[2]);
+                    if (dArgs.length >= 4 && dArgs.length <= 9) orthogonal = parseBoolean(dArgs[3]);
+                    if (dArgs.length >= 5 && dArgs.length <= 9) fileOutput = dArgs[4];
+                    if (dArgs.length >= 6 && dArgs.length <= 9) algorithm = dArgs[5];
+                    if (dArgs.length >= 7 && dArgs.length <= 9) antialiasing = parseBoolean(dArgs[6]);
+                    if (dArgs.length >= 8 && dArgs.length <= 9) parallelAntialiasing = parseBoolean(dArgs[7]);
+                    if (dArgs.length == 8) nThreads = parseInt(dArgs[8]);
+                    if (dArgs.length > 9) {
                         System.err.println("Error: ");
                         formatter.printHelp("Tracer", options);
                     }
                 }
-                demo(width, height, angleDeg, orthogonal, fileOutput, algorithm);
+                demo(width, height, angleDeg, orthogonal, fileOutput, algorithm, antialiasing, parallelAntialiasing, nThreads);
             }
         } catch (ParseException e) {
             System.err.println("Error: " + e.getMessage());
@@ -113,7 +119,7 @@ public class Tracer {
         img.writeLdrImage(out, "PNG", param.gamma);
     }
 
-    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM, String algorithm) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM, String algorithm, boolean antialiasing, boolean parallelAntialiasing, int nThreads) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
         long time = System.currentTimeMillis();
 
 
@@ -159,10 +165,12 @@ public class Tracer {
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial1));
 
+
         //translation = Transformation.translation(new Vec(0.f, 0.f, 0.3f));
         //world.addShape(new Plain(rotation.times(translation), groundMaterial));
         translation = Transformation.translation(new Vec(0.f, 0.f, -0.3f));
         world.addShape(new Plain(rotation.times(translation), sphereMaterial2));
+
 
         rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
         translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
@@ -170,6 +178,7 @@ public class Tracer {
         //world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.3f)), groundMaterial));
 
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
+
         translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), groundMaterial));
 
@@ -179,7 +188,13 @@ public class Tracer {
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
                 new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(0.1f, 0.0f, 0.0f)).times(Transformation.rotationZ(0)));
 
-        ImageTracer tracer = new ImageTracer(image, camera);
+        ImageTracer tracer;
+        if (antialiasing == true){
+            tracer = new ImageTracer(image, camera, 4, new PCG());
+        }else{
+            tracer = new ImageTracer(image, camera);
+        }
+
         if(algorithm.equals("flat")){
             tracer.fireAllRays(new FlatRenderer(world));
         }
@@ -187,7 +202,11 @@ public class Tracer {
             tracer.fireAllRays(new OnOffRenderer(world));
         }
         else if (algorithm.equals("pathTracer")){
-            tracer.fireAllRays(new PathTracer(world));
+            if (parallelAntialiasing == true) {
+                tracer.fireAllRaysParallel(new PathTracer(world), nThreads);
+            }else{
+                tracer.fireAllRays(new PathTracer(world));
+            }
         }
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
