@@ -124,18 +124,19 @@ public class Tracer {
 
 
         Material skyMaterial = new Material(
-                new DiffuseBRDF(new UniformPigment(new Color())),
+                new DiffuseBRDF(new UniformPigment(Black)),
                 new UniformPigment(White)
         );
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
-        Material sphereMaterial1 = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.3f, 0.4f, 0.8f))));
+        Material sphereMaterial1 = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
+        Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
         Material groundMaterial = new Material(
                 new DiffuseBRDF(
                         new CheckeredPigment(
-                                new Color(0.3f, 0.5f, 0.1f),
-                                new Color(0.1f, 0.2f, 0.5f), 16
+                                new Color(0.f, 0.5f, 0.f),
+                                new Color(1f, 1f, 1f), 16
                         )
-                )
+                ), new UniformPigment(Black)
         );
         /*Material checkeredMaterial = new Material(
                 new DiffuseBRDF(
@@ -146,9 +147,9 @@ public class Tracer {
                 )
         );*/
 
-        //InputStream str = new FileInputStream("Plank.pfm");
-        //HDRImage worldImage = PfmCreator.readPfmImage(str);
-        //Material worldSphere = new Material(new DiffuseBRDF(new UniformPigment(new Color (1, 1, 1)), 1.f));
+        InputStream str = new FileInputStream("Plank.pfm");
+        HDRImage worldImage = PfmCreator.readPfmImage(str);
+        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
         Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         World world = new World();
@@ -160,28 +161,32 @@ public class Tracer {
                 }
             }
         }*/
-        Transformation translation = Transformation.translation(new Vec(0f, 0f, -0.25f));
+        Transformation translation = Transformation.translation(new Vec(0f, 0f, 0f));
         rescale = Transformation.scaling(new Vec(0.25f, 0.25f, 0.25f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), sphereMaterial1));
 
-        //Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0f));f
-        //world.addShape(new Sphere(rotation.times(translation.times(rescale)), worldSphere));
+
+        //translation = Transformation.translation(new Vec(0.f, 0.f, 0.3f));
+        //world.addShape(new Plain(rotation.times(translation), groundMaterial));
+        translation = Transformation.translation(new Vec(0.f, 0.f, -0.3f));
+        world.addShape(new Plain(rotation.times(translation), sphereMaterial2));
 
 
         rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
         translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
         world.addShape(new Sphere(rotation.times(translation.times(rescale)), skyMaterial));
-        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.5f)), groundMaterial));
+        //world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.3f)), groundMaterial));
 
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
-        translation = Transformation.translation(new Vec(-0.1f, 0.5f, -0.3f));
-        world.addShape(new Sphere(rotation.times(translation.times(rescale)), mirrorMaterial));
+
+        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
+        world.addShape(new Sphere(rotation.times(translation.times(rescale)), groundMaterial));
 
 
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(0.1f, 0.0f, 0.0f)).times(Transformation.rotationY(3)));
+                new PerspectiveCamera(1f, (float) width/height, Transformation.translation(new Vec(0.1f, 0.0f, 0.0f)).times(Transformation.rotationZ(0)));
 
         ImageTracer tracer;
         if (antialiasing == true){
@@ -206,7 +211,7 @@ public class Tracer {
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
-        pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
+        pfm2image(0.18f, 2.5f, fileOutputPFM, fileOutputPNG);
         RemoveFile(fileOutputPFM);
         long time2 = System.currentTimeMillis();
         System.out.println(time2 - time);

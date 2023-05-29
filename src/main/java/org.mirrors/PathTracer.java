@@ -44,14 +44,16 @@ public class PathTracer extends Renderer{
 
         //RUSSIAN ROULETTE
         if(ray.depth >= this.russianRouletteLimit){
-            if (this.pcg.randomFloat() > hitColorLum){
-                hitColor = hitColor.prod(1.f /(1.f - hitColorLum));
+            float q = (float) max(0.05, 1.f - hitColorLum);
+            if (this.pcg.randomFloat() > q){
+                hitColor = hitColor.prod(1.f /(1.f - q));
             }
             else{
                 return emittedRadiance;
             }
         }
 
+        //MonteCarlo Integration
         Color cumRadiance = Black;
         if(hitColorLum > 0.f){
             for(int rayIndex = 0; rayIndex < this.numOfRays; ++rayIndex){

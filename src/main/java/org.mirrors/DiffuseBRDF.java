@@ -1,6 +1,7 @@
 package org.mirrors;
 
 import static org.mirrors.Global.Black;
+import static org.mirrors.Global.White;
 
 public class DiffuseBRDF extends BRDF {
     float reflectance;
@@ -14,7 +15,7 @@ public class DiffuseBRDF extends BRDF {
         this.reflectance = reflectance;
     }
     public DiffuseBRDF(){
-        super(new UniformPigment(Black));
+        super(new UniformPigment(White));
         this.reflectance = 1.f;
     }
 
@@ -35,8 +36,7 @@ public class DiffuseBRDF extends BRDF {
         Vec factor2 = (Vec) onb.e2.dot((float) Math.sin(phi) * cosTheta);
         Vec factor3 = (Vec) onb.e3.dot(sinTheta);
 
-        return new Ray(interactionPoint,
-                factor1.sum(factor2).sum(factor3),
-                depth);
+        return new Ray(interactionPoint, factor1.sum(factor2).sum(factor3),
+                1.e-3f, Float.POSITIVE_INFINITY, depth);
     }
 }
