@@ -1,5 +1,7 @@
 package org.mirrors;
 
+import java.util.Objects;
+
 import static org.mirrors.Global.White;
 
 public class OnOffRenderer extends Renderer{
@@ -15,6 +17,6 @@ public class OnOffRenderer extends Renderer{
 
     @Override
     public Color call(Ray ray) throws InvalidMatrixException {
-        return this.world.rayIntersection(ray) != null ? this.color : this.backgroundColor;
+        return Objects.isNull(this.world.rayIntersection(ray)) ? this.backgroundColor : this.color;
     }
 }
