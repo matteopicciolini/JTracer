@@ -4,6 +4,7 @@ public class ONB {
     Vec e1, e2, e3;
     public ONB(Normal normal) {
         //float sign = Math.signum(normal.z);
+        normal.normalize();
         float sign = normal.z > 0.f ? 1.f : -1.f;
         float a = -1.f / (sign + normal.z);
         float b = normal.x * normal.y * a;
