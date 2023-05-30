@@ -14,7 +14,7 @@ public class PathTracer extends Renderer{
         super(world);
         this.pcg = new PCG();
         this.numOfRays = 10;
-        this.maxDepth = 3;
+        this.maxDepth = 2;
         this.russianRouletteLimit = 3;
     }
 
@@ -69,6 +69,6 @@ public class PathTracer extends Renderer{
                 cumRadiance = cumRadiance.sum(hitColor.prod(newRadiance));
             }
         }
-        return emittedRadiance.sum(cumRadiance).prod((1.f / this.numOfRays));
+        return emittedRadiance.sum(cumRadiance.prod((1.f / this.numOfRays)));
     }
 }

@@ -83,7 +83,7 @@ public class ImageTracer {
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
         AtomicInteger progress = new AtomicInteger(0);
         int totalPixels = this.image.width * this.image.height;
-        int theadProgress[] =  {0, 0, 0, 0};
+        final int[] previousProgress = {0};
 
         for (int i = 0; i < this.image.width; ++i) {
             for (int j = 0; j < this.image.height; ++j) {
@@ -117,10 +117,14 @@ public class ImageTracer {
                         this.image.setPixel(pixelX, pixelY, color);
                     }
 
-
                     int completedPixels = progress.incrementAndGet();
                     int percentComplete = (int) (((float) completedPixels / totalPixels) * 100);
-                    System.out.print("\rThread " + Thread.currentThread().getName()+ " - Progress: " + percentComplete + "%");
+
+                    if (percentComplete > previousProgress[0]) {
+                        previousProgress[0] = percentComplete;
+                        System.out.print("\rThread " + Thread.currentThread() + " - Progress: " + percentComplete + "%   ");
+                        System.out.flush();
+                    }
                 });
             }
         }
@@ -129,6 +133,7 @@ public class ImageTracer {
         while (!executor.isTerminated()) {
             // Aspetta la fine dell'esecuzione di tutti i thread
         }
+        System.out.println();
     }
 
 

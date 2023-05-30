@@ -124,11 +124,10 @@ public class Tracer {
 
 
         Material skyMaterial = new Material(
-                new DiffuseBRDF(new UniformPigment(Black)),
-                new UniformPigment(White)
+                new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White)
         );
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
-        Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
+        Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(White)));
         Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material groundMaterial = new Material(
                 new DiffuseBRDF(
@@ -166,15 +165,20 @@ public class Tracer {
         //CUBE
         translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
         world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
-                translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), DiffuseNavy));
+                translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), mirrorMaterial));
 
         //PLANE
         world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.1f)), groundMaterial));
-
+        world.addShape(new Plain(Transformation.rotationY(90), groundMaterial));
         //SPHERE 1
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
-        world.addShape(new Sphere(translation.times(rescale), groundMaterial));
+        world.addShape(new Sphere(translation.times(rescale), DiffuseNavy));
+
+        //SPHERE 2
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(0.4f, 0.3f, 0.0f));
+        world.addShape(new Sphere(translation.times(rescale), sphereMaterial2));
 
         // MIRROR SPHERE
         rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));

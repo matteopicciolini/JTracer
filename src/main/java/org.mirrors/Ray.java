@@ -50,10 +50,9 @@ public class Ray {
      Calculate the point on the ray at distance t from the origin.
      @param t the distance from the origin point of the ray.
      @return the point on the ray at distance t from the origin.
-     @throws InvalidMatrixException if the matrix is not valid for the operation.
      */
-    public Point at(float t) throws InvalidMatrixException {
-        return (Point) (translation((Vec) this.dir.dot(t))).times(this.origin);
+    public Point at(float t) {
+        return this.origin.sum((Vec) this.dir.dot(t));
     }
 
     /**

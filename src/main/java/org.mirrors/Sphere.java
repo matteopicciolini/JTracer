@@ -33,7 +33,45 @@ public class Sphere extends Shape{
      * @throws InvalidMatrixException If the transformation matrix is invalid.
      */
     @Override
+
     public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+        Ray invRay = ray.transform(this.transformation.inverse());
+        Vec originVec = invRay.origin.toVec();
+        float b = originVec.dot(invRay.dir);
+        float a = invRay.dir.squaredNorm();
+        float c = originVec.squaredNorm() - 1f;
+        float delta = b * b - a * c;
+        if (delta <= 0)
+        {
+            return null;
+        }
+        float delta_sqrt = (float) Math.sqrt(delta);
+        float tmin = (-b-delta_sqrt)/a;
+        float tmax = (-b+delta_sqrt)/a;
+        float hit_t;
+        if (tmin > invRay.tMin && tmin < invRay.tMax)
+        {
+            hit_t = tmin;
+        }else if (tmax > invRay.tMin && tmax < invRay.tMax)
+        {
+            hit_t= tmax;
+        }
+        else return null;
+
+        Point hit_point = invRay.at(hit_t);
+        return new HitRecord((Point)transformation.times(hit_point), (Normal)transformation.times(sphereNormal(hit_point, ray.dir)),
+                spherePointToUV(hit_point),hit_t, ray, this);
+    }
+
+
+
+
+
+
+
+
+
+        /*
         Ray invRay = ray.transform(this.transformation.inverse());
         Vec originVec = invRay.origin.toVec();
         float a = invRay.dir.squaredNorm();
@@ -49,7 +87,7 @@ public class Sphere extends Shape{
         float tMax = (-b + sqrtDelta) / (2 * a);
 
         float firstHit;
-        if ((tMin > invRay.tMin) && (tMin < invRay.tMax)){
+        if ((tMin >= invRay.tMin) && (tMin <= invRay.tMax)){
             firstHit = tMin;
         }
         else if ((tMax > invRay.tMin) && (tMax < invRay.tMax)){
@@ -65,7 +103,7 @@ public class Sphere extends Shape{
                 spherePointToUV(hitPoint),
                 firstHit,
                 ray, this);
-    }
+    }*/
 
     /**
      * Computes the normal of the sphere at the given point and with the given ray direction.
