@@ -55,14 +55,19 @@ public class Vec extends OrientedObject {
     public Vec sum(Vec other){
         return sum(this, other, Vec.class);
     }
+    public Vec sum(float b){
+        return sum(this, b, Vec.class);
+    }
 
-    /**
-     * Returns a new Vec object that represents the cross product of the current Vec and the input Vec.
-     *
-     * @param other The Vec to calculate the cross product with.
-     * @return A new Vec object that represents the cross product of the current Vec and the input Vec.
-     */
+/**
+ * Returns a new Vec object that represents the cross product of the current Vec and the input Vec.
+ *
+ * @param other The Vec to calculate the cross product with.
+ * @return A new Vec object that represents the cross product of the current Vec and the input Vec.
+ */
     public Vec cross(Vec other){
         return cross(this, other, Vec.class);
     }
+
+    public Normal toNormal(){return new Normal(this.x , this.y, this.z);}
 }

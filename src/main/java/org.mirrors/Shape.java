@@ -6,21 +6,24 @@ package org.mirrors;
  * It contains a transformation matrix and an abstract method for ray-object intersection.
  */
 public abstract class Shape {
-    public Transformation trans;
+    public Transformation transformation;
+    public Material material;
 
-    /**
-     * Initializes a new Shape object with an identity transformation matrix.
-     */
     public Shape(){
-        this.trans = new Transformation();
+        this.transformation = new Transformation();
+        this.material = new Material();
     }
-
-    /**
-     * Initializes a new Shape object with the specified transformation matrix.
-     * @param trans The transformation matrix for the shape.
-     */
-    public Shape(Transformation trans){
-        this.trans = trans;
+    public Shape(Material material){
+        this.transformation = new Transformation();
+        this.material = material;
+    }
+    public Shape(Transformation transformation){
+        this.transformation = transformation;
+        this.material = new Material();
+    }
+    public Shape(Transformation transformation, Material material){
+        this.transformation = transformation;
+        this.material = material;
     }
     public abstract HitRecord rayIntersection(Ray ray) throws InvalidMatrixException;
 }

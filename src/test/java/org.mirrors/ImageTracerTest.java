@@ -1,5 +1,6 @@
 package org.mirrors;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mirrors.Global.Black;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,35 @@ public class ImageTracerTest {
     }
 
     @Test
-    void testImageCoverage(){
+    void testImageCoverage() throws InvalidMatrixException {
         tracer.fireAllRays((ray) -> new Color(1.f, 2.f, 3.f));
         for(int i = 0; i < this.image.height; ++i){
             for(int j = 0; j < this.image.width; ++j){
                 assertTrue(this.image.getPixel(j, i).isClose(new Color(1.f, 2.f, 3.f)));
             }
         }
+    }
+
+    @Test
+    void antialiasing() throws InvalidMatrixException {
+        final int[] numOfRays = {0};
+        HDRImage smallImage = new HDRImage(1,1);
+        Camera camera = new OrthogonalCamera(1);
+        ImageTracer tracer = new ImageTracer(smallImage, camera, 10, new PCG());
+
+        RayToColor traceRay = ray -> {
+
+            Point point = ray.at(1);
+
+            assertEquals(0.0f, point.x, 1e-3);
+            assertTrue(point.y >= -1.0 && point.y <= 1.0);
+            assertTrue(point.z >= -1.0 && point.z <= 1.0);
+
+            numOfRays[0]++;
+
+            return Black;
+        };
+        tracer.fireAllRays(traceRay);
+        assertEquals(100, numOfRays[0]);
     }
 }

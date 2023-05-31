@@ -28,6 +28,14 @@ public class Ray {
         this.depth = depth;
     }
 
+    public Ray(Point origin, Vec dir, float tMin, float tMax, int depth) {
+        this.origin = origin;
+        this.dir = dir;
+        this.tMin = tMin;
+        this.tMax = tMax;
+        this.depth = depth;
+    }
+
     /**
      Constructor for Ray class.
      @param origin the origin point of the ray.
@@ -42,10 +50,9 @@ public class Ray {
      Calculate the point on the ray at distance t from the origin.
      @param t the distance from the origin point of the ray.
      @return the point on the ray at distance t from the origin.
-     @throws InvalidMatrixException if the matrix is not valid for the operation.
      */
-    public Point at(float t) throws InvalidMatrixException {
-        return (Point) (translation((Vec) this.dir.dot(t))).times(this.origin);
+    public Point at(float t) {
+        return this.origin.sum((Vec) this.dir.dot(t));
     }
 
     /**

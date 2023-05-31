@@ -10,6 +10,7 @@ public class HitRecord {
     public Vec2d surfPoint;
     public float t;
     public Ray ray;
+    public Shape shape;
 
     /**
      * Initializes a new HitRecord with default values.
@@ -20,6 +21,7 @@ public class HitRecord {
         this.surfPoint = new Vec2d(0.f, 0.f);
         this.t = 0.0f;
         this.ray = new Ray();
+        this.shape = new Sphere();
     }
 
     /**
@@ -31,12 +33,13 @@ public class HitRecord {
      * @param t The time of the intersection.
      * @param ray The ray that intersected with the object.
      */
-    public HitRecord(Point worldPoint, Normal normal, Vec2d surfacePoint, float t, Ray ray) {
+    public HitRecord(Point worldPoint, Normal normal, Vec2d surfacePoint, float t, Ray ray, Shape shape) {
         this.worldPoint = worldPoint;
         this.normal = normal;
         this.surfPoint = surfacePoint;
         this.t = t;
         this.ray = ray;
+        this.shape = shape;
     }
 
     /**

@@ -30,14 +30,9 @@ public class Color {
      * @throws InvalidParameterException if any of the components are negative.
      */
     public Color(float r, float g, float b){
-        if (r >= 0 && g >= 0 && b >= 0){
-            this.r = r;
-            this.g = g;
-            this.b = b;
-        }
-        else{
-            throw new InvalidParameterException("Class Color can't have negative parameters.");
-        }
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
 
     /**
@@ -51,6 +46,14 @@ public class Color {
         color.r = this.r + color1.r;
         color.g = this.g + color1.g;
         color.b = this.b + color1.b;
+        return color;
+    }
+
+    public Color sum(float lambda){
+        Color color = new Color();
+        color.r = this.r + lambda;
+        color.g = this.g + lambda;
+        color.b = this.b + lambda;
         return color;
     }
 
@@ -126,6 +129,6 @@ public class Color {
      * @return The luminosity of this color.
      */
     public float luminosity(){
-        return ((Math.max(Math.max(this.r, this.g ), this.b))+Math.min(Math.min(this.r, this.g), this.b))/2.0f;
+        return ((Math.max(Math.max(this.r, this.g ), this.b)) + Math.min(Math.min(this.r, this.g), this.b))/2.0f;
     }
 }
