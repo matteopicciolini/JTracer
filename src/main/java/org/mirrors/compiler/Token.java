@@ -1,4 +1,4 @@
-package org.mirrors;
+package org.mirrors.compiler;
 
 public abstract class Token {
 
