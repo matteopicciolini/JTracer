@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static org.mirrors.compiler.KeywordEnum.Keywords.KEYWORDS;
+
 public class InStream {
     public InputStream stream;
     public SourceLocation location;
@@ -65,5 +67,66 @@ public class InStream {
             }
         }
         this.unreadChar(ch);
+    }
+    private StringToken ParseStringToken(SourceLocation token_location) throws Throwable {
+        StringBuilder token = new StringBuilder();
+        while (true) {
+            char ch = readChar();
+
+            if (ch == '"') {
+                break;
+            }
+
+            if (ch == '\0') {
+                throw new GrammarError(token_location, "unterminated string");
+            }
+
+            token.append(ch);
+        }
+
+        return new StringToken(token_location, token.toString());
+    }
+
+    public LiteralNumberToken ParseFloatToken(String firstChar, SourceLocation tokenLocation) throws IOException, GrammarError {
+        StringBuilder token = new StringBuilder(firstChar);
+        while (true) {
+            char ch = readChar();
+
+            if (!(Character.isDigit(ch) || ch == '.' || ch == 'e' || ch == 'E')) {
+                unreadChar(ch);
+                break;
+            }
+
+            token.append(ch);
+        }
+
+        try {
+            double value = Double.parseDouble(token.toString());
+            return new LiteralNumberToken(tokenLocation, (float) value);
+        } catch (NumberFormatException e) {
+            throw new GrammarError(tokenLocation, "That's an invalid floating-point number");
+        }
+    }
+
+    public Token ParseKeywordOrIdentifierToken(String firstChar, SourceLocation tokenLocation) throws IOException {
+        StringBuilder token = new StringBuilder(firstChar);
+        while (true) {
+            char ch = readChar();
+
+            if (!(Character.isLetterOrDigit(ch) || ch == '_')) {
+                unreadChar(ch);
+                break;
+            }
+
+            token.append(ch);
+        }
+
+        try {
+
+            return new KeywordToken(tokenLocation, KEYWORDS.get(token.toString()));
+        } catch (NullPointerException e) {
+
+            return new IdentifierToken(tokenLocation, token.toString());
+        }
     }
 }
