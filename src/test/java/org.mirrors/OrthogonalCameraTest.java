@@ -12,7 +12,7 @@ class OrthogonalCameraTest {
         Ray ray1 = cam.fireRay(0.f, 0.f);
         Ray ray2 = cam.fireRay(1.f, 0.f);
         Ray ray3 = cam.fireRay(0.f, 1.f);
-        Ray ray4 = cam .fireRay(1.f, 1.f);
+        Ray ray4 = cam.fireRay(1.f, 1.f);
 
         assertEquals(0.f, ray1.dir.cross(ray2.dir).squaredNorm(), 1e-5);
         assertEquals(0.f, ray1.dir.cross(ray3.dir).squaredNorm(), 1e-5);

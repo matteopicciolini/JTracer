@@ -6,6 +6,9 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static org.mirrors.Global.*;
+
+import java.io.File;
 
 public class Tracer {
     public static void main(String[] args) {
@@ -22,7 +25,7 @@ public class Tracer {
                 .build());
 
         options.addOption(Option.builder("d")
-                .argName("[width]> <[height]> <[angle-deg]> <[orthogonal]> <[output.pfm]")
+                .argName("[width]> <[height]> <[angle-deg]> <[orthogonal]> <[output.pfm]> <[algorithm]")
                 .hasArgs()
                 .longOpt("demo")
                 .valueSeparator(' ')
@@ -68,35 +71,42 @@ public class Tracer {
                 float angleDeg = 0.f;
                 boolean orthogonal = false;
                 String fileOutput = "fileOutput";
+                String algorithm = "flat";
+                boolean antialiasing = false;
+                boolean parallelAntialiasing = false;
+                int nThreads = 4;
 
                 if (dArgs != null) {
-                    if (dArgs.length >= 1 && dArgs.length <= 5) width = parseInt(dArgs[0]);
-                    if (dArgs.length >= 2 && dArgs.length <= 5) height = parseInt(dArgs[1]);
-                    if (dArgs.length >= 3 && dArgs.length <= 5) angleDeg = parseInt(dArgs[2]);
-                    if (dArgs.length >= 4 && dArgs.length <= 5) orthogonal = parseBoolean(dArgs[3]);
-                    if (dArgs.length == 5) fileOutput = dArgs[4];
-                    if (dArgs.length > 5) {
+                    if (dArgs.length >= 1 && dArgs.length <= 9) width = parseInt(dArgs[0]);
+                    if (dArgs.length >= 2 && dArgs.length <= 9) height = parseInt(dArgs[1]);
+                    if (dArgs.length >= 3 && dArgs.length <= 9) angleDeg = parseInt(dArgs[2]);
+                    if (dArgs.length >= 4 && dArgs.length <= 9) orthogonal = parseBoolean(dArgs[3]);
+                    if (dArgs.length >= 5 && dArgs.length <= 9) fileOutput = dArgs[4];
+                    if (dArgs.length >= 6 && dArgs.length <= 9) algorithm = dArgs[5];
+                    if (dArgs.length >= 7 && dArgs.length <= 9) antialiasing = parseBoolean(dArgs[6]);
+                    if (dArgs.length >= 8 && dArgs.length <= 9) parallelAntialiasing = parseBoolean(dArgs[7]);
+                    if (dArgs.length == 8) nThreads = parseInt(dArgs[8]);
+                    if (dArgs.length > 9) {
                         System.err.println("Error: ");
                         formatter.printHelp("Tracer", options);
                     }
                 }
-                demo(width, height, angleDeg, orthogonal, fileOutput);
+                demo(width, height, angleDeg, orthogonal, fileOutput, algorithm, antialiasing, parallelAntialiasing, nThreads);
             }
         } catch (ParseException e) {
             System.err.println("Error: " + e.getMessage());
             formatter.printHelp("Tracer", options);
             throw new RuntimeException(e);
-        } catch (IOException | InvalidPfmFileFormatException e) {
+        } catch (IOException | InvalidPfmFileFormatException | InvalidMatrixException e) {
             throw new RuntimeException(e);
         } catch (NullPointerException e) {
             formatter.printHelp("Tracer", options);
-            throw new RuntimeException(e);
-        } catch (InvalidMatrixException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static void pfm2image(float factor, float gamma, String inputFile, String outputFile) throws IOException, InvalidPfmFileFormatException {
+
         Parameters param = new Parameters(factor, gamma, inputFile, outputFile);
         OutputStream out = new FileOutputStream(param.outputFileName);
         InputStream str = new FileInputStream(param.inputFileName);
@@ -104,50 +114,124 @@ public class Tracer {
         HDRImage img = PfmCreator.readPfmImage(str);
 
         img.normalizeImage(param.factor);
+        //img.normalizeImage(param.factor, 0.5f);
         img.clampImage();
         img.writeLdrImage(out, "PNG", param.gamma);
     }
 
-    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+    public static void demo(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM, String algorithm, boolean antialiasing, boolean parallelAntialiasing, int nThreads) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+        long time = System.currentTimeMillis();
+
+
+        Material skyMaterial = new Material(
+                new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White)
+        );
+        Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
+        Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
+        Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
+        Material groundMaterial = new Material(
+                new DiffuseBRDF(
+                        new CheckeredPigment(
+                                new Color(0.f, 0.5f, 0.f),
+                                new Color(1f, 1f, 1f), 16
+                        )
+                ), new UniformPigment(Black)
+        );
+
+        InputStream str = new FileInputStream("Plank.pfm");
+        HDRImage worldImage = PfmCreator.readPfmImage(str);
+        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
-        Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+
         World world = new World();
+
+        //SPHERES
+        /*Transformation rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+
         for (float i = -0.5f; i <= 0.5f; i += 1.0f) {
             for (float j = -0.5f; j <= 0.5f; j += 1.0f) {
                 for (float k = -0.5f; k <= 0.5f; k += 1.0f) {
-                    Transformation trans = Transformation.translation(new Vec(i, j, k));
-                    world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+                    Transformation translation = Transformation.translation(new Vec(i, j, k));
+                    world.addShape(new Sphere(translation.times(rescale), sphereMaterial1));
                 }
             }
-        }
+        }*/
 
-        Transformation trans = Transformation.translation(new Vec(0.f, 0.f, -0.5f));
-        world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+        //SKY
+        Transformation rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
+        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
+        world.addShape(new Sphere(translation.times(rescale), skyMaterial));
 
-        trans = Transformation.translation(new Vec(0.f, 0.5f, 0.f));
-        world.addShape(new Sphere(rotation.times(trans.times(rescale))));
+        //CUBE
+        translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
+        world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
+                translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), DiffuseNavy));
+
+        //PLANE
+        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.1f)), groundMaterial));
+        //SPHERE 1
+        rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
+        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
+        world.addShape(new Sphere(translation.times(rescale), groundMaterial));
+
+        //SPHERE 2
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(0.4f, 0.3f, 0.0f));
+        world.addShape(new Sphere(translation.times(rescale), sphereMaterial2));
+
+        // MIRROR SPHERE
+        rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
+        translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
+        world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
+
 
 
         HDRImage image = new HDRImage(width, height);
-        Camera camera = orthogonal == true ?
-                new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1.f, (float) width/height, Transformation.translation(new Vec(-1.0f, 0.0f, 0.0f)));
+        Camera camera = orthogonal ?
+                new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
+                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
 
-        ImageTracer tracer = new ImageTracer(image, camera);
-        tracer.fireAllRays(
-                ray -> {
-            try {
-                return world.rayIntersection(ray) != null ? new Color(1.f, 1.f, 1.f) : new Color(0f, 0.f, 0.f);
+        ImageTracer tracer;
+        if (antialiasing == true){
+            tracer = new ImageTracer(image, camera, 4, new PCG());
+        }else{
+            tracer = new ImageTracer(image, camera);
+        }
+
+        if(algorithm.equals("flat")){
+            tracer.fireAllRays(new FlatRenderer(world));
+        }
+        else if (algorithm.equals("onOff")){
+            tracer.fireAllRays(new OnOffRenderer(world));
+        }
+        else if (algorithm.equals("pathTracer")){
+            if (parallelAntialiasing == true) {
+                tracer.fireAllRaysParallel(new PathTracer(world), nThreads);
+            }else{
+                tracer.fireAllRays(new PathTracer(world));
             }
-            catch (InvalidMatrixException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        }
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
         String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
-        pfm2image(0.18f, 2.2f, fileOutputPFM, fileOutputPNG);
+        pfm2image(0.18f, 2.5f, fileOutputPFM, fileOutputPNG);
+        RemoveFile(fileOutputPFM);
+        long time2 = System.currentTimeMillis();
+        System.out.println(time2 - time);
+    }
+
+
+    public static void RemoveFile(String fileName) {
+        File file = new File(fileName);
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("The file " + fileName + " has been successfully deleted.");
+            } else {
+                System.out.println("Unable to delete the file " + fileName +".");
+            }
+        } else {
+            System.out.println("The file " + fileName + "does not exist.");
+        }
     }
 }
-
-

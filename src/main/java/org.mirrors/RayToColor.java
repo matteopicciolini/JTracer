@@ -9,5 +9,5 @@ public interface RayToColor {
      * @param ray The Ray object to be mapped.
      * @return The Color object that the Ray object is mapped to.
      */
-    Color func(Ray ray);
+    Color call(Ray ray) throws InvalidMatrixException;
 }

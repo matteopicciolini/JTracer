@@ -2,6 +2,7 @@ package org.mirrors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a world that contains a list of shapes that can be intersected by a ray to find the closest hit.
@@ -27,10 +28,10 @@ public class World {
         HitRecord closest = null;
         for (Shape shape : shapes) {
             HitRecord intersection = shape.rayIntersection(ray);
-            if (intersection == null) {
+            if (Objects.isNull(intersection)) {
                 continue;
             }
-            if (closest == null || intersection.t < closest.t) {
+            if (Objects.isNull(closest) || intersection.t < closest.t) {
                 closest = intersection;
             }
         }
