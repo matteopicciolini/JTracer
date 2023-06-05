@@ -127,6 +127,7 @@ public class Tracer {
                 new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White)
         );
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
+        Material DiffuseLime = new Material(new DiffuseBRDF(new UniformPigment(LimeGreen)));
         Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
         Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material groundMaterial = new Material(
@@ -138,10 +139,12 @@ public class Tracer {
                 ), new UniformPigment(Black)
         );
 
-        InputStream str = new FileInputStream("Plank.pfm");
+        /*InputStream str = new FileInputStream("Plank.pfm");
         HDRImage worldImage = PfmCreator.readPfmImage(str);
         Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
+        */
         Transformation rotation = Transformation.rotationZ(angleDeg);
+
 
         World world = new World();
 
@@ -184,6 +187,10 @@ public class Tracer {
         translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
         world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
 
+        // CYLINDER
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(-0.5f, 0.15f, 0.f));
+        world.addShape(new Cylinder(translation.times(Transformation.rotationZ(40).times(Transformation.rotationX(90).times(rescale))), DiffuseLime));
 
 
         HDRImage image = new HDRImage(width, height);
