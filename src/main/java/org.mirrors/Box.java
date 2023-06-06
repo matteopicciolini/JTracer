@@ -135,24 +135,24 @@ public class Box extends Shape {
             Point hit2 = iray.at(t2);
             Normal n2 = getNormal(maxDir, iray.dir);
 
-            return Arrays.asList(
-                    new HitRecord(
-                            (Point) this.transformation.times(hit1),
-                            (Normal) this.transformation.times(n1),
-                            toSurPoint(hit1, n1),
-                            t1,
-                            ray,
-                            this
-                    ),
-                    new HitRecord(
-                            (Point) this.transformation.times(hit2),
-                            (Normal) this.transformation.times(n2),
-                            toSurPoint(hit2, n2),
-                            t2,
-                            ray,
-                            this
-                    )
-            );
+            List<HitRecord> resultList = new ArrayList<>();
+            resultList.add(new HitRecord(
+                    (Point) this.transformation.times(hit1),
+                    (Normal) this.transformation.times(n1),
+                    toSurPoint(hit1, n1),
+                    t1,
+                    ray,
+                    this
+            ));
+            resultList.add(new HitRecord(
+                    (Point) this.transformation.times(hit2),
+                    (Normal) this.transformation.times(n2),
+                    toSurPoint(hit2, n2),
+                    t2,
+                    ray,
+                    this
+            ));
+            return resultList;
         }
     }
 
