@@ -1,7 +1,11 @@
 package org.mirrors;
 
-import static org.mirrors.Global.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import static org.mirrors.Global.*;
+import java.util.Arrays;
 public class Box extends Shape {
     public Point min;
     public Point max;
@@ -31,13 +35,13 @@ public class Box extends Shape {
     }
 
     public boolean isPointInternal(Point point) {
-        Point realP = (Point) this.transformation.inverse().times(point);
-        return realP.x >= min.x && realP.x <= max.x &&
-                realP.y >= min.y && realP.y <= max.y &&
-                realP.z >= min.z && realP.z <= max.z;
+        point = (Point) this.transformation.inverse().times(point);
+        return point.x >= min.x && point.x <= max.x &&
+                point.y >= min.y && point.y <= max.y &&
+                point.z >= min.z && point.z <= max.z;
     }
     @Override
-    public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+    public HitRecord rayIntersection(Ray ray) {
         Ray iray = this.transformation.inverse().times(ray);
         float t1 = iray.tMin;
         float t2 = iray.tMax;
@@ -45,20 +49,20 @@ public class Box extends Shape {
         int maxDir = -1;
 
         for (int i = 0; i < 3; i++) {
-            float tmin = (min.get(i) - iray.origin.get(i)) / iray.dir.get(i);
-            float tmax = (max.get(i) - iray.origin.get(i)) / iray.dir.get(i);
+            float tMin = (min.get(i) - iray.origin.get(i)) / iray.dir.get(i);
+            float tMax = (max.get(i) - iray.origin.get(i)) / iray.dir.get(i);
 
-            if (tmin > tmax) {
-                float t = tmin;
-                tmin = tmax;
-                tmax = t;
+            if (tMin > tMax) {
+                float t = tMin;
+                tMin = tMax;
+                tMax = t;
             }
-            if (tmin > t1) {
-                t1 = tmin;
+            if (tMin > t1) {
+                t1 = tMin;
                 minDir = i;
             }
-            if (tmax < t2) {
-                t2 = tmax;
+            if (tMax < t2) {
+                t2 = tMax;
                 maxDir = i;
             }
 
@@ -78,6 +82,89 @@ public class Box extends Shape {
         Normal normal = getNormal(dir, iray.dir);
         return new HitRecord((Point) this.transformation.times(point), (Normal) this.transformation.times(normal), toSurPoint(point, normal), t, ray, this);
     }
+
+    @Override
+    public List<HitRecord> rayIntersectionList(Ray ray) {
+        Ray iray = this.transformation.inverse().times(ray);
+        float t1 = iray.tMin;
+        float t2 = iray.tMax;
+        int minDir = -1;
+        int maxDir = -1;
+
+        for (int i = 0; i < 3; i++) {
+            float tMin = (min.get(i) - iray.origin.get(i)) / iray.dir.get(i);
+            float tMax = (max.get(i) - iray.origin.get(i)) / iray.dir.get(i);
+
+            if (tMin > tMax) {
+                float t = tMin;
+                tMin = tMax;
+                tMax = t;
+            }
+            if (tMin > t1) {
+                t1 = tMin;
+                minDir = i;
+            }
+            if (tMax < t2) {
+                t2 = tMax;
+                maxDir = i;
+            }
+
+            if (t1 > t2) {
+                return null;
+            }
+        }
+
+        if (minDir == -1) {
+            Point hit2 = iray.at(t2);
+            Normal n2 = getNormal(maxDir, iray.dir);
+
+            List<HitRecord> resultList = new ArrayList<>();
+            resultList.add(new HitRecord(
+                    (Point) this.transformation.times(hit2),
+                    (Normal) this.transformation.times(n2),
+                    toSurPoint(hit2, n2),
+                    t2,
+                    ray,
+                    this
+            ));
+            return resultList;
+        } else {
+            Point hit1 = iray.at(t1);
+            Normal n1 = getNormal(minDir, iray.dir);
+
+            Point hit2 = iray.at(t2);
+            Normal n2 = getNormal(maxDir, iray.dir);
+
+            return Arrays.asList(
+                    new HitRecord(
+                            (Point) this.transformation.times(hit1),
+                            (Normal) this.transformation.times(n1),
+                            toSurPoint(hit1, n1),
+                            t1,
+                            ray,
+                            this
+                    ),
+                    new HitRecord(
+                            (Point) this.transformation.times(hit2),
+                            (Normal) this.transformation.times(n2),
+                            toSurPoint(hit2, n2),
+                            t2,
+                            ray,
+                            this
+                    )
+            );
+        }
+    }
+
+    @Override
+    public boolean isInternal(Point point) {
+        Point realP = (Point) this.transformation.inverse().times(point);
+        return realP.x >= min.x && realP.x <= max.x
+                && realP.y >= min.y && realP.y <= max.y
+                && realP.z >= min.z && realP.z <= max.z;
+    }
+
+
 
     private Normal getNormal(int minDir, Vec rayDir) {
         Normal norm = switch (minDir) {
