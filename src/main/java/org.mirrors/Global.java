@@ -20,7 +20,7 @@ public record Global() {
     public static Color Black;
     public static Color Navy, SkyBlue, Silver, Crimson, DarkCyan, Olive, Pink,
             DarkRed, Tomato, Gold, LimeGreen, Green, DarkOrange, Purple,
-            Brown, Red, Gray, DarkGray, DimGray, SaddleBrown, DarkBrown, Yellow;
+            Brown, Red, Gray, DarkGray, DimGray, SaddleBrown, DarkBrown, Yellow, Indigo, DarkGreen;
 
     static {
         LEReferenceBytes = new byte[]{
@@ -94,6 +94,8 @@ public record Global() {
         SaddleBrown = new Color(0.54509803921F, 0.27058823529F, 0.07450980392F);
         DarkBrown = new Color(0.32156862745F, 0.16862745098F, 0.05882352941F);
         Yellow = new Color (1.0F, 1.0F, 0.0F);
+        Indigo = new Color(0.212F, 0, 0.212F);
+        DarkGreen = new Color(0.118F, 0.514F, 0F);
     }
 
 }

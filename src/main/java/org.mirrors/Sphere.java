@@ -33,7 +33,6 @@ public class Sphere extends Shape{
      * @throws InvalidMatrixException If the transformation matrix is invalid.
      */
     @Override
-
     public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
         Ray invRay = ray.transform(this.transformation.inverse());
         Vec originVec = invRay.origin.toVec();
