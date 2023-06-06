@@ -33,6 +33,15 @@ public class Tracer {
                 .desc("run DEMO")
                 .build());
 
+        options.addOption(Option.builder("r")
+                .argName("[width]> <[height]> <[angle-deg]> <[orthogonal]> <[output.pfm]> <[algorithm]")
+                .hasArgs()
+                .longOpt("render")
+                .valueSeparator(' ')
+                .optionalArg(true)
+                .desc("render")
+                .build());
+
         CommandLineParser parser = new DefaultParser();
 
         HelpFormatter formatter = new HelpFormatter();
@@ -93,6 +102,37 @@ public class Tracer {
                 }
                 demo(width, height, angleDeg, orthogonal, fileOutput, algorithm, antialiasing, parallelAntialiasing, nThreads);
             }
+
+            if (cmd.hasOption("r")) {
+                String[] dArgs = cmd.getOptionValues("r");
+
+                int width = 1920;
+                int height = 1080;
+                float angleDeg = 0.f;
+                boolean orthogonal = false;
+                String fileOutput = "fileOutput";
+                String algorithm = "flat";
+                boolean antialiasing = false;
+                boolean parallelAntialiasing = false;
+                int nThreads = 4;
+
+                if (dArgs != null) {
+                    if (dArgs.length >= 1 && dArgs.length <= 9) width = parseInt(dArgs[0]);
+                    if (dArgs.length >= 2 && dArgs.length <= 9) height = parseInt(dArgs[1]);
+                    if (dArgs.length >= 3 && dArgs.length <= 9) angleDeg = parseInt(dArgs[2]);
+                    if (dArgs.length >= 4 && dArgs.length <= 9) orthogonal = parseBoolean(dArgs[3]);
+                    if (dArgs.length >= 5 && dArgs.length <= 9) fileOutput = dArgs[4];
+                    if (dArgs.length >= 6 && dArgs.length <= 9) algorithm = dArgs[5];
+                    if (dArgs.length >= 7 && dArgs.length <= 9) antialiasing = parseBoolean(dArgs[6]);
+                    if (dArgs.length >= 8 && dArgs.length <= 9) parallelAntialiasing = parseBoolean(dArgs[7]);
+                    if (dArgs.length == 8) nThreads = parseInt(dArgs[8]);
+                    if (dArgs.length > 9) {
+                        System.err.println("Error: ");
+                        formatter.printHelp("Tracer", options);
+                    }
+                }
+                render(width, height, angleDeg, orthogonal, fileOutput, algorithm, antialiasing, parallelAntialiasing, nThreads);
+            }
         } catch (ParseException e) {
             System.err.println("Error: " + e.getMessage());
             formatter.printHelp("Tracer", options);
@@ -113,8 +153,8 @@ public class Tracer {
 
         HDRImage img = PfmCreator.readPfmImage(str);
 
-        img.normalizeImage(param.factor);
-        //img.normalizeImage(param.factor, 0.5f);
+        //img.normalizeImage(param.factor);
+        img.normalizeImage(param.factor, 0.5f);
         img.clampImage();
         img.writeLdrImage(out, "PNG", param.gamma);
     }
@@ -180,21 +220,117 @@ public class Tracer {
         world.addShape(new Sphere(translation.times(rescale), sphereMaterial2));
 
         // MIRROR SPHERE
-        //rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
-        //translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
-        //world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
-
-        // CSG
         rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
-        world.addShape(new CSGDifference(new Sphere(translation.times(rescale), mirrorMaterial),
-                new Sphere(Transformation.translation(new Vec(0.2f, -0.4f, 0.1f)).times(rescale), groundMaterial)));
+        world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
+
 
 
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
                 new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
+
+        ImageTracer tracer;
+        if (antialiasing == true){
+            tracer = new ImageTracer(image, camera, 4, new PCG());
+        }else{
+            tracer = new ImageTracer(image, camera);
+        }
+
+        if(algorithm.equals("flat")){
+            tracer.fireAllRays(new FlatRenderer(world));
+        }
+        else if (algorithm.equals("onOff")){
+            tracer.fireAllRays(new OnOffRenderer(world));
+        }
+        else if (algorithm.equals("pathTracer")){
+            if (parallelAntialiasing == true) {
+                tracer.fireAllRaysParallel(new PathTracer(world), nThreads);
+            }else{
+                tracer.fireAllRays(new PathTracer(world));
+            }
+        }
+
+        image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
+        String fileOutputPNG = fileOutputPFM.substring(0, fileOutputPFM.length() - 3) + "png";
+        pfm2image(0.18f, 2.5f, fileOutputPFM, fileOutputPNG);
+        RemoveFile(fileOutputPFM);
+        long time2 = System.currentTimeMillis();
+        System.out.println(time2 - time);
+    }
+
+    public static void render(int width, int height, float angleDeg, boolean orthogonal, String fileOutputPFM, String algorithm, boolean antialiasing, boolean parallelAntialiasing, int nThreads) throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
+        long time = System.currentTimeMillis();
+
+
+        Material skyMaterial = new Material(
+                new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White)
+        );
+        Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
+        Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
+        Material DiffuseRed = new Material(new DiffuseBRDF(new UniformPigment(Red)));
+        Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
+        Material groundMaterial = new Material(
+                new DiffuseBRDF(
+                        new CheckeredPigment(
+                                new Color(0.f, 0.5f, 0.f),
+                                new Color(1f, 1f, 1f), 16
+                        )
+                ), new UniformPigment(Black)
+        );
+
+        Transformation rotation = Transformation.rotationZ(angleDeg);
+
+        World world = new World();
+
+        //SKY
+        Transformation rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
+        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
+        world.addShape(new Sphere(translation.times(rescale), skyMaterial));
+
+        //CUBE
+        //translation = Transformation.translation(new Vec(-0.5f, 0.5f, 0));
+        /*world.addShape(new Box(
+                new Point(-0.1f,-0.1f,-0.1f),
+                new Point(0.1f, 0.1f, 0.1f),
+                Transformation.translation(new Vec(-0.5f, 0.5f, 0)),
+                DiffuseRed
+        ));*/
+        //SPHERE
+        //translation = Transformation.translation(new Vec(-0.5f, 0f, 0));
+        //rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        /*world.addShape(new Sphere(
+                Transformation.translation(new Vec(-0.5f, 0.5f, 0)).times(Transformation.scaling(new Vec(0.15f, 0.15f, 0.15f))),
+                DiffuseNavy
+        ));*/
+
+
+        //CSG
+        world.addShape(
+                new CSGIntersection(
+                        new Box(
+                                new Point(-0.1f,-0.1f,-0.1f),
+                                new Point(0.1f, 0.1f, 0.1f),
+                                Transformation.translation(new Vec(-0.5f, 0.5f, 0)),
+                                DiffuseRed
+                        ),
+                        new Sphere(
+                                Transformation.translation(new Vec(-0.5f, 0.5f, 0)).times(Transformation.scaling(new Vec(0.13f, 0.13f, 0.13f))),
+                                DiffuseNavy
+                        )
+                )
+        );
+        //PLANE
+        //world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.1f)), groundMaterial));
+
+
+
+
+        HDRImage image = new HDRImage(width, height);
+        Camera camera = orthogonal ?
+                new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
+                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(-0.3f, 0f, 0.5f)).times(Transformation.rotationZ(20).times(Transformation.rotationY(20)))));
 
         ImageTracer tracer;
         if (antialiasing == true){
