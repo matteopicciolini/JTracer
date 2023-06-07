@@ -3,29 +3,34 @@ package org.mirrors.compiler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Objects;
+
+import static java.util.Arrays.*;
 
 public class InStream {
     public InputStream stream;
     public SourceLocation location;
     public SourceLocation savedLocation;
     public char savedChar;
-    public int tabulations;
     public Token savedToken;
+    public int tab = 4;
 
-    public InStream(InputStream stream, String fileName, int tabulation) {
+    public InStream(InputStream stream, String fileName) {
         this.stream = stream;
         this.location = new SourceLocation(fileName, 1, 1);
     }
+    public InStream(InputStream stream) {
+        this.stream = stream;
+        this.location = new SourceLocation("", 1, 1);
+    }
 
     private void updatePos(char ch) {
-        if (Objects.isNull(ch)) {
+        if (ch == '\0') {
             return;
         } else if (ch == '\n') {
             this.location.lineNum += 1;
             this.location.colNum = 1;
         } else if (ch == '\t') {
-            this.location.colNum += this.tabulations;
+            this.location.colNum += this.tab;
         } else {
             this.location.colNum += 1;
         }
@@ -33,12 +38,12 @@ public class InStream {
 
     public char readChar() throws IOException {
         char ch;
-        if (Objects.isNull(this.savedChar)) {
+        if (this.savedChar != '\0') {
             ch = savedChar;
             this.savedChar = '\0';
         } else {
             int r = this.stream.read();
-            ch = (r != -1) ? (char) r : null;
+            ch = (r != -1) ? (char) r : '\0';
         }
 
         this.savedLocation = location.copy();
@@ -54,9 +59,9 @@ public class InStream {
 
     public void skipWhitespacesAndComments() throws IOException {
         char ch = this.readChar();
-        while (" \t\n\r".contains(String.valueOf(ch)) || ch == '#') {
+        while (" \t\n\r".contains(String.valueOf(ch)) || (ch == '#')) {
             if (ch == '#') {
-                while (!Arrays.asList('\r', '\n', '\0').contains(this.readChar())) {
+                while (!asList('\r', '\n', '\0').contains(this.readChar())) {
                 }
             }
             ch = this.readChar();
@@ -116,62 +121,35 @@ public class InStream {
             token += ch;
         }
 
-        switch (token){
-            case "new":
-                return new KeywordToken(tokenLocation, KeywordEnum.NEW);
-            case "material":
-                return new KeywordToken(tokenLocation, KeywordEnum.MATERIAL);
-            case "shape":
-                return new KeywordToken(tokenLocation, KeywordEnum.SHAPE);
-            case "plane":
-                return new KeywordToken(tokenLocation, KeywordEnum.PLANE);
-            case "sphere":
-                return new KeywordToken(tokenLocation, KeywordEnum.SPHERE);
-            case "diffuse":
-                return new KeywordToken(tokenLocation, KeywordEnum.DIFFUSE);
-            case "specular":
-                return new KeywordToken(tokenLocation, KeywordEnum.SPECULAR);
-            case "uniform":
-                return new KeywordToken(tokenLocation, KeywordEnum.UNIFORM);
-            case "checkered":
-                return new KeywordToken(tokenLocation, KeywordEnum.CHECKERED);
-            case "image":
-                return new KeywordToken(tokenLocation, KeywordEnum.IMAGE);
-            case "identity":
-                return new KeywordToken(tokenLocation, KeywordEnum.IDENTITY);
-            case "translation":
-                return new KeywordToken(tokenLocation, KeywordEnum.TRANSLATION);
-            case "rotationX":
-                return new KeywordToken(tokenLocation, KeywordEnum.ROTATION_X);
-            case "rotationY":
-                return new KeywordToken(tokenLocation, KeywordEnum.ROTATION_Y);
-            case "rotationZ":
-                return new KeywordToken(tokenLocation, KeywordEnum.ROTATION_Z);
-            case "scaling":
-                return new KeywordToken(tokenLocation, KeywordEnum.SCALING);
-            case "camera":
-                return new KeywordToken(tokenLocation, KeywordEnum.CAMERA);
-            case "orthogonal":
-                return new KeywordToken(tokenLocation, KeywordEnum.ORTHOGONAL);
-            case "perspective":
-                return new KeywordToken(tokenLocation, KeywordEnum.PERSPECTIVE);
-            case "float":
-                return new KeywordToken(tokenLocation, KeywordEnum.FLOAT);
-            case "box":
-                return new KeywordToken(tokenLocation, KeywordEnum.BOX);
-            case "cylinder":
-                return new KeywordToken(tokenLocation, KeywordEnum.CYLINDER);
-            case "hyperboloid":
-                return new KeywordToken(tokenLocation, KeywordEnum.HYPERBOLOID);
-            case "union":
-                return new KeywordToken(tokenLocation, KeywordEnum.CSGUNION);
-            case "difference":
-                return new KeywordToken(tokenLocation, KeywordEnum.CSGDIFFERENCE);
-            case "intersection":
-                return new KeywordToken(tokenLocation, KeywordEnum.CSGINTERSECTION);
-            default:
-                return new IdentifierToken(tokenLocation, token);
-        }
+        return switch (token) {
+            case "new" -> new KeywordToken(tokenLocation, KeywordEnum.NEW);
+            case "material" -> new KeywordToken(tokenLocation, KeywordEnum.MATERIAL);
+            case "shape" -> new KeywordToken(tokenLocation, KeywordEnum.SHAPE);
+            case "plane" -> new KeywordToken(tokenLocation, KeywordEnum.PLANE);
+            case "sphere" -> new KeywordToken(tokenLocation, KeywordEnum.SPHERE);
+            case "diffuse" -> new KeywordToken(tokenLocation, KeywordEnum.DIFFUSE);
+            case "specular" -> new KeywordToken(tokenLocation, KeywordEnum.SPECULAR);
+            case "uniform" -> new KeywordToken(tokenLocation, KeywordEnum.UNIFORM);
+            case "checkered" -> new KeywordToken(tokenLocation, KeywordEnum.CHECKERED);
+            case "image" -> new KeywordToken(tokenLocation, KeywordEnum.IMAGE);
+            case "identity" -> new KeywordToken(tokenLocation, KeywordEnum.IDENTITY);
+            case "translation" -> new KeywordToken(tokenLocation, KeywordEnum.TRANSLATION);
+            case "rotationX" -> new KeywordToken(tokenLocation, KeywordEnum.ROTATION_X);
+            case "rotationY" -> new KeywordToken(tokenLocation, KeywordEnum.ROTATION_Y);
+            case "rotationZ" -> new KeywordToken(tokenLocation, KeywordEnum.ROTATION_Z);
+            case "scaling" -> new KeywordToken(tokenLocation, KeywordEnum.SCALING);
+            case "camera" -> new KeywordToken(tokenLocation, KeywordEnum.CAMERA);
+            case "orthogonal" -> new KeywordToken(tokenLocation, KeywordEnum.ORTHOGONAL);
+            case "perspective" -> new KeywordToken(tokenLocation, KeywordEnum.PERSPECTIVE);
+            case "float" -> new KeywordToken(tokenLocation, KeywordEnum.FLOAT);
+            case "box" -> new KeywordToken(tokenLocation, KeywordEnum.BOX);
+            case "cylinder" -> new KeywordToken(tokenLocation, KeywordEnum.CYLINDER);
+            case "hyperboloid" -> new KeywordToken(tokenLocation, KeywordEnum.HYPERBOLOID);
+            case "union" -> new KeywordToken(tokenLocation, KeywordEnum.CSGUNION);
+            case "difference" -> new KeywordToken(tokenLocation, KeywordEnum.CSGDIFFERENCE);
+            case "intersection" -> new KeywordToken(tokenLocation, KeywordEnum.CSGINTERSECTION);
+            default -> new IdentifierToken(tokenLocation, token);
+        };
     }
 
     public void unreadToken(Token token){
