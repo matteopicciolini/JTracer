@@ -21,6 +21,5 @@ public class SourceLocation{
 
     public SourceLocation copy() {
         return new SourceLocation(this.fileName, this.lineNum, this.colNum);
-
     }
 }
