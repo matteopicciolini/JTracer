@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Objects;
-import java.io.*;
-import java.util.*;
-import static org.mirrors.compiler.KeywordEnum.KEYWORDS;
 
 public class InStream {
     static public String SYMBOLS = "()<>[],*";
@@ -79,14 +76,13 @@ public class InStream {
         String token = "";
         while (true) {
             char ch = readChar();
-
             if (ch == '"') {
                 break;
             }
-
             if (ch == '\0') {
                 throw new GrammarError(tokenLocation, "unterminated string");
             }
+
 
             token += (ch);
         }
@@ -94,22 +90,26 @@ public class InStream {
         return new StringToken(tokenLocation, token.toString());
     }
 
+
     public LiteralNumberToken ParseFloatToken(String firstChar, SourceLocation tokenLocation) throws IOException, GrammarError {
-        String token = "";
+        String token = firstChar;
+
         while (true) {
             char ch = readChar();
 
             if (!(Character.isDigit(ch) || ch == '.' || ch == 'e' || ch == 'E')) {
-                unreadChar(ch);
+                this.unreadChar(ch);
                 break;
             }
+
 
             token += (ch);
         }
 
         try {
-            float value = (float) Double.parseDouble(token.toString());
-            return new LiteralNumberToken(tokenLocation, (float) value);
+            float value = (float) Double.parseDouble(token);
+            return new LiteralNumberToken(tokenLocation, value);
+
         } catch (NumberFormatException e) {
             throw new GrammarError(tokenLocation, "That's an invalid floating-point number");
         }
@@ -117,7 +117,9 @@ public class InStream {
 
 
     public Token ParseKeywordOrIdentifierToken(String firstChar, SourceLocation tokenLocation) throws IOException {
+
         String token = "";
+
         while (true) {
             char ch = readChar();
 
@@ -126,15 +128,64 @@ public class InStream {
                 break;
             }
 
-            token += (ch);
+            token += ch;
         }
 
-        try {
-
-            return new KeywordToken(tokenLocation, KEYWORDS.get(token));
-        } catch (NullPointerException e) {
-
-            return new IdentifierToken(tokenLocation, token.toString());
+        switch (token){
+            case "new":
+                return new KeywordToken(tokenLocation, KeywordEnum.NEW);
+            case "material":
+                return new KeywordToken(tokenLocation, KeywordEnum.MATERIAL);
+            case "shape":
+                return new KeywordToken(tokenLocation, KeywordEnum.SHAPE);
+            case "plane":
+                return new KeywordToken(tokenLocation, KeywordEnum.PLANE);
+            case "sphere":
+                return new KeywordToken(tokenLocation, KeywordEnum.SPHERE);
+            case "diffuse":
+                return new KeywordToken(tokenLocation, KeywordEnum.DIFFUSE);
+            case "specular":
+                return new KeywordToken(tokenLocation, KeywordEnum.SPECULAR);
+            case "uniform":
+                return new KeywordToken(tokenLocation, KeywordEnum.UNIFORM);
+            case "checkered":
+                return new KeywordToken(tokenLocation, KeywordEnum.CHECKERED);
+            case "image":
+                return new KeywordToken(tokenLocation, KeywordEnum.IMAGE);
+            case "identity":
+                return new KeywordToken(tokenLocation, KeywordEnum.IDENTITY);
+            case "translation":
+                return new KeywordToken(tokenLocation, KeywordEnum.TRANSLATION);
+            case "rotationX":
+                return new KeywordToken(tokenLocation, KeywordEnum.ROTATION_X);
+            case "rotationY":
+                return new KeywordToken(tokenLocation, KeywordEnum.ROTATION_Y);
+            case "rotationZ":
+                return new KeywordToken(tokenLocation, KeywordEnum.ROTATION_Z);
+            case "scaling":
+                return new KeywordToken(tokenLocation, KeywordEnum.SCALING);
+            case "camera":
+                return new KeywordToken(tokenLocation, KeywordEnum.CAMERA);
+            case "orthogonal":
+                return new KeywordToken(tokenLocation, KeywordEnum.ORTHOGONAL);
+            case "perspective":
+                return new KeywordToken(tokenLocation, KeywordEnum.PERSPECTIVE);
+            case "float":
+                return new KeywordToken(tokenLocation, KeywordEnum.FLOAT);
+            case "box":
+                return new KeywordToken(tokenLocation, KeywordEnum.BOX);
+            case "cylinder":
+                return new KeywordToken(tokenLocation, KeywordEnum.CYLINDER);
+            case "hyperboloid":
+                return new KeywordToken(tokenLocation, KeywordEnum.HYPERBOLOID);
+            case "union":
+                return new KeywordToken(tokenLocation, KeywordEnum.CSGUNION);
+            case "difference":
+                return new KeywordToken(tokenLocation, KeywordEnum.CSGDIFFERENCE);
+            case "intersection":
+                return new KeywordToken(tokenLocation, KeywordEnum.CSGINTERSECTION);
+            default:
+                return new IdentifierToken(tokenLocation, token);
         }
     }
 
@@ -174,6 +225,13 @@ public class InStream {
             // We got some weird character, like '@` or `&`
             throw new GrammarError(this.location, "Invalid character: " + ch);
         }
+    }
+
+
+
+    public void unreadToken(Token token){
+        assert (this.savedToken == null);
+        this.savedToken = token;
     }
 
 }
