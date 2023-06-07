@@ -173,4 +173,9 @@ public class InStream {
                 return new IdentifierToken(tokenLocation, token);
         }
     }
+
+    public void unreadToken(Token token){
+        assert (this.savedToken == null);
+        this.savedToken = token;
+    }
 }
