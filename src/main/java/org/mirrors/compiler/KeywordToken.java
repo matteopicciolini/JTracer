@@ -1,8 +1,9 @@
 package org.mirrors.compiler;
 
-public class KeywordToken {
-    public String keyword;
+public class KeywordToken extends Token{
+    public KeywordEnum keyword;
     public KeywordToken(SourceLocation location, KeywordEnum keyword){
-        this.keyword= String.valueOf(keyword);
+        super(location);
+        this.keyword = keyword;
     }
 }

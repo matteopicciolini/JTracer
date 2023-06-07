@@ -4,16 +4,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Objects;
-
-import static org.mirrors.compiler.KeywordEnum.Keywords.KEYWORDS;
+import java.io.*;
+import java.util.*;
+import static org.mirrors.compiler.KeywordEnum.KEYWORDS;
 
 public class InStream {
+    static public String SYMBOLS = "()<>[],*";
+    static public String WHITESPACE = " \t\n\r";
+
     public InputStream stream;
     public SourceLocation location;
     public SourceLocation savedLocation;
     public char savedChar;
     public int tabulations;
-    public Token savedToken;
+    public Token savedToken = null;
+    public Token isThereToken;
 
     public InStream(InputStream stream, String fileName, int tabulation) {
         this.stream = stream;
@@ -68,8 +73,10 @@ public class InStream {
         }
         this.unreadChar(ch);
     }
-    private StringToken ParseStringToken(SourceLocation token_location) throws Throwable {
-        StringBuilder token = new StringBuilder();
+
+    private StringToken ParseStringToken(SourceLocation tokenLocation) throws IOException, GrammarError {
+
+        String token = "";
         while (true) {
             char ch = readChar();
 
@@ -78,17 +85,17 @@ public class InStream {
             }
 
             if (ch == '\0') {
-                throw new GrammarError(token_location, "unterminated string");
+                throw new GrammarError(tokenLocation, "unterminated string");
             }
 
-            token.append(ch);
+            token += (ch);
         }
 
-        return new StringToken(token_location, token.toString());
+        return new StringToken(tokenLocation, token.toString());
     }
 
     public LiteralNumberToken ParseFloatToken(String firstChar, SourceLocation tokenLocation) throws IOException, GrammarError {
-        StringBuilder token = new StringBuilder(firstChar);
+        String token = "";
         while (true) {
             char ch = readChar();
 
@@ -97,19 +104,20 @@ public class InStream {
                 break;
             }
 
-            token.append(ch);
+            token += (ch);
         }
 
         try {
-            double value = Double.parseDouble(token.toString());
+            float value = (float) Double.parseDouble(token.toString());
             return new LiteralNumberToken(tokenLocation, (float) value);
         } catch (NumberFormatException e) {
             throw new GrammarError(tokenLocation, "That's an invalid floating-point number");
         }
     }
 
+
     public Token ParseKeywordOrIdentifierToken(String firstChar, SourceLocation tokenLocation) throws IOException {
-        StringBuilder token = new StringBuilder(firstChar);
+        String token = "";
         while (true) {
             char ch = readChar();
 
@@ -118,15 +126,55 @@ public class InStream {
                 break;
             }
 
-            token.append(ch);
+            token += (ch);
         }
 
         try {
 
-            return new KeywordToken(tokenLocation, KEYWORDS.get(token.toString()));
+            return new KeywordToken(tokenLocation, KEYWORDS.get(token));
         } catch (NullPointerException e) {
 
             return new IdentifierToken(tokenLocation, token.toString());
         }
     }
+
+    public Token readToken() throws IOException, GrammarError {
+        if (savedToken != null) {
+            Token result = savedToken;
+            savedToken = null;
+            return result;
+        }
+
+        skipWhitespacesAndComments();
+
+        // At this point we're sure that ch does *not* contain a whitespace character
+        String ch = String.valueOf(readChar());
+        if (ch.equals("")) {
+            // No more characters in the file, so return a StopToken
+            return new StopToken(location);
+        }
+
+        // At this point we must check what kind of token begins with the "ch" character (which has been
+        // put back in the stream with unreadChar). First, we save the position in the stream
+        SourceLocation tokenLocation = this.location.copy();
+
+        if (SYMBOLS.contains(ch)) {
+            // One-character symbol, like '(' or ','
+            return new SymbolToken(tokenLocation, ch);
+        } else if (ch.equals("\"")) {
+            // A literal string (used for file names)
+            return ParseStringToken(tokenLocation);
+        } else if (Character.isDigit(ch.charAt(0)) || ch.equals("+") || ch.equals("-") || ch.equals(".")) {
+            // A floating-point number
+            return ParseFloatToken(ch, tokenLocation);
+        } else if (Character.isLetter(ch.charAt(0)) || ch.equals("_")) {
+            // Since it begins with an alphabetic character, it must either be a keyword or an identifier
+            return ParseKeywordOrIdentifierToken(ch, tokenLocation);
+        } else {
+            // We got some weird character, like '@` or `&`
+            throw new GrammarError(this.location, "Invalid character: " + ch);
+        }
+    }
+
 }
+

@@ -1,11 +1,8 @@
 package org.mirrors.compiler;
 import java.util.HashMap;
 import java.util.Map;
-public class KeywordEnum {
 
-
-
-    public enum Keywords {;
+    public enum KeywordEnum {;
         public static  int NEW = 1;
         public static  int MATERIAL = 2;
         public static  int PLANE = 3;
@@ -52,7 +49,7 @@ public class KeywordEnum {
             KEYWORDS.put("point_light", POINT_LIGHT);
         }
     }
-}
+
 
 
 
