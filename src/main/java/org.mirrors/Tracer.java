@@ -140,9 +140,9 @@ public class Tracer {
                 ), new UniformPigment(Black)
         );
         SourceLocation source;
-        InputStream str = new FileInputStream("Plank.pfm");
-        HDRImage worldImage = PfmCreator.readPfmImage(str);
-        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
+        //InputStream str = new FileInputStream("Plank.pfm");
+        //HDRImage worldImage = PfmCreator.readPfmImage(str);
+        //Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
         Transformation rotation = Transformation.rotationZ(angleDeg);
 
         World world = new World();

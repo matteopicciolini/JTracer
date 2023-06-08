@@ -1,7 +1,7 @@
 package org.mirrors.compiler;
 
 public class StringToken extends Token {
-    private String string;
+    public String string;
 
     public StringToken(SourceLocation location, String s) {
         super(location);
@@ -10,6 +10,6 @@ public class StringToken extends Token {
 
     @Override
     public String toString() {
-        return string;
+        return this.string;
     }
 }

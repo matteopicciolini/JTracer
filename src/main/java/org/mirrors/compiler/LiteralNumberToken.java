@@ -1,7 +1,7 @@
 package org.mirrors.compiler;
 
     public class LiteralNumberToken extends Token {
-        private float value;
+        public float value;
 
         public LiteralNumberToken(SourceLocation location, float value) {
             super(location);

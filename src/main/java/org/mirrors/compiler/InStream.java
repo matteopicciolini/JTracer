@@ -2,7 +2,7 @@ package org.mirrors.compiler;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Arrays.*;
 
@@ -75,9 +75,9 @@ public class InStream {
         this.unreadChar(ch);
     }
 
-    private StringToken ParseStringToken(SourceLocation tokenLocation) throws IOException, GrammarError {
-
+    private StringToken parseStringToken(SourceLocation tokenLocation) throws IOException, GrammarError {
         String token = "";
+
         while (true) {
             char ch = readChar();
             if (ch == '"') {
@@ -86,28 +86,22 @@ public class InStream {
             if (ch == '\0') {
                 throw new GrammarError(tokenLocation, "unterminated string");
             }
-
-
             token += (ch);
         }
-
         return new StringToken(tokenLocation, token.toString());
     }
 
 
-    public LiteralNumberToken ParseFloatToken(String firstChar, SourceLocation tokenLocation) throws IOException, GrammarError {
-        String token = firstChar;
+    public LiteralNumberToken parseFloatToken(char firstChar, SourceLocation tokenLocation) throws IOException, GrammarError {
+        String token = String.valueOf(firstChar);
 
         while (true) {
             char ch = readChar();
-
             if (!(Character.isDigit(ch) || ch == '.' || ch == 'e' || ch == 'E')) {
                 this.unreadChar(ch);
                 break;
             }
-
-
-            token += (ch);
+            token += ch;
         }
 
         try {
@@ -120,9 +114,9 @@ public class InStream {
     }
 
 
-    public Token ParseKeywordOrIdentifierToken(String firstChar, SourceLocation tokenLocation) throws IOException {
+    public Token parseKeywordOrIdentifierToken(char firstChar, SourceLocation tokenLocation) throws IOException {
 
-        String token = "";
+        String token = String.valueOf(firstChar);
 
         while (true) {
             char ch = readChar();
@@ -168,48 +162,86 @@ public class InStream {
 
     public Token readToken() throws IOException, GrammarError {
         if (savedToken != null) {
-            Token result = savedToken;
-            savedToken = null;
+            Token result = this.savedToken;
+            this.savedToken = null;
             return result;
         }
 
-        skipWhitespacesAndComments();
+        this.skipWhitespacesAndComments();
 
-        // At this point we're sure that ch does *not* contain a whitespace character
-        String ch = String.valueOf(readChar());
-        if (ch.equals("")) {
-            // No more characters in the file, so return a StopToken
-            return new StopToken(location);
+        char ch = readChar();
+        if (ch == '\0') {
+            return new StopToken(this.location);
         }
-
-        // At this point we must check what kind of token begins with the "ch" character (which has been
-        // put back in the stream with unreadChar). First, we save the position in the stream
         SourceLocation tokenLocation = this.location.copy();
-
-        if (SYMBOLS.contains(ch)) {
-            // One-character symbol, like '(' or ','
+        if (SYMBOLS.indexOf(ch) != -1) {
             return new SymbolToken(tokenLocation, ch);
-        } else if (ch.equals("\"")) {
-            // A literal string (used for file names)
-            return ParseStringToken(tokenLocation);
-        } else if (Character.isDigit(ch.charAt(0)) || ch.equals("+") || ch.equals("-") || ch.equals(".")) {
-            // A floating-point number
-            return ParseFloatToken(ch, tokenLocation);
-        } else if (Character.isLetter(ch.charAt(0)) || ch.equals("_")) {
-            // Since it begins with an alphabetic character, it must either be a keyword or an identifier
-            return ParseKeywordOrIdentifierToken(ch, tokenLocation);
+        } else if (ch == '"') {
+            return this.parseStringToken(tokenLocation);
+        } else if (Character.isDigit(ch) || ch == '+' || ch == '-' || ch == '.') {
+            return parseFloatToken(ch, tokenLocation);
+        } else if (Character.isLetter(ch) || ch == '_') {
+            return parseKeywordOrIdentifierToken(ch, tokenLocation);
         } else {
-            // We got some weird character, like '@` or `&`
             throw new GrammarError(this.location, "Invalid character: " + ch);
         }
     }
-
-
 
     public void unreadToken(Token token){
         assert (this.savedToken == null);
         this.savedToken = token;
     }
 
+    public void expectSymbol(String symbol) throws GrammarError, IOException {
+        Token token = this.readToken();
+        if (!(token instanceof SymbolToken) || !token.toString().equals(symbol)) {
+            throw new GrammarError(token.location, "got '" + token + "' instead of '" + symbol + "'");
+        }
+    }
+
+    public KeywordEnum expectKeywords(List<KeywordEnum> keywords) throws GrammarError, IOException {
+        Token token = this.readToken();
+        if (!(token instanceof KeywordToken)) {
+            throw new GrammarError(token.location, "expected a keyword instead of '" + token + "'");
+        }
+
+        if (!keywords.contains(((KeywordToken) token).keyword)) {
+            String expectedKeywords = String.join(",", keywords.stream().map(Enum::toString).toArray(String[]::new));
+            throw new GrammarError(token.location, "expected one of the keywords " + expectedKeywords + " instead of '" + token + "'");
+        }
+        return ((KeywordToken) token).keyword;
+    }
+
+    public float expectNumber(Scene scene) throws GrammarError, IOException {
+        Token token = this.readToken();
+        if (token instanceof LiteralNumberToken) {
+            return ((LiteralNumberToken) token).value;
+        } else if (token instanceof IdentifierToken) {
+            String variableName = ((IdentifierToken) token).identifier;
+            if (!scene.floatVariables.containsKey(variableName)) {
+                throw new GrammarError(token.location, "unknown variable '" + token + "'");
+            }
+            return scene.floatVariables.get(variableName);
+        }
+
+        throw new GrammarError(token.location, "got '" + token + "' instead of a number");
+    }
+
+    public String expectString() throws GrammarError, IOException {
+        Token token = this.readToken();
+        if (!(token instanceof StringToken)) {
+            throw new GrammarError(token.location, "got '" + token + "' instead of a string");
+        }
+        return token.toString();
+    }
+
+    public String expectIdentifier() throws GrammarError, IOException {
+        Token token = this.readToken();
+        if (!(token instanceof IdentifierToken)) {
+            throw new GrammarError(token.location, "got '" + token + "' instead of an identifier");
+        }
+
+        return ((IdentifierToken) token).identifier;
+    }
 }
 
