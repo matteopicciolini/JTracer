@@ -1,6 +1,5 @@
 package org.mirrors;
 import org.apache.commons.cli.*;
-import org.mirrors.compiler.SourceLocation;
 
 import java.io.*;
 
@@ -139,7 +138,7 @@ public class Tracer {
                         )
                 ), new UniformPigment(Black)
         );
-        SourceLocation source;
+
         //InputStream str = new FileInputStream("Plank.pfm");
         //HDRImage worldImage = PfmCreator.readPfmImage(str);
         //Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));

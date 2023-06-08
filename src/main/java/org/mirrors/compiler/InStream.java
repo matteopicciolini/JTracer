@@ -1,15 +1,17 @@
 package org.mirrors.compiler;
-
+import org.mirrors.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.List;
-
+import java.util.ArrayList;
 import static java.util.Arrays.*;
+import java.util.Arrays;
+import org.javatuples.Pair;
 
 public class InStream {
     static public String SYMBOLS = "()<>[],*";
     static public String WHITESPACE = " \t\n\r";
-
     public InputStream stream;
     public SourceLocation location;
     public SourceLocation savedLocation;
@@ -192,9 +194,9 @@ public class InStream {
         this.savedToken = token;
     }
 
-    public void expectSymbol(String symbol) throws GrammarError, IOException {
+    public void expectSymbol(char symbol) throws GrammarError, IOException {
         Token token = this.readToken();
-        if (!(token instanceof SymbolToken) || !token.toString().equals(symbol)) {
+        if (!(token instanceof SymbolToken) || ((SymbolToken) token).symbol != symbol) {
             throw new GrammarError(token.location, "got '" + token + "' instead of '" + symbol + "'");
         }
     }
@@ -223,7 +225,6 @@ public class InStream {
             }
             return scene.floatVariables.get(variableName);
         }
-
         throw new GrammarError(token.location, "got '" + token + "' instead of a number");
     }
 
@@ -240,8 +241,237 @@ public class InStream {
         if (!(token instanceof IdentifierToken)) {
             throw new GrammarError(token.location, "got '" + token + "' instead of an identifier");
         }
-
         return ((IdentifierToken) token).identifier;
     }
+
+    public Vec parseVector(Scene scene) throws GrammarError, IOException {
+        this.expectSymbol('[');
+        float x = this.expectNumber(scene);
+        this.expectSymbol(',');
+        float y = this.expectNumber(scene);
+        this.expectSymbol(',');
+        float z = this.expectNumber(scene);
+        this.expectSymbol(']');
+
+        return new Vec(x, y, z);
+    }
+
+    public Color parseColor(Scene scene) throws GrammarError, IOException {
+        this.expectSymbol('<');
+        float red = this.expectNumber(scene);
+        this.expectSymbol(',');
+        float green = this.expectNumber(scene);
+        this.expectSymbol(',');
+        float blue = this.expectNumber(scene);
+        this.expectSymbol('>');
+
+        return new Color(red, green, blue);
+    }
+
+    public Pigment parsePigment(Scene scene) throws GrammarError, IOException {
+        KeywordEnum keyword = this.expectKeywords(new ArrayList<>(Arrays.asList(KeywordEnum.UNIFORM, KeywordEnum.CHECKERED, KeywordEnum.IMAGE)));
+
+        this.expectSymbol('(');
+        Pigment result;
+
+        if (keyword == KeywordEnum.UNIFORM) {
+            Color color = this.parseColor(scene);
+            result = new UniformPigment(color);
+        } else if (keyword == KeywordEnum.CHECKERED) {
+            Color color1 = this.parseColor(scene);
+            this.expectSymbol(',');
+            Color color2 = this.parseColor(scene);
+            this.expectSymbol(',');
+            int numOfSteps = (int) expectNumber(scene);
+            result = new CheckeredPigment(color1, color2, numOfSteps);
+        } else if (keyword == KeywordEnum.IMAGE) {
+            String fileName = this.expectString();
+            try (InputStream imageFile = new FileInputStream(fileName)) {
+                HDRImage image = PfmCreator.readPfmImage(imageFile);
+                result = new ImagePigment(image);
+            } catch (IOException | InvalidPfmFileFormatException e) {
+                throw new GrammarError(this.location, "Error reading image file: " + fileName);
+            }
+        } else {
+            throw new AssertionError("This line should be unreachable");
+        }
+
+        expectSymbol(')');
+        return result;
+    }
+
+    public BRDF parseBRDF(Scene scene) throws GrammarError, IOException {
+        KeywordEnum BRDFKeyword = this.expectKeywords(new ArrayList<>(List.of(KeywordEnum.DIFFUSE, KeywordEnum.SPECULAR)));
+
+        this.expectSymbol('(');
+        Pigment pigment = this.parsePigment(scene);
+        this.expectSymbol(')');
+
+        if (BRDFKeyword == KeywordEnum.DIFFUSE) {
+            return new DiffuseBRDF(pigment);
+        } else if (BRDFKeyword == KeywordEnum.SPECULAR) {
+            return new SpecularBRDF(pigment);
+        } else {
+            throw new AssertionError("This line should be unreachable");
+        }
+    }
+
+    public Pair<String, Material> parseMaterial(Scene scene) throws GrammarError, IOException {
+        String name = this.expectIdentifier();
+
+        this.expectSymbol('(');
+        BRDF brdf = this.parseBRDF(scene);
+        this.expectSymbol(',');
+        Pigment emittedRadiance = this.parsePigment(scene);
+        this.expectSymbol(')');
+
+        return new Pair<>(name, new Material(brdf, emittedRadiance));
+    }
+
+    public Transformation parseTransformation(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+        Transformation result = new Transformation();
+
+        while (true) {
+            KeywordEnum transformation_kw = this.expectKeywords(Arrays.asList(
+                    KeywordEnum.IDENTITY,
+                    KeywordEnum.TRANSLATION,
+                    KeywordEnum.ROTATION_X,
+                    KeywordEnum.ROTATION_Y,
+                    KeywordEnum.ROTATION_Z,
+                    KeywordEnum.SCALING
+            ));
+
+            if (transformation_kw == KeywordEnum.IDENTITY) {
+                // Do nothing (this is a primitive form of optimization!)
+            } else if (transformation_kw == KeywordEnum.TRANSLATION) {
+                this.expectSymbol('(');
+                result.times(Transformation.translation(parseVector(scene)));
+                this.expectSymbol(')');
+            } else if (transformation_kw == KeywordEnum.ROTATION_X) {
+                this.expectSymbol('(');
+                result.times(Transformation.rotationX(expectNumber(scene)));
+                this.expectSymbol(')');
+            } else if (transformation_kw == KeywordEnum.ROTATION_Y) {
+                this.expectSymbol('(');
+                result.times(Transformation.rotationY(expectNumber(scene)));
+                this.expectSymbol(')');
+            } else if (transformation_kw == KeywordEnum.ROTATION_Z) {
+                this.expectSymbol('(');
+                result.times(Transformation.rotationZ(expectNumber(scene)));
+                this.expectSymbol(')');
+            } else if (transformation_kw == KeywordEnum.SCALING) {
+                this.expectSymbol('(');
+                result.times(Transformation.scaling(parseVector(scene)));
+                this.expectSymbol(')');
+            }
+
+            // We must peek the next token to check if there is another transformation that is being
+            // chained or if the sequence ends. Thus, this is a LL(1) parser.
+            Token next_kw = this.readToken();
+            if (!(next_kw instanceof SymbolToken) || ((SymbolToken) next_kw).symbol != '*') {
+                // Pretend you never read this token and put it back!
+                this.unreadToken(next_kw);
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public Sphere parseSphere(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarError(this.location, "unknown material " + materialName);
+        }
+
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new Sphere(transformation, scene.materials.get(materialName));
+    }
+
+
+    public Plain parsePlane(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarError(this.location, "unknown material " + materialName);
+        }
+
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new Plain(transformation, scene.materials.get(materialName));
+    }
+
+    public Camera parseCamera(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+        KeywordEnum typeKeyword = expectKeywords(Arrays.asList(KeywordEnum.PERSPECTIVE, KeywordEnum.ORTHOGONAL));
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(',');
+        float aspectRatio = expectNumber(scene);
+        this.expectSymbol(',');
+        float distance = expectNumber(scene);
+        this.expectSymbol(')');
+
+        Camera result;
+        if (typeKeyword == KeywordEnum.PERSPECTIVE) {
+            result = new PerspectiveCamera(distance, aspectRatio, transformation);
+        } else if (typeKeyword == KeywordEnum.ORTHOGONAL) {
+            result = new OrthogonalCamera(aspectRatio, transformation);
+        } else {
+            throw new GrammarError(this.location, "Invalid camera type");
+        }
+
+        return result;
+    }
+
+    public Scene parseScene() throws GrammarError, IOException, InvalidMatrixException {
+        Scene scene = new Scene();
+
+        while (true) {
+            Token what = this.readToken();
+            if (what instanceof StopToken) {
+                break;
+            }
+
+            if (!(what instanceof KeywordToken)) {
+                throw new GrammarError(what.location, "Expected a keyword instead of '" + what + "'");
+            }
+
+            KeywordEnum keyword = ((KeywordToken) what).keyword;
+
+            if (keyword == KeywordEnum.FLOAT) {
+                String variableName = this.expectIdentifier();
+                this.expectSymbol('(');
+                float variableValue = expectNumber(scene);
+                this.expectSymbol(')');
+
+                scene.floatVariables.put(variableName, variableValue);
+            } else if (keyword == KeywordEnum.SPHERE) {
+                scene.objects.add(this.parseSphere(scene));
+            } else if (keyword == KeywordEnum.PLANE) {
+                scene.objects.add(this.parsePlane(scene));
+            } else if (keyword == KeywordEnum.CAMERA) {
+                if (scene.camera != null) {
+                    throw new GrammarError(what.location, "You cannot define more than one camera");
+                }
+
+                scene.camera = this.parseCamera(scene);
+            } else if (keyword == KeywordEnum.MATERIAL) {
+                Pair<String, Material> materialTuple = parseMaterial(scene);
+                scene.materials.put(materialTuple.getValue0(), materialTuple.getValue1());
+            }
+        }
+        return scene;
+    }
+
+
 }
 
