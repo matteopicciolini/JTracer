@@ -11,16 +11,30 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InStreamTest {
-    private static void assertIsKeyword(Token token, KeywordEnum keyword) {
-        Objects.requireNonNull(token);
-        if (!(token instanceof KeywordToken)) {
-            throw new IllegalArgumentException("Token is not a KeywordToken");
-        }
+    public static void assertIsKeyword(Token token, KeywordEnum keyword) {
+        assertTrue(token instanceof KeywordToken);
         KeywordToken keywordToken = (KeywordToken) token;
-        if (!keywordToken.keyword.equals(keyword)) {
-            throw new AssertionError(String.format("Token '%s' is not equal to keyword '%s'", token, keyword));
-        }
+        assertEquals(keyword, keywordToken.keyword);
     }
+
+    public static void assertIsIdentifier(Token token, String identifier) {
+        assertTrue(token instanceof IdentifierToken);
+        IdentifierToken identifierToken = (IdentifierToken) token;
+        assertEquals(identifier, identifierToken.identifier);
+    }
+
+    public static void assertIsSymbol(Token token, String symbol) {
+        assertTrue(token instanceof SymbolToken);
+        SymbolToken symbolToken = (SymbolToken) token;
+        assertEquals(symbol, symbolToken.toString());
+    }
+
+    public static void assertIsString(Token token, String s) {
+        assertTrue(token instanceof StringToken);
+        StringToken stringToken = (StringToken) token;
+        assertEquals(s, stringToken.string);
+    }
+
     @Test
     public void inputFileTest() throws IOException {
         String input = "abc   \nd\nef";
@@ -69,7 +83,7 @@ class InStreamTest {
     }
 
     @Test
-    public void testLexer(){
+    public void testLexer() throws IOException, GrammarError {
         String input = """
         # This is a comment
         # This is another comment
@@ -80,6 +94,15 @@ class InStreamTest {
 """;
         InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
 
-        //assertIsKeyword(inStream.read)
+        assertIsKeyword(inStream.readToken(), KeywordEnum.NEW);
+        assertIsKeyword(inStream.readToken(), KeywordEnum.MATERIAL);
+        assertIsIdentifier(inStream.readToken(), "sky_material");
+        assertIsSymbol(inStream.readToken(), "(");
+        assertIsKeyword(inStream.readToken(), KeywordEnum.DIFFUSE);
+        assertIsSymbol(inStream.readToken(), "(");
+        assertIsKeyword(inStream.readToken(), KeywordEnum.IMAGE);
+        assertIsSymbol(inStream.readToken(), "(");
+        assertIsString(inStream.readToken(), "my file.pfm");
+        assertIsSymbol(inStream.readToken(), ")");
     }
 }
