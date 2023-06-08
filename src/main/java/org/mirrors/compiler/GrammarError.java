@@ -7,7 +7,5 @@ public class GrammarError extends Throwable {
     public GrammarError(SourceLocation source, String message){
         this.location = source;
         this.message = message;
-
-
     }
 }
