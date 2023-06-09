@@ -191,7 +191,7 @@ class InStreamTest {
     """;
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
-            fail("the code did not throw an exception");
+            fail("The code did not throw an exception");
         } catch (GrammarError e) {
             // Exception was thrown as expected
         }
@@ -206,7 +206,7 @@ class InStreamTest {
     """;
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
-            fail("the code did not throw an exception");
+            fail("The code did not throw an exception");
         } catch (GrammarError e) {
             // Exception was thrown as expected
         }
