@@ -11,8 +11,8 @@ public class Commands implements Runnable{
             @Option(names = {"-w", "--width"}, description = "int: Width of the image. \t\t Default: 480") Integer width,
             @Option(names = {"-h", "--height"}, description = "int: Height of the image. \t\t Default: 480") Integer height,
             @Option(names = {"-a", "--angle-deg"}, description = "int: Angle of view. \t\t\t Default: 0") Float angleDeg,
-            @Option(names = {"-out", "--output"}, description = "string: Path of the output ldr file. \t Default: fileOutput.png") String outputFilename,
-            @Option(names = {"-al", "--algorithm"}, description = "string: Algorithm of rendering. \t Default: pathtracing") String algorithm,
+            @Option(names = {"-out", "--output"}, description = "string: Path of the output ldr file. \t Default: img.pfm") String outputFilename,
+            @Option(names = {"-al", "--algorithm"}, description = "string: Algorithm of rendering. \t Default: pathTracer") String algorithm,
             @Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera \t Default: false") Boolean orthogonal,
             @Option(names = {"-aa", "--antialiasing"}, description = "bool: Use antialiasing algorithm \t Default: true") Boolean antialiasing,
             @Option(names = {"-paa", "--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm \t Default: false") Boolean parallelAntialiasing,
@@ -45,7 +45,7 @@ public class Commands implements Runnable{
         if (gamma == null) gamma = 2.2f;
         if (factor == null) factor = 0.18f;
         if (luminosity == null){
-            if(algorithm != "pathTracer"){
+            if(!algorithm.equals("pathTracer")){
                 luminosity = 0.5f;
             }
         }
