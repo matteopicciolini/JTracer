@@ -1,9 +1,8 @@
 package org.mirrors;
 
-import org.mirrors.compiler.GrammarError;
+import org.mirrors.compiler.GrammarErrorException;
 import org.mirrors.compiler.InStream;
 import org.mirrors.compiler.Scene;
-import picocli.CommandLine;
 
 import java.io.*;
 
@@ -49,7 +48,6 @@ public class Tracer {
                             boolean parallelAntialiasing, int nThreads)
             throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
         long time = System.currentTimeMillis();
-
 
         Material skyMaterial = new Material(new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White));
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
@@ -141,45 +139,12 @@ public class Tracer {
     public static void render(int width, int height, float angleDeg, boolean orthogonal,
                             String fileOutputPFM, String algorithm, boolean antialiasing,
                             boolean parallelAntialiasing, int nThreads)
-            throws InvalidMatrixException, IOException, InvalidPfmFileFormatException, GrammarError {
+            throws InvalidMatrixException, IOException, InvalidPfmFileFormatException, GrammarErrorException {
         long time = System.currentTimeMillis();
-        //-------------------------------------------------
-        /*Material skyMaterial = new Material(new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White));
-        Material groundMaterial = new Material(new DiffuseBRDF(new CheckeredPigment(
-                new Color(0.f, 0.5f, 0.f),
-                new Color(1f, 1f, 1f), 16)), new UniformPigment(Black));
 
-
-        Transformation rotation = Transformation.rotationZ(angleDeg);
-        World world = new World();
-
-        //SKY
-        Transformation rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
-        Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
-        world.addShape(new Sphere(translation.times(rescale), skyMaterial));
-
-        //PLANE
-        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.1f)), groundMaterial));
-        //SPHERE 1
-        rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
-        translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
-        world.addShape(new Sphere(translation.times(rescale), groundMaterial));
-
-        HDRImage image = new HDRImage(width, height);
-        Camera camera = orthogonal ?
-                new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
-
-        ImageTracer tracer;
-        if (antialiasing){
-            tracer = new ImageTracer(image, camera, 4, new PCG());
-        }else{
-            tracer = new ImageTracer(image, camera);
-        }*/
-        //-------------------------------------------------
         InputStream input = new FileInputStream("firstImage.txt");
 
-        InStream inStream = new InStream(input);
+        InStream inStream = new InStream(input, "firstImage.txt");
         Scene scene = inStream.parseScene();
 
         //Transformation rotation = Transformation.rotationZ(angleDeg);

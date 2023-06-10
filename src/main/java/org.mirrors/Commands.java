@@ -1,21 +1,18 @@
 package org.mirrors;
-import org.mirrors.compiler.GrammarError;
+import org.mirrors.compiler.GrammarErrorException;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @Command(name = "", description = ".NET Core console app with argument parsing.", mixinStandardHelpOptions = true)
 public class Commands implements Runnable{
     public static Float valueOfLuminosity(String algorithm){
-        if(!Objects.equals(algorithm, "pathTracer")){
-            return 0.5f;
-        }
-        else{
-            return null;
-        }
+        if(!Objects.equals(algorithm, "pathTracer")) return 0.5f;
+        else return null;
     }
     @Command(name = "demo", description = "Demo of JTracer.", mixinStandardHelpOptions = true)
     public void demo(
@@ -91,23 +88,24 @@ public class Commands implements Runnable{
             @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma,
             @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
             @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: It is calculated for the pathTracer; otherwise, it is set to 0.5.") Float luminosity
-    ) throws InvalidOptionException {
+    ) throws InvalidOptionException{
         if(!convertInPNG && deletePFM){
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
         }
         luminosity = valueOfLuminosity(algorithm);
+
         try {
             Tracer.render(width, height, angleDeg, orthogonal, outputFilename, algorithm, antialiasing, parallelAntialiasing, nThreads);
 
             if(convertInPNG) {
                 String fileOutputPNG = outputFilename.substring(0, outputFilename.length() - 3) + "png";
-                if (luminosity == null) Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);
+                if (luminosity == null){ Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);}
                 else Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG, luminosity);
                 if(deletePFM) Tracer.RemoveFile(outputFilename);
             }
 
-        } catch (Exception | InvalidMatrixException | InvalidPfmFileFormatException | GrammarError ex) {
-            System.err.println(ex.getMessage());
+        }catch (InvalidMatrixException | IOException | GrammarErrorException | InvalidPfmFileFormatException e) {
+            throw new RuntimeException(e);
         }
     }
 

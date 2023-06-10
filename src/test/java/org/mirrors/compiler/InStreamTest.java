@@ -82,7 +82,7 @@ class InStreamTest {
     }
 
     @Test
-    public void testLexer() throws IOException, GrammarError {
+    public void testLexer() throws IOException, GrammarErrorException {
         String input = """
         # This is a comment
         # This is another comment
@@ -106,7 +106,7 @@ class InStreamTest {
     }
 
     @Test
-    public void TestParser() throws InvalidMatrixException, GrammarError, IOException {
+    public void TestParser() throws InvalidMatrixException, GrammarErrorException, IOException {
         String input = """
         float clock(150)
     
@@ -125,7 +125,7 @@ class InStreamTest {
     
         material sphereMaterial(
             specular(uniform(<0.5, 0.5, 0.5>)),
-            uniform(<0, 0, 0>)
+            uniform(<black>)
         )
     
         plane (skyMaterial, translation([0, 0, 100]) * rotationY(clock))
@@ -185,6 +185,13 @@ class InStreamTest {
         assertTrue(Transformation.translation(new Vec(0.f, 0.f, 1.f)).isClose(scene.objects.get(2).transformation));
         assertTrue(Transformation.translation(new Vec(0.f, 0.f, 0.f)).isClose(scene.objects.get(1).transformation));
         assertTrue(Transformation.translation(new Vec(0.f, 0.f, 100.f)).times(Transformation.rotationY(150)).isClose(scene.objects.get(0).transformation));
+
+        assertTrue((new Color(0.f, 0.f,0.f)).isClose(((UniformPigment) scene.objects.get(0).material.brdf.pigment).color));
+        assertTrue((new Color(0.7f, 0.5f,1.f)).isClose(((UniformPigment) scene.objects.get(0).material.emittedRadiance).color));
+
+        assertTrue((new Color(0.5f, 0.5f,0.5f)).isClose(((UniformPigment) scene.objects.get(2).material.brdf.pigment).color));
+        assertTrue((new Color(0.f, 0.f,0.f)).isClose(((UniformPigment) scene.objects.get(2).material.emittedRadiance).color));
+
     }
 
     @Test
@@ -196,7 +203,7 @@ class InStreamTest {
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
             fail("The code did not throw an exception");
-        } catch (GrammarError e) {
+        } catch (GrammarErrorException e) {
             // Exception was thrown as expected
         }
     }
@@ -211,7 +218,7 @@ class InStreamTest {
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
             fail("The code did not throw an exception");
-        } catch (GrammarError e) {
+        } catch (GrammarErrorException e) {
             // Exception was thrown as expected
         }
     }
