@@ -345,23 +345,23 @@ public class InStream {
                 // Do nothing (this is a primitive form of optimization!)
             } else if (transformationKw == KeywordEnum.TRANSLATION) {
                 this.expectSymbol('(');
-                result.times(Transformation.translation(parseVector(scene)));
+                result = result.times(Transformation.translation(parseVector(scene)));
                 this.expectSymbol(')');
             } else if (transformationKw == KeywordEnum.ROTATION_X) {
                 this.expectSymbol('(');
-                result.times(Transformation.rotationX(expectNumber(scene)));
+                result = result.times(Transformation.rotationX(expectNumber(scene)));
                 this.expectSymbol(')');
             } else if (transformationKw == KeywordEnum.ROTATION_Y) {
                 this.expectSymbol('(');
-                result.times(Transformation.rotationY(expectNumber(scene)));
+                result = result.times(Transformation.rotationY(expectNumber(scene)));
                 this.expectSymbol(')');
             } else if (transformationKw == KeywordEnum.ROTATION_Z) {
                 this.expectSymbol('(');
-                result.times(Transformation.rotationZ(expectNumber(scene)));
+                result = result.times(Transformation.rotationZ(expectNumber(scene)));
                 this.expectSymbol(')');
             } else if (transformationKw == KeywordEnum.SCALING) {
                 this.expectSymbol('(');
-                result.times(Transformation.scaling(parseVector(scene)));
+                result = result.times(Transformation.scaling(parseVector(scene)));
                 this.expectSymbol(')');
             }
 
