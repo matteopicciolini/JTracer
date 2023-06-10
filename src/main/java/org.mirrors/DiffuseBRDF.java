@@ -4,20 +4,24 @@ import static org.mirrors.Global.Black;
 import static org.mirrors.Global.White;
 
 public class DiffuseBRDF extends BRDF {
+    float reflectance;
 
     public DiffuseBRDF(Pigment pigment){
         super(pigment);
+        this.reflectance = 1.f;
     }
     public DiffuseBRDF(Pigment pigment, float reflectance){
         super(pigment);
+        this.reflectance = reflectance;
     }
     public DiffuseBRDF(){
         super(new UniformPigment(White));
+        this.reflectance = 1.f;
     }
 
     @Override
     public Color eval(Normal norm, Vec dir, Vec outDir, Vec2d uv){
-        return this.pigment.getColor(uv).prod((float) (1.f / Math.PI));
+        return this.pigment.getColor(uv).prod((float) (this.reflectance / Math.PI));
     }
 
     @Override

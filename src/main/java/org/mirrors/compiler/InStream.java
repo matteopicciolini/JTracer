@@ -3,10 +3,11 @@ import org.mirrors.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+
 import static java.util.Arrays.*;
-import java.util.Arrays;
+import static org.mirrors.Global.*;
+
 import org.javatuples.Pair;
 
 public class InStream {
@@ -18,6 +19,35 @@ public class InStream {
     public char savedChar;
     public int tab = 4;
     public Token savedToken = null;
+
+    private Map<String, Color> colorName = new HashMap<String, Color>() {{
+        put("white", White);
+        put("black", Black);
+        put("navy", Navy);
+        put("skyblue", SkyBlue);
+        put("silver", Silver);
+        put("crimson", Crimson);
+        put("darkCyan", DarkCyan);
+        put("olive", Olive);
+        put("pink", Pink);
+        put("darkRed", DarkRed);
+        put("tomato", Tomato);
+        put("gold", Gold);
+        put("limeGreen", LimeGreen);
+        put("green", Green);
+        put("darkOrange", DarkOrange);
+        put("purple", Purple);
+        put("brown", Brown);
+        put("red", Red);
+        put("gray", Gray);
+        put("darkGray", DarkGray);
+        put("dimGray", DimGray);
+        put("saddleBrown", SaddleBrown);
+        put("darkBrown", DarkBrown);
+        put("yellow", Yellow);
+    }};
+
+
 
     public InStream(InputStream stream, String fileName) {
         this.stream = stream;
@@ -77,7 +107,7 @@ public class InStream {
         this.unreadChar(ch);
     }
 
-    private StringToken parseStringToken(SourceLocation tokenLocation) throws IOException, GrammarError {
+    private StringToken parseStringToken(SourceLocation tokenLocation) throws IOException, GrammarErrorException {
         String token = "";
 
         while (true) {
@@ -86,7 +116,7 @@ public class InStream {
                 break;
             }
             if (ch == '\0') {
-                throw new GrammarError(tokenLocation, "unterminated string");
+                throw new GrammarErrorException(tokenLocation, "unterminated string");
             }
             token += (ch);
         }
@@ -94,7 +124,7 @@ public class InStream {
     }
 
 
-    public LiteralNumberToken parseFloatToken(char firstChar, SourceLocation tokenLocation) throws IOException, GrammarError {
+    public LiteralNumberToken parseFloatToken(char firstChar, SourceLocation tokenLocation) throws IOException, GrammarErrorException {
         String token = String.valueOf(firstChar);
 
         while (true) {
@@ -111,7 +141,7 @@ public class InStream {
             return new LiteralNumberToken(tokenLocation, value);
 
         } catch (NumberFormatException e) {
-            throw new GrammarError(tokenLocation, "That's an invalid floating-point number");
+            throw new GrammarErrorException(tokenLocation, "That's an invalid floating-point number");
         }
     }
 
@@ -162,7 +192,7 @@ public class InStream {
         };
     }
 
-    public Token readToken() throws IOException, GrammarError {
+    public Token readToken() throws IOException, GrammarErrorException {
         if (savedToken != null) {
             Token result = this.savedToken;
             this.savedToken = null;
@@ -185,7 +215,7 @@ public class InStream {
         } else if (Character.isLetter(ch) || ch == '_') {
             return parseKeywordOrIdentifierToken(ch, tokenLocation);
         } else {
-            throw new GrammarError(this.location, "Invalid character: " + ch);
+            throw new GrammarErrorException(this.location, "Invalid character: " + ch);
         }
     }
 
@@ -194,57 +224,57 @@ public class InStream {
         this.savedToken = token;
     }
 
-    public void expectSymbol(char symbol) throws GrammarError, IOException {
+    public void expectSymbol(char symbol) throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof SymbolToken) || ((SymbolToken) token).symbol != symbol) {
-            throw new GrammarError(token.location, "got '" + token + "' instead of '" + symbol + "'");
+            throw new GrammarErrorException(token.location, "got '" + token + "' instead of '" + symbol + "'");
         }
     }
 
-    public KeywordEnum expectKeywords(List<KeywordEnum> keywords) throws GrammarError, IOException {
+    public KeywordEnum expectKeywords(List<KeywordEnum> keywords) throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof KeywordToken)) {
-            throw new GrammarError(token.location, "expected a keyword instead of '" + token + "'");
+            throw new GrammarErrorException(token.location, "expected a keyword instead of '" + token + "'");
         }
 
         if (!keywords.contains(((KeywordToken) token).keyword)) {
             String expectedKeywords = String.join(",", keywords.stream().map(Enum::toString).toArray(String[]::new));
-            throw new GrammarError(token.location, "expected one of the keywords " + expectedKeywords + " instead of '" + token + "'");
+            throw new GrammarErrorException(token.location, "expected one of the keywords " + expectedKeywords + " instead of '" + token + "'");
         }
         return ((KeywordToken) token).keyword;
     }
 
-    public float expectNumber(Scene scene) throws GrammarError, IOException {
+    public float expectNumber(Scene scene) throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (token instanceof LiteralNumberToken) {
             return ((LiteralNumberToken) token).value;
         } else if (token instanceof IdentifierToken) {
             String variableName = ((IdentifierToken) token).identifier;
             if (!scene.floatVariables.containsKey(variableName)) {
-                throw new GrammarError(token.location, "unknown variable '" + token + "'");
+                throw new GrammarErrorException(token.location, "unknown variable '" + token + "'");
             }
             return scene.floatVariables.get(variableName);
         }
-        throw new GrammarError(token.location, "got '" + token + "' instead of a number");
+        throw new GrammarErrorException(token.location, "got '" + token + "' instead of a number");
     }
 
-    public String expectString() throws GrammarError, IOException {
+    public String expectString() throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof StringToken)) {
-            throw new GrammarError(token.location, "got '" + token + "' instead of a string");
+            throw new GrammarErrorException(token.location, "got '" + token + "' instead of a string");
         }
         return token.toString();
     }
 
-    public String expectIdentifier() throws GrammarError, IOException {
+    public String expectIdentifier() throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof IdentifierToken)) {
-            throw new GrammarError(token.location, "got '" + token + "' instead of an identifier");
+            throw new GrammarErrorException(token.location, "got '" + token + "' instead of an identifier");
         }
         return ((IdentifierToken) token).identifier;
     }
 
-    public Vec parseVector(Scene scene) throws GrammarError, IOException {
+    public Vec parseVector(Scene scene) throws GrammarErrorException, IOException {
         this.expectSymbol('[');
         float x = this.expectNumber(scene);
         this.expectSymbol(',');
@@ -256,19 +286,34 @@ public class InStream {
         return new Vec(x, y, z);
     }
 
-    public Color parseColor(Scene scene) throws GrammarError, IOException {
+    public Color parseColor(Scene scene) throws GrammarErrorException, IOException {
         this.expectSymbol('<');
-        float red = this.expectNumber(scene);
-        this.expectSymbol(',');
-        float green = this.expectNumber(scene);
-        this.expectSymbol(',');
-        float blue = this.expectNumber(scene);
-        this.expectSymbol('>');
+        Token token = readToken();
+        Color result;
+        if (token instanceof LiteralNumberToken){
+            float red = ((LiteralNumberToken) token).value;
+            this.expectSymbol(',');
+            float green = this.expectNumber(scene);
+            this.expectSymbol(',');
+            float blue = this.expectNumber(scene);
 
-        return new Color(red, green, blue);
+            result = new Color(red, green, blue);
+        }
+        else if (token instanceof IdentifierToken){
+            if (!colorName.containsKey(((IdentifierToken) token).identifier)){
+                throw new GrammarErrorException(token.location, "'" + ((IdentifierToken) token).identifier +"' is not a valid color.");
+            }
+            else result = colorName.get(((IdentifierToken) token).identifier);
+        }
+        else{
+            throw new GrammarErrorException(this.location, "expected a color");
+        }
+
+        this.expectSymbol('>');
+        return result;
     }
 
-    public Pigment parsePigment(Scene scene) throws GrammarError, IOException {
+    public Pigment parsePigment(Scene scene) throws GrammarErrorException, IOException {
         KeywordEnum keyword = this.expectKeywords(new ArrayList<>(Arrays.asList(KeywordEnum.UNIFORM, KeywordEnum.CHECKERED, KeywordEnum.IMAGE)));
 
         this.expectSymbol('(');
@@ -290,7 +335,7 @@ public class InStream {
                 HDRImage image = PfmCreator.readPfmImage(imageFile);
                 result = new ImagePigment(image);
             } catch (IOException | InvalidPfmFileFormatException e) {
-                throw new GrammarError(this.location, "Error reading image file: " + fileName);
+                throw new GrammarErrorException(this.location, "Error reading image file: " + fileName);
             }
         } else {
             throw new AssertionError("This line should be unreachable");
@@ -300,7 +345,7 @@ public class InStream {
         return result;
     }
 
-    public BRDF parseBRDF(Scene scene) throws GrammarError, IOException {
+    public BRDF parseBRDF(Scene scene) throws GrammarErrorException, IOException {
         KeywordEnum BRDFKeyword = this.expectKeywords(new ArrayList<>(List.of(KeywordEnum.DIFFUSE, KeywordEnum.SPECULAR)));
 
         this.expectSymbol('(');
@@ -316,7 +361,7 @@ public class InStream {
         }
     }
 
-    public Pair<String, Material> parseMaterial(Scene scene) throws GrammarError, IOException {
+    public Pair<String, Material> parseMaterial(Scene scene) throws GrammarErrorException, IOException {
         String name = this.expectIdentifier();
 
         this.expectSymbol('(');
@@ -328,7 +373,7 @@ public class InStream {
         return new Pair<>(name, new Material(brdf, emittedRadiance));
     }
 
-    public Transformation parseTransformation(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+    public Transformation parseTransformation(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         Transformation result = new Transformation();
 
         while (true) {
@@ -378,12 +423,12 @@ public class InStream {
         return result;
     }
 
-    public Sphere parseSphere(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+    public Sphere parseSphere(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
 
         String materialName = this.expectIdentifier();
         if (!scene.materials.containsKey(materialName)) {
-            throw new GrammarError(this.location, "unknown material " + materialName);
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
         }
 
         this.expectSymbol(',');
@@ -393,13 +438,28 @@ public class InStream {
         return new Sphere(transformation, scene.materials.get(materialName));
     }
 
-
-    public Plain parsePlane(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+    public Box parseBox(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
 
         String materialName = this.expectIdentifier();
         if (!scene.materials.containsKey(materialName)) {
-            throw new GrammarError(this.location, "unknown material " + materialName);
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new Box(new Point(-0.5f, -0.5f, -0.5f), new Point(0.5f, 0.5f, 0.5f), transformation, scene.materials.get(materialName));
+    }
+
+
+    public Plain parsePlane(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
         }
 
         this.expectSymbol(',');
@@ -409,7 +469,7 @@ public class InStream {
         return new Plain(transformation, scene.materials.get(materialName));
     }
 
-    public Camera parseCamera(Scene scene) throws GrammarError, IOException, InvalidMatrixException {
+    public Camera parseCamera(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
         KeywordEnum typeKeyword = expectKeywords(Arrays.asList(KeywordEnum.PERSPECTIVE, KeywordEnum.ORTHOGONAL));
         this.expectSymbol(',');
@@ -426,13 +486,13 @@ public class InStream {
         } else if (typeKeyword == KeywordEnum.ORTHOGONAL) {
             result = new OrthogonalCamera(aspectRatio, transformation);
         } else {
-            throw new GrammarError(this.location, "Invalid camera type");
+            throw new GrammarErrorException(this.location, "Invalid camera type");
         }
 
         return result;
     }
 
-    public Scene parseScene() throws GrammarError, IOException, InvalidMatrixException {
+    public Scene parseScene() throws GrammarErrorException, IOException, InvalidMatrixException {
         Scene scene = new Scene();
 
         while (true) {
@@ -442,7 +502,7 @@ public class InStream {
             }
 
             if (!(what instanceof KeywordToken)) {
-                throw new GrammarError(what.location, "Expected a keyword instead of '" + what + "'");
+                throw new GrammarErrorException(what.location, "Expected a keyword instead of '" + what + "'");
             }
 
             KeywordEnum keyword = ((KeywordToken) what).keyword;
@@ -458,9 +518,11 @@ public class InStream {
                 scene.objects.add(this.parseSphere(scene));
             } else if (keyword == KeywordEnum.PLANE) {
                 scene.objects.add(this.parsePlane(scene));
+            } else if (keyword == KeywordEnum.BOX) {
+                scene.objects.add(this.parseBox(scene));
             } else if (keyword == KeywordEnum.CAMERA) {
                 if (scene.camera != null) {
-                    throw new GrammarError(what.location, "You cannot define more than one camera");
+                    throw new GrammarErrorException(what.location, "You cannot define more than one camera");
                 }
 
                 scene.camera = this.parseCamera(scene);
