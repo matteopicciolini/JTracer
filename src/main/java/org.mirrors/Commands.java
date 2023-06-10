@@ -1,63 +1,53 @@
 package org.mirrors;
+import org.mirrors.compiler.GrammarError;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-@Command(name = "dotnet run", description = ".NET Core console app with argument parsing.")
+import java.util.Objects;
+
+@Command(name = "", description = ".NET Core console app with argument parsing.", mixinStandardHelpOptions = true)
 public class Commands implements Runnable{
-    @Command(name = "demo", description = "Demo of JTracer.")
+    public static Float valueOfLuminosity(String algorithm){
+        if(!Objects.equals(algorithm, "pathTracer")){
+            return 0.5f;
+        }
+        else{
+            return null;
+        }
+    }
+    @Command(name = "demo", description = "Demo of JTracer.", mixinStandardHelpOptions = true)
     public void demo(
-            @Option(names = {"-w", "--width"}, description = "int: Width of the image. \t\t Default: 480") Integer width,
-            @Option(names = {"-h", "--height"}, description = "int: Height of the image. \t\t Default: 480") Integer height,
-            @Option(names = {"-a", "--angle-deg"}, description = "int: Angle of view. \t\t\t Default: 0") Float angleDeg,
-            @Option(names = {"-out", "--output"}, description = "string: Path of the output ldr file. \t Default: img.pfm") String outputFilename,
-            @Option(names = {"-al", "--algorithm"}, description = "string: Algorithm of rendering. \t Default: pathTracer") String algorithm,
-            @Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera \t Default: false") Boolean orthogonal,
-            @Option(names = {"-aa", "--antialiasing"}, description = "bool: Use antialiasing algorithm \t Default: true") Boolean antialiasing,
-            @Option(names = {"-paa", "--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm \t Default: false") Boolean parallelAntialiasing,
-            @Option(names = {"-nt","--nThreads"}, description = "int: Number of threads to use for parallelization \t Default: 4") Integer nThreads,
-            @Option(names = {"-c","--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG.   \t Default: true") Boolean convertInPNG,
-            @Option(names = {"-d","--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. \t Default: false") Boolean deletePFM,
+            @Option(names = {"-w", "--width"}, description = "int: Width of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer width,
+            @Option(names = {"--height"}, description = "int: Height of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer height,
+            @Option(names = {"-a", "--angle-deg"}, description = "float: Angle of view. Default: ${DEFAULT-VALUE}.", defaultValue = "0") Float angleDeg,
+            @Option(names = {"--output"}, description = "string: Path of the output ldr file. Default: ${DEFAULT-VALUE}.", defaultValue = "img.pfm") String outputFilename,
+            @Option(names = {"--algorithm"}, description = "string: Algorithm of rendering. Default: ${DEFAULT-VALUE}.", defaultValue = "pathTracer") String algorithm,
+            @Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean orthogonal,
+            @Option(names = {"--antialiasing"}, description = "bool: Use antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean antialiasing,
+            @Option(names = {"--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallelAntialiasing,
+            @Option(names = {"--nThreads"}, description = "int: Number of threads to use for parallelization. Default: ${DEFAULT-VALUE}.", defaultValue = "4") Integer nThreads,
+            @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
+            @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
             //Screen features
-            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. \t Default: 2.2") Float gamma,
-            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. \t\t Default: 0.18") Float factor,
-            @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: It is calculated for the path tracer; otherwise, it is set to 0.5.") Float luminosity
+            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma,
+            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
+            @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: It is calculated for the pathTracer; otherwise, it is set to 0.5.") Float luminosity
     ) throws InvalidOptionException {
-        if (width == null) width = 480;
-        if (height == null) height = 480;
-        if (angleDeg == null) angleDeg = 0.f;
-        if (orthogonal == null) orthogonal = false;
-        if (outputFilename == null) outputFilename = "img.pfm";
-        if (algorithm == null) algorithm = "pathTracer";
-        if (convertInPNG == null) convertInPNG = true;
-        if (deletePFM == null) deletePFM = false;
         if(!convertInPNG && deletePFM){
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
         }
-
-        // Antialiasing and parallelization
-        if (antialiasing == null) antialiasing = false;
-        if (parallelAntialiasing == null) parallelAntialiasing = false;
-        if (nThreads == null) nThreads = 4;
-
-        // Screen features
-        if (gamma == null) gamma = 2.2f;
-        if (factor == null) factor = 0.18f;
-        if (luminosity == null){
-            if(!algorithm.equals("pathTracer")){
-                luminosity = 0.5f;
-            }
-        }
+        luminosity = valueOfLuminosity(algorithm);
 
         try {
             Tracer.demo(width, height, angleDeg, orthogonal, outputFilename, algorithm, antialiasing, parallelAntialiasing, nThreads);
+
             if(convertInPNG) {
                 String fileOutputPNG = outputFilename.substring(0, outputFilename.length() - 3) + "png";
-                Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);
-                if(deletePFM){
-                    Tracer.RemoveFile(outputFilename);
-                }
+                if (luminosity == null) Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);
+                else Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG, luminosity);
+                if(deletePFM) Tracer.RemoveFile(outputFilename);
             }
 
         } catch (Exception | InvalidMatrixException | InvalidPfmFileFormatException ex) {
@@ -66,11 +56,10 @@ public class Commands implements Runnable{
     }
 
 
-    @Command(name = "convert", description = "Convert pfm file to png.")
+    @Command(name = "convert", description = "Convert pfm file to png.", mixinStandardHelpOptions = true)
     public void convert(
             @Parameters(index = "0", paramLabel = "-i", description = "String: Path of the input file") String inputFilename,
-            //@Option(names = {"-i", "--inputFilename"}, description = "String: Path of the input file") String inputFilename,
-            @Option(names = {"-o", "--outputFilename"}, description = "String: Path of the output ldr file") String outputFilename,
+            @Option(names = {"-o", "--outputFileName"}, description = "String: Path of the output ldr file") String outputFilename,
             @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction") Float gamma,
             @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor") Float factor)
     {
@@ -81,6 +70,43 @@ public class Commands implements Runnable{
         try {
             Tracer.pfm2image(factor, gamma, inputFilename, outputFilename);
         } catch (Exception | InvalidPfmFileFormatException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    @Command(name = "render", description = "Demo of JTracer.", mixinStandardHelpOptions = true)
+    public void render(
+            @Option(names = {"-w", "--width"}, description = "int: Width of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer width,
+            @Option(names = {"--height"}, description = "int: Height of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer height,
+            @Option(names = {"-a", "--angle-deg"}, description = "float: Angle of view. Default: ${DEFAULT-VALUE}.", defaultValue = "0") Float angleDeg,
+            @Option(names = {"--output"}, description = "string: Path of the output ldr file. Default: ${DEFAULT-VALUE}.", defaultValue = "img.pfm") String outputFilename,
+            @Option(names = {"--algorithm"}, description = "string: Algorithm of rendering. Default: ${DEFAULT-VALUE}.", defaultValue = "pathTracer") String algorithm,
+            @Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean orthogonal,
+            @Option(names = {"--antialiasing"}, description = "bool: Use antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean antialiasing,
+            @Option(names = {"--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallelAntialiasing,
+            @Option(names = {"--nThreads"}, description = "int: Number of threads to use for parallelization. Default: ${DEFAULT-VALUE}.", defaultValue = "4") Integer nThreads,
+            @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
+            @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
+            //Screen features
+            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma,
+            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
+            @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: It is calculated for the pathTracer; otherwise, it is set to 0.5.") Float luminosity
+    ) throws InvalidOptionException {
+        if(!convertInPNG && deletePFM){
+            throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
+        }
+        luminosity = valueOfLuminosity(algorithm);
+        try {
+            Tracer.render(width, height, angleDeg, orthogonal, outputFilename, algorithm, antialiasing, parallelAntialiasing, nThreads);
+
+            if(convertInPNG) {
+                String fileOutputPNG = outputFilename.substring(0, outputFilename.length() - 3) + "png";
+                if (luminosity == null) Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);
+                else Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG, luminosity);
+                if(deletePFM) Tracer.RemoveFile(outputFilename);
+            }
+
+        } catch (Exception | InvalidMatrixException | InvalidPfmFileFormatException | GrammarError ex) {
             System.err.println(ex.getMessage());
         }
     }

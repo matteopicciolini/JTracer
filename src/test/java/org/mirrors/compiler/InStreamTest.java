@@ -175,6 +175,10 @@ class InStreamTest {
         assertTrue(sphereMaterial.emittedRadiance instanceof UniformPigment);
         assertTrue(sphereMaterial.emittedRadiance.getColor(new Vec2d()).isClose(Black));
 
+
+        assertTrue(Transformation.translation(new Vec(0.f, 0.f, 1.f)).isClose(scene.objects.get(2).transformation));
+
+
         assertEquals(scene.objects.size(), 3, 1e-3);
         assertTrue(scene.objects.get(0) instanceof Plain);
         assertTrue(scene.objects.get(1) instanceof Plain);
