@@ -175,23 +175,23 @@ class InStreamTest {
         assertTrue(sphereMaterial.emittedRadiance instanceof UniformPigment);
         assertTrue(sphereMaterial.emittedRadiance.getColor(new Vec2d()).isClose(Black));
 
-
-        assertTrue(Transformation.translation(new Vec(0.f, 0.f, 1.f)).isClose(scene.objects.get(2).transformation));
-
-
         assertEquals(scene.objects.size(), 3, 1e-3);
         assertTrue(scene.objects.get(0) instanceof Plain);
         assertTrue(scene.objects.get(1) instanceof Plain);
         assertTrue(scene.objects.get(2) instanceof Sphere);
 
         assertTrue(scene.camera instanceof PerspectiveCamera);
+
+        assertTrue(Transformation.translation(new Vec(0.f, 0.f, 1.f)).isClose(scene.objects.get(2).transformation));
+        assertTrue(Transformation.translation(new Vec(0.f, 0.f, 0.f)).isClose(scene.objects.get(1).transformation));
+        assertTrue(Transformation.translation(new Vec(0.f, 0.f, 100.f)).times(Transformation.rotationY(150)).isClose(scene.objects.get(0).transformation));
     }
 
     @Test
     public void testParserUndefinedMaterial() throws InvalidMatrixException, IOException {
         try {
             String input = """
-    plane(this_material_does_not_exist, identity)
+    plane(thisMaterialDoesNotExist, identity)
     """;
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
@@ -205,7 +205,7 @@ class InStreamTest {
     public void testParserDoubleCamera() throws InvalidMatrixException, IOException {
         try {
             String input = """
-    camera(perspective, rotation_z(30) * translation([-4, 0, 1]), 1.0, 1.0)
+    camera(perspective, rotationZ(30) * translation([-4, 0, 1]), 1.0, 1.0)
     camera(orthogonal, identity, 1.0, 1.0)
     """;
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
