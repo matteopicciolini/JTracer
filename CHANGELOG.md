@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 - Two additional renders are available: `flat` and `pathTracer` [#8](https://github.com/matteopicciolini/ray_tracing/pull/8). The latter is the core of the program. 
 - Implementation of the antialiasing algorithm for `pathTracer` [#10](https://github.com/matteopicciolini/ray_tracing/pull/10).
 - Implement parallelization for antialiasing [#10](https://github.com/matteopicciolini/ray_tracing/pull/10).
-- New Shape: `Plane` [#11](https://github.com/matteopicciolini/ray_tracing/pull/6).
+- New Shape: `Plane` [#6](https://github.com/matteopicciolini/ray_tracing/pull/6).
 - New Shape: `Box` [#11](https://github.com/matteopicciolini/ray_tracing/pull/11).
 
 #### Fixed
