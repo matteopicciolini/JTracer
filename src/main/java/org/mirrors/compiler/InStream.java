@@ -332,7 +332,7 @@ public class InStream {
         Transformation result = new Transformation();
 
         while (true) {
-            KeywordEnum transformation_kw = this.expectKeywords(Arrays.asList(
+            KeywordEnum transformationKw = this.expectKeywords(Arrays.asList(
                     KeywordEnum.IDENTITY,
                     KeywordEnum.TRANSLATION,
                     KeywordEnum.ROTATION_X,
@@ -341,25 +341,25 @@ public class InStream {
                     KeywordEnum.SCALING
             ));
 
-            if (transformation_kw == KeywordEnum.IDENTITY) {
+            if (transformationKw == KeywordEnum.IDENTITY) {
                 // Do nothing (this is a primitive form of optimization!)
-            } else if (transformation_kw == KeywordEnum.TRANSLATION) {
+            } else if (transformationKw == KeywordEnum.TRANSLATION) {
                 this.expectSymbol('(');
                 result.times(Transformation.translation(parseVector(scene)));
                 this.expectSymbol(')');
-            } else if (transformation_kw == KeywordEnum.ROTATION_X) {
+            } else if (transformationKw == KeywordEnum.ROTATION_X) {
                 this.expectSymbol('(');
                 result.times(Transformation.rotationX(expectNumber(scene)));
                 this.expectSymbol(')');
-            } else if (transformation_kw == KeywordEnum.ROTATION_Y) {
+            } else if (transformationKw == KeywordEnum.ROTATION_Y) {
                 this.expectSymbol('(');
                 result.times(Transformation.rotationY(expectNumber(scene)));
                 this.expectSymbol(')');
-            } else if (transformation_kw == KeywordEnum.ROTATION_Z) {
+            } else if (transformationKw == KeywordEnum.ROTATION_Z) {
                 this.expectSymbol('(');
                 result.times(Transformation.rotationZ(expectNumber(scene)));
                 this.expectSymbol(')');
-            } else if (transformation_kw == KeywordEnum.SCALING) {
+            } else if (transformationKw == KeywordEnum.SCALING) {
                 this.expectSymbol('(');
                 result.times(Transformation.scaling(parseVector(scene)));
                 this.expectSymbol(')');
@@ -367,10 +367,10 @@ public class InStream {
 
             // We must peek the next token to check if there is another transformation that is being
             // chained or if the sequence ends. Thus, this is a LL(1) parser.
-            Token next_kw = this.readToken();
-            if (!(next_kw instanceof SymbolToken) || ((SymbolToken) next_kw).symbol != '*') {
+            Token nextKw = this.readToken();
+            if (!(nextKw instanceof SymbolToken) || ((SymbolToken) nextKw).symbol != '*') {
                 // Pretend you never read this token and put it back!
-                this.unreadToken(next_kw);
+                this.unreadToken(nextKw);
                 break;
             }
         }
