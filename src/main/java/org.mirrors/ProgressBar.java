@@ -8,18 +8,20 @@ public class ProgressBar {
 
     private StringBuilder progressBar;
     public long startTime;
+    public int flushFrequence;
 
-    public ProgressBar(int totalProgress) {
+    public ProgressBar(int totalProgress, int flushFrequence) {
         this.totalProgress = totalProgress;
         this.currentProgress = 0;
         this.progressBar = new StringBuilder();
         this.startTime = System.currentTimeMillis();
+        this.flushFrequence = flushFrequence;
     }
 
     public void updateProgress() {
         currentProgress++;
         float progress = (float) currentProgress / totalProgress;
-        if (currentProgress % 2000 != 0) {
+        if (currentProgress % flushFrequence != 0) {
             return;
         }
 
@@ -47,10 +49,6 @@ public class ProgressBar {
         // Aggiungi la stima del tempo residuo
         progressBar.append(" Remaining time: ");
         appendTime(progressBar, estimatedRemainingTime);
-
-        if (currentProgress == totalProgress) {
-            progressBar.append('\n');
-        }
 
         System.out.print(progressBar);
         System.out.flush();
@@ -95,7 +93,7 @@ public class ProgressBar {
             sb.append(minutes).append("m ");
         }
         if (seconds > 0) {
-            sb.append(seconds).append("s");
+            sb.append(seconds).append("s    ");
         }
     }
 

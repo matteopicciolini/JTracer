@@ -56,8 +56,8 @@ public class ImageTracer {
     /**
      Fire a ray for each pixel in the image and set its color according to the returned value from a given function.
      */
-    public void fireAllRays(RayToColor f) throws InvalidMatrixException {
-        ProgressBar progressBar = new ProgressBar(this.image.width * this.image.height);
+    public void fireAllRays(RayToColor f, int progBarFlushFrequence) throws InvalidMatrixException {
+        ProgressBar progressBar = new ProgressBar(this.image.width * this.image.height, progBarFlushFrequence);
         for(int i = 0; i < this.image.width; ++i){
             for(int j = 0; j < this.image.height; ++j){
                 Color cumColor = Black;
@@ -83,11 +83,11 @@ public class ImageTracer {
     }
 
 
-    public void fireAllRaysParallel(RayToColor f, int numThreads) throws InvalidMatrixException {
+    public void fireAllRaysParallel(RayToColor f, int numThreads, int progBarFlushFrequence) throws InvalidMatrixException {
         int totalPixels = this.image.width * this.image.height;
         Map<Thread, Integer> threadCountMap = new HashMap<>();
 
-        ProgressBar progressBar = new ProgressBar(totalPixels);
+        ProgressBar progressBar = new ProgressBar(totalPixels, progBarFlushFrequence);
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
         for (int i = 0; i < this.image.width; ++i) {

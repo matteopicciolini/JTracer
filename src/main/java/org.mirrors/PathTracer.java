@@ -25,6 +25,13 @@ public class PathTracer extends Renderer{
         this.maxDepth = maxDepth;
         this.russianRouletteLimit = russianRouletteLimit;
     }
+    public PathTracer(World world, int numOfRays, int maxDepth, int russianRouletteLimit) {
+        super(world);
+        this.pcg = new PCG();
+        this.numOfRays = numOfRays;
+        this.maxDepth = maxDepth;
+        this.russianRouletteLimit = russianRouletteLimit;
+    }
 
     @Override
     public Color call(Ray ray) throws InvalidMatrixException {
