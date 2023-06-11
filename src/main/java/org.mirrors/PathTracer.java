@@ -13,8 +13,8 @@ public class PathTracer extends Renderer{
     public PathTracer(World world) {
         super(world);
         this.pcg = new PCG();
-        this.numOfRays = 10;
-        this.maxDepth = 3;
+        this.numOfRays = 5;
+        this.maxDepth = 2;
         this.russianRouletteLimit = 3;
     }
 

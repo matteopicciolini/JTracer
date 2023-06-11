@@ -3,14 +3,9 @@ package org.mirrors;
 import org.mirrors.compiler.GrammarErrorException;
 import org.mirrors.compiler.InStream;
 import org.mirrors.compiler.Scene;
-
 import java.io.*;
-
-import static java.lang.Integer.parseInt;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.mirrors.Global.*;
-
-import java.io.File;
 
 public class Tracer {
     public static void main(String[] args) {
@@ -47,7 +42,7 @@ public class Tracer {
                             String fileOutputPFM, String algorithm, boolean antialiasing,
                             boolean parallelAntialiasing, int nThreads)
             throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
-        long time = System.currentTimeMillis();
+
 
         Material skyMaterial = new Material(new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White));
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
@@ -104,6 +99,12 @@ public class Tracer {
             tracer = new ImageTracer(image, camera);
         }
 
+        createPfmImage(fileOutputPFM, algorithm, parallelAntialiasing, nThreads, world, image, tracer);
+
+
+    }
+
+    private static void createPfmImage(String fileOutputPFM, String algorithm, boolean parallelAntialiasing, int nThreads, World world, HDRImage image, ImageTracer tracer) throws InvalidMatrixException, IOException {
         switch (algorithm) {
             case "flat" -> tracer.fireAllRays(new FlatRenderer(world));
             case "onOff" -> tracer.fireAllRays(new OnOffRenderer(world));
@@ -117,8 +118,6 @@ public class Tracer {
         }
 
         image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
-        long time2 = System.currentTimeMillis();
-        System.out.println(time2 - time);
     }
 
 
@@ -137,10 +136,10 @@ public class Tracer {
     }
 
     public static void render(int width, int height, float angleDeg, boolean orthogonal,
-                            String fileOutputPFM, String algorithm, boolean antialiasing,
-                            boolean parallelAntialiasing, int nThreads)
+                                      String fileOutputPFM, String algorithm, boolean antialiasing,
+                                      boolean parallelAntialiasing, int nThreads)
             throws InvalidMatrixException, IOException, InvalidPfmFileFormatException, GrammarErrorException {
-        long time = System.currentTimeMillis();
+
 
         InputStream input = new FileInputStream("firstImage.txt");
 
@@ -160,20 +159,6 @@ public class Tracer {
         for (int i = 0; i < scene.objects.size();  ++i){
             world.addShape(scene.objects.get(i));
         }
-        switch (algorithm) {
-            case "flat" -> tracer.fireAllRays(new FlatRenderer(world));
-            case "onOff" -> tracer.fireAllRays(new OnOffRenderer(world));
-            case "pathTracer" -> {
-                if (parallelAntialiasing) {
-                    tracer.fireAllRaysParallel(new PathTracer(world), nThreads);
-                } else {
-                    tracer.fireAllRays(new PathTracer(world));
-                }
-            }
-        }
-
-        image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
-        long time2 = System.currentTimeMillis();
-        System.out.println(time2 - time);
+        createPfmImage(fileOutputPFM, algorithm, parallelAntialiasing, nThreads, world, image, tracer);
     }
 }
