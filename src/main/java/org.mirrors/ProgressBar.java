@@ -28,8 +28,12 @@ public class ProgressBar {
         // Calcola il tempo trascorso
         long elapsedTime = System.currentTimeMillis() - startTime;
 
+        // Calcola la velocità di avanzamento media
+        float averageSpeed = (float) elapsedTime / currentProgress;
+
         // Calcola il tempo stimato rimanente
-        long estimatedRemainingTime = (long) ((elapsedTime / progress) * (1 - progress));
+        long estimatedRemainingTime = (long) (averageSpeed * (totalProgress - currentProgress));
+
 
         int completedChars = (int) (progress * BAR_LENGTH);
         int remainingChars = BAR_LENGTH - completedChars;
@@ -84,7 +88,7 @@ public class ProgressBar {
     private void appendTime(StringBuilder sb, long millis) {
         long seconds = (millis / 1000) % 60;
         long minutes = (millis / (1000 * 60)) % 60;
-        long hours = (millis / (1000 * 60 * 60)) % 24;
+        long hours = (millis / (1000 * 60 * 60));
 
         if (hours > 0) {
             sb.append(hours).append("h ");
