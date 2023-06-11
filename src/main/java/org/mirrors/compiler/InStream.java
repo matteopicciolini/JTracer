@@ -286,6 +286,18 @@ public class InStream {
         return new Vec(x, y, z);
     }
 
+    public Point parsePoint(Scene scene) throws GrammarErrorException, IOException {
+        this.expectSymbol('[');
+        float x = this.expectNumber(scene);
+        this.expectSymbol(',');
+        float y = this.expectNumber(scene);
+        this.expectSymbol(',');
+        float z = this.expectNumber(scene);
+        this.expectSymbol(']');
+
+        return new Point(x, y, z);
+    }
+
     public Color parseColor(Scene scene) throws GrammarErrorException, IOException {
         this.expectSymbol('<');
         Token token = readToken();
@@ -440,7 +452,10 @@ public class InStream {
 
     public Box parseBox(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
-
+        Point min = this.parsePoint(scene);
+        expectSymbol(',');
+        Point max = this.parsePoint(scene);
+        expectSymbol(',');
         String materialName = this.expectIdentifier();
         if (!scene.materials.containsKey(materialName)) {
             throw new GrammarErrorException(this.location, "unknown material " + materialName);
@@ -450,7 +465,7 @@ public class InStream {
         Transformation transformation = this.parseTransformation(scene);
         this.expectSymbol(')');
 
-        return new Box(new Point(-0.5f, -0.5f, -0.5f), new Point(0.5f, 0.5f, 0.5f), transformation, scene.materials.get(materialName));
+        return new Box(min, max, transformation, scene.materials.get(materialName));
     }
 
 
