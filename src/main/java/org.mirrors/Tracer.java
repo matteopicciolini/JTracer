@@ -38,9 +38,7 @@ public class Tracer {
         img.writeLdrImage(out, "PNG", param.gamma);
     }
 
-    public static void demo(int width, int height, float angleDeg, boolean orthogonal,
-                            String fileOutputPFM, String algorithm, boolean antialiasing,
-                            boolean parallelAntialiasing, int nThreads)
+    public static void demo(Parameters parameters)
             throws InvalidMatrixException, IOException, InvalidPfmFileFormatException {
 
 
@@ -56,7 +54,7 @@ public class Tracer {
         //HDRImage worldImage = PfmCreator.readPfmImage(str);
         //Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
 
-        Transformation rotation = Transformation.rotationZ(angleDeg);
+        Transformation rotation = Transformation.rotationZ(parameters.angleDeg);
         World world = new World();
 
         //SKY
@@ -87,37 +85,37 @@ public class Tracer {
         translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
         world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
 
-        HDRImage image = new HDRImage(width, height);
-        Camera camera = orthogonal ?
-                new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
+        HDRImage image = new HDRImage(parameters.width, parameters.height);
+        Camera camera = parameters.orthogonal ?
+                new OrthogonalCamera((float) parameters.width/parameters.height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
+                new PerspectiveCamera(1f, (float) parameters.width/parameters.height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
 
         ImageTracer tracer;
-        if (antialiasing){
+        if (parameters.antialiasing){
             tracer = new ImageTracer(image, camera, 4, new PCG());
         }else{
             tracer = new ImageTracer(image, camera);
         }
 
-        createPfmImage(fileOutputPFM, algorithm, parallelAntialiasing, nThreads, world, image, tracer);
+        createPfmImageWithAlgorithm(parameters, world, image, tracer);
 
 
     }
 
-    private static void createPfmImage(String fileOutputPFM, String algorithm, boolean parallelAntialiasing, int nThreads, World world, HDRImage image, ImageTracer tracer) throws InvalidMatrixException, IOException {
-        switch (algorithm) {
-            case "flat" -> tracer.fireAllRays(new FlatRenderer(world));
-            case "onOff" -> tracer.fireAllRays(new OnOffRenderer(world));
+    private static void createPfmImageWithAlgorithm(Parameters parameters, World world, HDRImage image, ImageTracer tracer) throws InvalidMatrixException, IOException {
+        switch (parameters.algorithm) {
+            case "flat" -> tracer.fireAllRays(new FlatRenderer(world), parameters.progBarFlushFrequence);
+            case "onOff" -> tracer.fireAllRays(new OnOffRenderer(world), parameters.progBarFlushFrequence);
             case "pathTracer" -> {
-                if (parallelAntialiasing) {
-                    tracer.fireAllRaysParallel(new PathTracer(world), nThreads);
+                if (parameters.parallelAntialiasing) {
+                    tracer.fireAllRaysParallel(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit), parameters.nThreads, parameters.progBarFlushFrequence);
                 } else {
-                    tracer.fireAllRays(new PathTracer(world));
+                    tracer.fireAllRays(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit), parameters.progBarFlushFrequence);
                 }
             }
         }
 
-        image.writePfm(new FileOutputStream(fileOutputPFM), LITTLE_ENDIAN);
+        image.writePfm(new FileOutputStream(parameters.outputFileName), LITTLE_ENDIAN);
     }
 
 
@@ -135,21 +133,18 @@ public class Tracer {
         }
     }
 
-    public static void render(int width, int height, float angleDeg, boolean orthogonal,
-                                      String fileOutputPFM, String algorithm, boolean antialiasing,
-                                      boolean parallelAntialiasing, int nThreads)
+    public static void render(Parameters parameters)
             throws InvalidMatrixException, IOException, InvalidPfmFileFormatException, GrammarErrorException {
 
+        InputStream input = new FileInputStream(parameters.inputFileNameTXT);
+        InStream inStream = new InStream(input, parameters.inputFileNameTXT);
 
-        InputStream input = new FileInputStream("firstImage.txt");
-
-        InStream inStream = new InStream(input, "firstImage.txt");
         Scene scene = inStream.parseScene();
+        scene.camera.transformation = Transformation.rotationZ(parameters.angleDeg).times(scene.camera.transformation);
 
-        //Transformation rotation = Transformation.rotationZ(angleDeg);
-        HDRImage image = new HDRImage(width, height);
+        HDRImage image = new HDRImage(parameters.width, parameters.height);
         ImageTracer tracer;
-        if (antialiasing){
+        if (parameters.antialiasing){
             tracer = new ImageTracer(image, scene.camera, 4, new PCG());
         }else{
             tracer = new ImageTracer(image, scene.camera);
@@ -159,6 +154,6 @@ public class Tracer {
         for (int i = 0; i < scene.objects.size();  ++i){
             world.addShape(scene.objects.get(i));
         }
-        createPfmImage(fileOutputPFM, algorithm, parallelAntialiasing, nThreads, world, image, tracer);
+        createPfmImageWithAlgorithm(parameters, world, image, tracer);
     }
 }
