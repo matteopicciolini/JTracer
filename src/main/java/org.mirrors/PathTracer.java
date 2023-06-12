@@ -4,12 +4,22 @@ import java.util.Objects;
 
 import static java.lang.Math.max;
 import static org.mirrors.Global.Black;
+/**
 
+ This class represents a path tracer renderer that extends the Renderer class.
+ It is used to compute the color of a given ray by tracing its path through the scene.
+ */
 public class PathTracer extends Renderer{
     public PCG pcg;
     public int numOfRays;
     public int maxDepth;
     public int russianRouletteLimit;
+
+    /**
+     * Constructs a PathTracer object with a given world.
+     *
+     * @param world the world containing the scene to render
+     */
     public PathTracer(World world) {
         super(world);
         this.pcg = new PCG();
@@ -18,6 +28,16 @@ public class PathTracer extends Renderer{
         this.russianRouletteLimit = 3;
     }
 
+    /**
+     * Constructs a PathTracer object with the specified parameters.
+     *
+     * @param world                 the world containing the scene to render
+     * @param backgroundColor      the background color of the scene
+     * @param pcg                   the PCG (Pseudo Random Number Generator) to use
+     * @param numOfRays             the number of rays to trace for each intersection
+     * @param maxDepth              the maximum depth of recursion for ray tracing
+     * @param russianRouletteLimit  the depth at which Russian Roulette starts to be applied
+     */
     public PathTracer(World world, Color backgroundColor, PCG pcg, int numOfRays, int maxDepth, int russianRouletteLimit) {
         super(world, backgroundColor);
         this.pcg = pcg;
@@ -25,6 +45,15 @@ public class PathTracer extends Renderer{
         this.maxDepth = maxDepth;
         this.russianRouletteLimit = russianRouletteLimit;
     }
+
+    /**
+     * Constructs a PathTracer object with the specified parameters and default background color.
+     *
+     * @param world                 the world containing the scene to render
+     * @param numOfRays             the number of rays to trace for each intersection
+     * @param maxDepth              the maximum depth of recursion for ray tracing
+     * @param russianRouletteLimit  the depth at which Russian Roulette starts to be applied
+     */
     public PathTracer(World world, int numOfRays, int maxDepth, int russianRouletteLimit) {
         super(world);
         this.pcg = new PCG();
@@ -33,6 +62,9 @@ public class PathTracer extends Renderer{
         this.russianRouletteLimit = russianRouletteLimit;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Color call(Ray ray) throws InvalidMatrixException {
         if (ray.depth > this.maxDepth){
