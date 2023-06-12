@@ -10,6 +10,13 @@ import static org.mirrors.Global.*;
 
 import org.javatuples.Pair;
 
+
+/**
+
+ This class represents an input stream for reading characters from an InputStream.
+
+ It keeps track of the current position in the stream using a SourceLocation object.
+ */
 public class InStream {
     static public String SYMBOLS = "()<>[],*";
     static public String WHITESPACE = " \t\n\r";
@@ -48,16 +55,34 @@ public class InStream {
     }};
 
 
+    /**
 
+     Constructs an InStream object with a given InputStream and file name.
+     The initial position is set to line 1, column 1 of the specified file.
+     @param stream the InputStream to read characters from
+     @param fileName the name of the file being read
+     */
     public InStream(InputStream stream, String fileName) {
         this.stream = stream;
         this.location = new SourceLocation(fileName, 1, 1);
     }
+
+    /**
+
+     Constructs an InStream object with a given InputStream.
+     The initial position is set to line 1, column 1.
+     @param stream the InputStream to read characters from
+     */
     public InStream(InputStream stream) {
         this.stream = stream;
         this.location = new SourceLocation("", 1, 1);
     }
 
+    /**
+
+     Updates the current position in the stream based on the given character.
+     @param ch the character to update the position with
+     */
     private void updatePos(char ch) {
         if (ch == '\0') {
             return;
@@ -71,6 +96,14 @@ public class InStream {
         }
     }
 
+    /**
+
+     Reads the next character from the stream.
+
+     @return the next character read
+
+     @throws IOException if an I/O error occurs
+     */
     public char readChar() throws IOException {
         char ch;
         if (this.savedChar != '\0') {
@@ -86,12 +119,23 @@ public class InStream {
         return ch;
     }
 
+    /**
+
+     Unreads the specified character, allowing it to be read again.
+     @param ch the character to unread
+     */
     public void unreadChar(char ch) {
         assert (this.savedChar == '\0');
         this.savedChar = ch;
         this.location = savedLocation.copy();
     }
 
+    /**
+
+     Skips whitespaces and comments in the input stream.
+     Comments are identified by the '#' symbol.
+     @throws IOException if an I/O error occurs
+     */
     public void skipWhitespacesAndComments() throws IOException {
         char ch = this.readChar();
         while (" \t\n\r".contains(String.valueOf(ch)) || (ch == '#')) {
@@ -107,6 +151,13 @@ public class InStream {
         this.unreadChar(ch);
     }
 
+    /**
+     Parses a string token from the input stream starting at the given token location.
+     @param tokenLocation the location of the string token
+     @return the parsed StringToken
+     @throws IOException if an I/O error occurs
+     @throws GrammarErrorException if the string token is not properly terminated
+     */
     private StringToken parseStringToken(SourceLocation tokenLocation) throws IOException, GrammarErrorException {
         String token = "";
 
@@ -123,7 +174,15 @@ public class InStream {
         return new StringToken(tokenLocation, token.toString());
     }
 
+    /**
 
+     Parses a floating-point number token from the input stream starting with the given first character and token location.
+     @param firstChar the first character of the number token
+     @param tokenLocation the location of the number token
+     @return the parsed LiteralNumberToken
+     @throws IOException if an I/O error occurs
+     @throws GrammarErrorException if the floating-point number is invalid
+     */
     public LiteralNumberToken parseFloatToken(char firstChar, SourceLocation tokenLocation) throws IOException, GrammarErrorException {
         String token = String.valueOf(firstChar);
 
@@ -145,7 +204,13 @@ public class InStream {
         }
     }
 
-
+    /**
+     Parses a keyword or identifier token from the input stream starting with the given first character and token location.
+     @param firstChar the first character of the token
+     @param tokenLocation the location of the token
+     @return the parsed Token
+     @throws IOException if an I/O error occurs
+     */
     public Token parseKeywordOrIdentifierToken(char firstChar, SourceLocation tokenLocation) throws IOException {
 
         String token = String.valueOf(firstChar);
@@ -192,6 +257,12 @@ public class InStream {
         };
     }
 
+    /**
+     Reads the next token from the input stream.
+     @return the next Token read
+     @throws IOException if an I/O error occurs
+     @throws GrammarErrorException if a grammar error is encountered
+     */
     public Token readToken() throws IOException, GrammarErrorException {
         if (savedToken != null) {
             Token result = this.savedToken;
@@ -219,11 +290,21 @@ public class InStream {
         }
     }
 
+    /**
+     Unreads the specified token, allowing it to be read again.
+     @param token the token to unread
+     */
     public void unreadToken(Token token){
         assert (this.savedToken == null);
         this.savedToken = token;
     }
 
+    /**
+     Expects the next token to be a specific symbol, otherwise throws a GrammarErrorException.
+     @param symbol the expected symbol
+     @throws GrammarErrorException if the next token is not the expected symbol
+     @throws IOException if an I/O error occurs
+     */
     public void expectSymbol(char symbol) throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof SymbolToken) || ((SymbolToken) token).symbol != symbol) {
@@ -231,6 +312,13 @@ public class InStream {
         }
     }
 
+    /**
+     Expects one of the specified keywords and returns the matched keyword.
+     @param keywords the list of keywords to expect
+     @return the matched keyword
+     @throws GrammarErrorException if the next token is not a keyword or does not match any of the specified keywords
+     @throws IOException if an I/O error occurs
+     */
     public KeywordEnum expectKeywords(List<KeywordEnum> keywords) throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof KeywordToken)) {
@@ -244,6 +332,14 @@ public class InStream {
         return ((KeywordToken) token).keyword;
     }
 
+    /**
+
+     Expects a number token or an identifier token representing a float variable, and returns the corresponding float value.
+     @param scene the scene object containing float variables
+     @return the float value
+     @throws GrammarErrorException if the next token is not a number or an identifier
+     @throws IOException if an I/O error occurs
+     */
     public float expectNumber(Scene scene) throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (token instanceof LiteralNumberToken) {
@@ -258,6 +354,13 @@ public class InStream {
         throw new GrammarErrorException(token.location, "got '" + token + "' instead of a number");
     }
 
+    /**
+
+     Expects a string token and returns the string value.
+     @return the string value
+     @throws GrammarErrorException if the next token is not a string
+     @throws IOException if an I/O error occurs
+     */
     public String expectString() throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof StringToken)) {
@@ -266,6 +369,13 @@ public class InStream {
         return token.toString();
     }
 
+    /**
+
+     Expects an identifier token and returns the identifier string.
+     @return the identifier string
+     @throws GrammarErrorException if the next token is not an identifier
+     @throws IOException if an I/O error occurs
+     */
     public String expectIdentifier() throws GrammarErrorException, IOException {
         Token token = this.readToken();
         if (!(token instanceof IdentifierToken)) {
@@ -274,6 +384,13 @@ public class InStream {
         return ((IdentifierToken) token).identifier;
     }
 
+    /**
+     Parses a vector from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Vec object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     */
     public Vec parseVector(Scene scene) throws GrammarErrorException, IOException {
         this.expectSymbol('[');
         float x = this.expectNumber(scene);
@@ -286,6 +403,13 @@ public class InStream {
         return new Vec(x, y, z);
     }
 
+    /**
+     Parses a point from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Point object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     */
     public Point parsePoint(Scene scene) throws GrammarErrorException, IOException {
         this.expectSymbol('[');
         float x = this.expectNumber(scene);
@@ -298,6 +422,13 @@ public class InStream {
         return new Point(x, y, z);
     }
 
+    /**
+     Parses a color from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Color object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     */
     public Color parseColor(Scene scene) throws GrammarErrorException, IOException {
         this.expectSymbol('<');
         Token token = readToken();
@@ -325,6 +456,13 @@ public class InStream {
         return result;
     }
 
+    /**
+     Parses a pigment from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Pigment object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     */
     public Pigment parsePigment(Scene scene) throws GrammarErrorException, IOException {
         KeywordEnum keyword = this.expectKeywords(new ArrayList<>(Arrays.asList(KeywordEnum.UNIFORM, KeywordEnum.CHECKERED, KeywordEnum.IMAGE)));
 
@@ -357,6 +495,13 @@ public class InStream {
         return result;
     }
 
+    /**
+     Parses a BRDF (Bidirectional Reflectance Distribution Function) from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed BRDF object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     */
     public BRDF parseBRDF(Scene scene) throws GrammarErrorException, IOException {
         KeywordEnum BRDFKeyword = this.expectKeywords(new ArrayList<>(List.of(KeywordEnum.DIFFUSE, KeywordEnum.SPECULAR)));
 
@@ -373,6 +518,13 @@ public class InStream {
         }
     }
 
+    /**
+     Parses a material from the input stream.
+     @param scene the scene object containing float variables
+     @return a Pair object containing the material name and the parsed Material object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     */
     public Pair<String, Material> parseMaterial(Scene scene) throws GrammarErrorException, IOException {
         String name = this.expectIdentifier();
 
@@ -385,6 +537,14 @@ public class InStream {
         return new Pair<>(name, new Material(brdf, emittedRadiance));
     }
 
+    /**
+     Parses a transformation from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Transformation object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     @throws InvalidMatrixException if the transformation matrix is invalid
+     */
     public Transformation parseTransformation(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         Transformation result = new Transformation();
 
@@ -435,6 +595,14 @@ public class InStream {
         return result;
     }
 
+    /**
+     Parses a sphere from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Sphere object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     @throws InvalidMatrixException if the transformation matrix is invalid
+     */
     public Sphere parseSphere(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
 
@@ -449,6 +617,15 @@ public class InStream {
 
         return new Sphere(transformation, scene.materials.get(materialName));
     }
+
+    /**
+     Parses a box from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Box object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     @throws InvalidMatrixException if the transformation matrix is invalid
+     */
 
     public Box parseBox(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
@@ -468,7 +645,14 @@ public class InStream {
         return new Box(min, max, transformation, scene.materials.get(materialName));
     }
 
-
+    /**
+     Parses a plane from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Plane object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     @throws InvalidMatrixException if the transformation matrix is invalid
+     */
     public Plain parsePlane(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
 
@@ -484,6 +668,14 @@ public class InStream {
         return new Plain(transformation, scene.materials.get(materialName));
     }
 
+    /**
+     Parses a camera from the input stream.
+     @param scene the scene object containing float variables
+     @return the parsed Camera object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     @throws InvalidMatrixException if the transformation matrix is invalid
+     */
     public Camera parseCamera(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
         KeywordEnum typeKeyword = expectKeywords(Arrays.asList(KeywordEnum.PERSPECTIVE, KeywordEnum.ORTHOGONAL));
@@ -507,6 +699,13 @@ public class InStream {
         return result;
     }
 
+    /**
+     Parses the scene from the input stream.
+     @return the parsed Scene object
+     @throws GrammarErrorException if a grammar error is encountered
+     @throws IOException if an I/O error occurs
+     @throws InvalidMatrixException if the transformation matrix is invalid
+     */
     public Scene parseScene() throws GrammarErrorException, IOException, InvalidMatrixException {
         Scene scene = new Scene();
 
@@ -548,7 +747,5 @@ public class InStream {
         }
         return scene;
     }
-
-
 }
 
