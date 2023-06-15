@@ -145,7 +145,7 @@ public class Tracer {
         HDRImage image = new HDRImage(parameters.width, parameters.height);
         ImageTracer tracer;
         if (parameters.antialiasing){
-            tracer = new ImageTracer(image, scene.camera, 4, new PCG());
+            tracer = new ImageTracer(image, scene.camera, parameters.samplesPerSide, new PCG());
         }else{
             tracer = new ImageTracer(image, scene.camera);
         }

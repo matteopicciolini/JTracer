@@ -78,7 +78,7 @@ public class Commands implements Runnable{
 
     @Command(name = "render", description = "JTracer render.", mixinStandardHelpOptions = true)
     public void render(
-            @Option(names = {"-i", "--input"}, required = true,description = "string: Path of the input TXT file. REQUIRED.") String inputFileNameTXT,
+            @Option(names = {"-i", "--input"}, required = true, description = "string: Path of the input TXT file. REQUIRED.") String inputFileNameTXT,
             @Option(names = {"-w", "--width"}, description = "int: Width of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer width,
             @Option(names = {"--height"}, description = "int: Height of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer height,
             @Option(names = {"-a", "--angle-deg"}, description = "float: Angle of view. Default: ${DEFAULT-VALUE}.", defaultValue = "0") Float angleDeg,
@@ -90,6 +90,7 @@ public class Commands implements Runnable{
             @Option(names = {"--nThreads"}, description = "int: Number of threads to use for parallelization. Default: ${DEFAULT-VALUE}.", defaultValue = "8") Integer nThreads,
             @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
             @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
+            @Option(names = {"-s", "--samplePerSide"}, description = "int: In antialiasing algorithm, the number of samples per side. Default: ${DEFAULT-VALUE}.", defaultValue = "4") Integer samplesPerSide,
             //ProgressBar
             @Option(names = {"--flushFrequence"}, description = "int: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: ${DEFAULT-VALUE}", defaultValue = "100") Integer progBarFlushFrequence,
             //Screen features
@@ -108,8 +109,8 @@ public class Commands implements Runnable{
 
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(inputFileNameTXT, width, height, angleDeg,
-                outputFileName, algorithm, antialiasing, parallelAntialiasing, nThreads, convertInPNG,
-                deletePFM, progBarFlushFrequence, gamma, factor, luminosity, numOfRays, maxDepth, russianRouletteLimit);
+                outputFileName,  algorithm, antialiasing, parallelAntialiasing, nThreads, convertInPNG,
+                deletePFM, samplesPerSide, progBarFlushFrequence, gamma, factor, luminosity, numOfRays, maxDepth, russianRouletteLimit);
 
         try {
             Tracer.render(parameters);

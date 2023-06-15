@@ -45,20 +45,20 @@ public class Box extends Shape {
         int maxDir = -1;
 
         for (int i = 0; i < 3; i++) {
-            float tmin = (min.get(i) - iray.origin.get(i)) / iray.dir.get(i);
-            float tmax = (max.get(i) - iray.origin.get(i)) / iray.dir.get(i);
+            float tMin = (min.get(i) - iray.origin.get(i)) / iray.dir.get(i);
+            float tMax = (max.get(i) - iray.origin.get(i)) / iray.dir.get(i);
 
-            if (tmin > tmax) {
-                float t = tmin;
-                tmin = tmax;
-                tmax = t;
+            if (tMin > tMax) {
+                float t = tMin;
+                tMin = tMax;
+                tMax = t;
             }
-            if (tmin > t1) {
-                t1 = tmin;
+            if (tMin > t1) {
+                t1 = tMin;
                 minDir = i;
             }
-            if (tmax < t2) {
-                t2 = tmax;
+            if (tMax < t2) {
+                t2 = tMax;
                 maxDir = i;
             }
 
@@ -107,31 +107,21 @@ public class Box extends Shape {
             throw new RuntimeException();
         }
 
-        Vec2d result;
-        switch (face) {
-            case 0:
-                result = new Vec2d(0.50F + (max.z - hit.z) / (max.z - min.z) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
-                break;
-            case 1:
-                result = new Vec2d((hit.z - min.z) / (max.z - min.z) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
-                break;
-            case 2:
-                result = new Vec2d(0.25F + (hit.x - min.x) / (max.x - min.x) * 0.25F, 0.50F - (max.z - hit.z) / (max.z - min.z) * 0.25F);
-                break;
-            case 3:
-                result = new Vec2d(0.25F + (hit.x - min.x) / (max.x - min.x) * 0.25F, 1.00F - (hit.z - min.z) / (max.z - min.z) * 0.25F);
-                break;
-            case 4:
-                result = new Vec2d(0.25F + (hit.x - min.x) / (max.x - min.x) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
-                break;
-            case 5:
-                result = new Vec2d(0.75F + (max.x - hit.x) / (max.x - min.x) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
-                break;
-            default:
-                throw new RuntimeException();
-        }
-
-        return result;
+        return switch (face) {
+            case 0 ->
+                    new Vec2d(0.50F + (max.z - hit.z) / (max.z - min.z) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
+            case 1 ->
+                    new Vec2d((hit.z - min.z) / (max.z - min.z) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
+            case 2 ->
+                    new Vec2d(0.25F + (hit.x - min.x) / (max.x - min.x) * 0.25F, 0.50F - (max.z - hit.z) / (max.z - min.z) * 0.25F);
+            case 3 ->
+                    new Vec2d(0.25F + (hit.x - min.x) / (max.x - min.x) * 0.25F, 1.00F - (hit.z - min.z) / (max.z - min.z) * 0.25F);
+            case 4 ->
+                    new Vec2d(0.25F + (hit.x - min.x) / (max.x - min.x) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
+            case 5 ->
+                    new Vec2d(0.75F + (max.x - hit.x) / (max.x - min.x) * 0.25F, 0.75F - (hit.y - min.y) / (max.y - min.y) * 0.25F);
+            default -> throw new RuntimeException();
+        };
     }
 
 
