@@ -25,6 +25,7 @@ public class Parameters {
     public int progBarFlushFrequence;
     public int numOfRays;
     public int maxDepth;
+    public int samplesPerSide;
 
     public int russianRouletteLimit;
     public Parameters(float factor, float gamma, String inputFileName, String outputFileName){
@@ -37,7 +38,7 @@ public class Parameters {
     public Parameters(String inputFileNameTXT, int width, int height, float angleDeg,
                       String outputFileName, String algorithm, boolean antialiasing,
                       boolean parallelAntialiasing, int nThreads, boolean convertInPNG,
-                      boolean deletePFM, int progBarFlushFrequence, float gamma,
+                      boolean deletePFM, int samplesPerSide, int progBarFlushFrequence, float gamma,
                       float factor, Float luminosity, int numOfRays, int maxDepth,
                       int russianRouletteLimit){
         this.inputFileNameTXT = inputFileNameTXT;
@@ -51,6 +52,7 @@ public class Parameters {
         this.nThreads = nThreads;
         this.convertInPNG = convertInPNG;
         this.deletePFM = deletePFM;
+        this.samplesPerSide = samplesPerSide;
         this.progBarFlushFrequence = progBarFlushFrequence;
         this.gamma = gamma;
         this.factor = factor;
