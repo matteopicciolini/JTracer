@@ -21,7 +21,7 @@ class FlatRendererTest {
         World world = new World();
         world.addShape(sphere);
         FlatRenderer renderer = new FlatRenderer(world);
-        tracer.fireAllRays(renderer);
+        tracer.fireAllRays(renderer, 10);
 
         assertTrue(image.getPixel(0,0).isClose(Black));
         assertTrue(image.getPixel(1,0).isClose(Black));

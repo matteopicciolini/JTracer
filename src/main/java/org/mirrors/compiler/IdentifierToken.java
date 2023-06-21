@@ -1,11 +1,11 @@
 package org.mirrors.compiler;
 
 public class IdentifierToken extends Token {
-    private String identifier;
+    public String identifier;
 
-    public IdentifierToken(SourceLocation location, String s) {
+    public IdentifierToken(SourceLocation location, String identifier) {
         super(location);
-        this.identifier = s;
+        this.identifier = identifier;
     }
 
     @Override
