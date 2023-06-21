@@ -68,8 +68,6 @@ public class Vec extends OrientedObject {
     public Vec cross(Vec other){
         return cross(this, other, Vec.class);
     }
-    public Vec dot(Vec other, Vec vec, Class<Vec> vecClass){
-        return dot(this, other, Vec.class);
-    }
+
     public Normal toNormal(){return new Normal(this.x , this.y, this.z);}
 }

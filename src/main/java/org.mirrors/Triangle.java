@@ -39,41 +39,45 @@ public class Triangle extends Shape{
 
         // check if the ray and plane are parallel.
 
-        if (Math.abs(N.dot(ray.dir)) < 1e-5) // almost 0
-            return false; // they are parallel, so they don't intersect!
+        if (Math.abs(N.dot(ray.dir)) < 1e-5)
+            return false;
 
         // compute d parameter using equation 2
-        float d = -N.dotProduct(v0);
+        float d = -N.dot(v0);
 
         // compute t (equation 3)
-        t = -(N.dotProduct(orig) + d) / NdotRayDirection;
+        float t = -(N.dot(ray.origin) + d) / N.dot(ray.dir);
 
         // check if the triangle is behind the ray
-        if (t < 0) return false; // the triangle is behind
+        if (t < 0)
+            return false;
 
         // compute the intersection point using equation 1
-        Vec3f P = orig + t * dir;
+        Vec P = ray.origin.sum(ray.dir.dot(t));
 
         // Step 2: inside-outside test
-        Vec3f C; // vector perpendicular to triangle's plane
+        Vec C; // vector perpendicular to triangle's plane
 
         // edge 0
-        Vec3f edge0 = v1 - v0;
-        Vec3f vp0 = P - v0;
-        C = edge0.crossProduct(vp0);
-        if (N.dotProduct(C) < 0) return false; // P is on the right side
+        Vec edge0 = v1.minus(v0);
+        Vec vp0 = P.minus(v0);
+        C = edge0.cross(vp0);
+        if (N.dot(C) < 0)
+            return false; // P is on the right side
 
         // edge 1
-        Vec3f edge1 = v2 - v1;
-        Vec3f vp1 = P - v1;
-        C = edge1.crossProduct(vp1);
-        if (N.dotProduct(C) < 0)  return false; // P is on the right side
+        Vec edge1 = v2.minus(v1);
+        Vec vp1 = P.minus(v1);
+        C = edge1.cross(vp1);
+        if (N.dot(C) < 0)
+            return false; // P is on the right side
 
         // edge 2
-        Vec3f edge2 = v0 - v2;
-        Vec3f vp2 = P - v2;
-        C = edge2.crossProduct(vp2);
-        if (N.dotProduct(C) < 0) return false; // P is on the right side;
+        Vec edge2 = v0.minus(v2);
+        Vec vp2 = P.minus(v2);
+        C = edge2.cross(vp2);
+        if (N.dot(C) < 0)
+            return false; // P is on the right side;
 
         return true; // this ray hits the triangle
     }
