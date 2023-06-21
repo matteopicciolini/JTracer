@@ -86,7 +86,8 @@ public class Box extends Shape {
             case 2 -> VecZ.toNormal();
             default -> new Normal();
         };
-        return (norm.toVec().dot(rayDir) >= 0) ? (Normal) norm.neg() : norm;
+        Vec other;
+        return (norm.toVec().dot(rayDir, other, Vec.class) >= 0) ? (Normal) norm.neg() : norm;
     }
 
     private Vec2d toSurPoint(Point hit, Normal normal) {

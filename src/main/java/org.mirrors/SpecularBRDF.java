@@ -32,7 +32,7 @@ public class SpecularBRDF extends BRDF{
         rayDir.normalize();
         Vec normalVec = normal.toVec();
         normalVec.normalize();
-        float dotProd = normalVec.dot(rayDir);
+        float dotProd = normalVec.dot(rayDir, other, Vec.class);
 
         return new Ray(
                 interPoint,
