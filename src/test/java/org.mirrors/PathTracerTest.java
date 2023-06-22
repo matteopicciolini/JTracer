@@ -24,7 +24,7 @@ class PathTracerTest {
 
             world.addShape(new Sphere(enclosureMaterial));
 
-            PathTracer pathTracer = new PathTracer(world, Black, pcg, 1, 100, 101);
+            PathTracer pathTracer = new PathTracer(world, Black, pcg, 5, 100, 101);
             Ray ray = new Ray(new Point(0.f, 0.f, 0.f), new Vec(1.f, 0.f, 0.f));
             Color color = pathTracer.call(ray);
 

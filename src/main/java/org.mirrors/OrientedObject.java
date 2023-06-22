@@ -40,10 +40,11 @@ public abstract class OrientedObject extends Geometry {
     /**
      * Returns the dot product of the current OrientedObject and the input OrientedObject.
      *
-     * @param other The OrientedObject to calculate the dot product with.
+     * @param other    The OrientedObject to calculate the dot product with.
+     * @param vecClass
      * @return The dot product of the current OrientedObject and the input OrientedObject.
      */
-    public float dot(OrientedObject other) {
+    public float dot(OrientedObject other, Class<Vec> vecClass) {
         return (this.x * other.x +
                 this.y * other.y +
                 this.z * other.z
@@ -65,7 +66,7 @@ public abstract class OrientedObject extends Geometry {
      * @return The squared Euclidean norm of the current OrientedObject.
      */
     public float squaredNorm(){
-        return this.dot(this);
+        return this.dot(this, Vec.class);
     }
 
     /**

@@ -1,12 +1,9 @@
 package org.mirrors;
 
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Triangle extends Shape{
-
-    public Triangle() {
-        super();
-    }
     public Triangle(Transformation transformation) {
         super(transformation);
     }
@@ -16,76 +13,82 @@ public class Triangle extends Shape{
     public Triangle(Transformation transformation, Material material) {
         super(transformation, material);
     }
-    private Vec v0;  // Vertice 0
-    private Vec v1;  // Vertice 1
-    private Vec v2;  // Vertice 2
-    private Color color;  // Colore del triangolo
 
-    public Triangle(Vec v0, Vec v1, Vec v2, Color color) {
+    public Vec v0;  // Vertice 0
+    public Vec v1;  // Vertice 1
+    public Vec v2;  // Vertice 2
+    public Vec e1;  // lato 1
+    public Vec e2;  // lato 2
+    public Normal norm;
+
+    public Triangle(Vec v0, Vec v1, Vec v2, Material material) {
+        super(material);
         this.v0 = v0;
         this.v1 = v1;
         this.v2 = v2;
-        this.color = color;
+    }
+    public Triangle(Vec v0, Vec v1, Vec v2) {
+        this.v0 = v0;
+        this.v1 = v1;
+        this.v2 = v2;
     }
 
     public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+        // Applica la trasformazione inversa al raggio
+        Ray iray = transformation.inverse().times(ray);
+        Normal norm= calculateNormal();
 
-// compute the plane's normal
+        // Prodotto vettoriale tra direzione del raggio e il secondo lato del triangolo
+        Vec pvec = iray.dir.cross(e2);
 
-        Normal N = calculateNormal(); // N
-        float area = calculateTriangleArea(v0, v1, v2);
+        // Calcola determinante tra il lato del triangolo e pvec
+        float det = e1.dot(pvec, Vec.class);
 
-        // Step 1: finding P
+        // Condizione di parallelismo
+        if (Math.abs(det) < 1e-5) {return null;}
 
-        // check if the ray and plane are parallel.
+        float invDet = 1.0f / det;
 
-        if (Math.abs(N.dot(ray.dir)) < 1e-5)
-            return false;
+        // Calcola il vettore dal punto di origine del raggio al primo vertice del triangolo
+        Vec tvec = iray.origin.minus(v0).toVec();
 
-        // compute d parameter using equation 2
-        float d = -N.dot(v0);
+        // Calcola il parametro u dell'intersezione del raggio con il triangolo
+        float u = tvec.dot(pvec, Vec.class) * invDet;
 
-        // compute t (equation 3)
-        float t = -(N.dot(ray.origin) + d) / N.dot(ray.dir);
+        // Controlla se il parametro u è fuori dai limiti del triangolo
+        if (u < 0 || u > 1) {return null;}
 
-        // check if the triangle is behind the ray
-        if (t < 0)
-            return false;
+        // Calcola il prodotto vettoriale tra il vettore tvec e il primo lato del triangolo
+        Vec qvec = tvec.cross(e1);
 
-        // compute the intersection point using equation 1
-        Vec P = ray.origin.sum(ray.dir.dot(t));
+        // Calcola il parametro v dell'intersezione del raggio con il triangolo
+        float v = iray.dir.dot(qvec, Vec.class) * invDet;
 
-        // Step 2: inside-outside test
-        Vec C; // vector perpendicular to triangle's plane
+        // Controlla se il parametro v è fuori dai limiti del triangolo
+        if (v < 0 || u + v > 1) {return null;}
 
-        // edge 0
-        Vec edge0 = v1.minus(v0);
-        Vec vp0 = P.minus(v0);
-        C = edge0.cross(vp0);
-        if (N.dot(C) < 0)
-            return false; // P is on the right side
+        // Calcola il parametro t dell'intersezione del raggio con il triangolo
+        float t = e2.dot(qvec, Vec.class) * invDet;
 
-        // edge 1
-        Vec edge1 = v2.minus(v1);
-        Vec vp1 = P.minus(v1);
-        C = edge1.cross(vp1);
-        if (N.dot(C) < 0)
-            return false; // P is on the right side
+        // Controlla se l'intersezione è dietro il punto di origine del raggio o oltre il limite massimo
+        if (t < iray.tMin || t > iray.tMax) {return null;}
 
-        // edge 2
-        Vec edge2 = v0.minus(v2);
-        Vec vp2 = P.minus(v2);
-        C = edge2.cross(vp2);
-        if (N.dot(C) < 0)
-            return false; // P is on the right side;
+        // Calcola il punto di intersezione nel sistema di coordinate del mondo
+        Point point = iray.at(t);
 
-        return true; // this ray hits the triangle
+        // Applica la trasformazione al punto di intersezione e alla normale
+        point = (Point) transformation.times(point);
+        Normal normal = (Normal) transformation.times(norm);
+
+        // Calcola le coordinate di superficie per il punto di intersezione
+        Vec2d surfacePoint = calculateSurfacePoint(point);
+        return new HitRecord(point, normal, surfacePoint, t, ray, this);
     }
-        private Normal calculateNormal() {
+        public Normal calculateNormal() {
             // Calcola il vettore normale al piano del triangolo utilizzando il prodotto vettoriale tra due lati
-            Vec side1 = v1.minus(v0);
-            Vec side2 = v2.minus(v0);
-            Normal norm = (side1.cross(side2)).toNormal();
+            e1 = v1.minus(v0);
+            e2 = v2.minus(v0);
+            norm = (e1.cross(e2)).toNormal();
             norm.normalize();
             return norm;
         }
@@ -94,12 +97,33 @@ public class Triangle extends Shape{
             // Calcola l'area del triangolo utilizzando il prodotto vettoriale tra due lati
             Vec side1 = p1.minus(p0);
             Vec side2 = p2.minus(p0);
-            return side1.dot(side2);
+            return side1.dot(side2, Vec.class);
     }
 
+    public Vec2d calculateSurfacePoint(Point hit){
+        // Calcola le coordinate di superficie (uv) dei vertici.
+        Vec2d uv0 = new Vec2d(0.0f, 0.0f);
+        Vec2d uv1 = new Vec2d(1.0f, 0.0f);
+        Vec2d uv2 = new Vec2d(0.0f, 1.0f);
 
-    public Color getColor() {
-        return color;
+        // Calcola i pesi w0, w1, w2 usando la formula del baricentro.
+
+        float areaABC = calculateTriangleArea(v0, v1, v2);
+        float areaPBC = calculateTriangleArea(hit.toVec(), v1, v2);
+        float areaPCA = calculateTriangleArea(v0, hit.toVec(), v2);
+        float areaPAB = calculateTriangleArea(v0, v1, hit.toVec());
+
+        // Calcola i pesi dividendo le aree relative.
+        float w0 = areaPBC / areaABC;
+        float w1 = areaPCA / areaABC;
+        float w2 = areaPAB / areaABC;
+
+        // Calcola le coordinate di superficie (uv) come combinazioni lineari dei vertici.
+        float u = w0 * uv0.u + w1 * uv1.u + w2 * uv2.u;
+        float v = w0 * uv0.v + w1 * uv1.v + w2 * uv2.v;
+
+        return new Vec2d(u, v);
     }
+
 }
 

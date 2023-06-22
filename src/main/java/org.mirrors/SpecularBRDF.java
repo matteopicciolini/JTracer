@@ -16,8 +16,8 @@ public class SpecularBRDF extends BRDF{
         normal.normalize();
         indDir.normalize();
         outDir.normalize();
-        float thetaIn = (float) Math.acos(normal.dot(indDir));
-        float thetaOut = (float) Math.acos(normal.dot(outDir));
+        float thetaIn = (float) Math.acos(normal.dot(indDir, Vec.class));
+        float thetaOut = (float) Math.acos(normal.dot(outDir, Vec.class));
 
 
         if (Math.abs(thetaIn - thetaOut) < this.thresholdAngle)
@@ -32,7 +32,7 @@ public class SpecularBRDF extends BRDF{
         rayDir.normalize();
         Vec normalVec = normal.toVec();
         normalVec.normalize();
-        float dotProd = normalVec.dot(rayDir, other, Vec.class);
+        float dotProd = normalVec.dot(rayDir, Vec.class);
 
         return new Ray(
                 interPoint,

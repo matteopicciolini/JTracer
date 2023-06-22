@@ -37,7 +37,7 @@ public class Sphere extends Shape{
     public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
         Ray invRay = ray.transform(this.transformation.inverse());
         Vec originVec = invRay.origin.toVec();
-        float b = originVec.dot(invRay.dir, other, Vec.class);
+        float b = originVec.dot(invRay.dir, Vec.class);
         float a = invRay.dir.squaredNorm();
         float c = originVec.squaredNorm() - 1f;
         float delta = b * b - a * c;
@@ -112,7 +112,7 @@ public class Sphere extends Shape{
      * @return A Normal object representing the normal of the sphere at the given point.
      */
     private Normal sphereNormal(Point point, Vec rayDir){
-        return point.toVec().dot(rayDir, other, Vec.class) < 0.f ?
+        return point.toVec().dot(rayDir, Vec.class) < 0.f ?
                 new Normal(point.x, point.y, point.z) :
                 new Normal(-point.x, -point.y, -point.z);
     }
