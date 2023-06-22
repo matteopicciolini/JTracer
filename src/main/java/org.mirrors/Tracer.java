@@ -86,7 +86,11 @@ public class Tracer {
         ArrayList<Vec> vertices = new ArrayList<>();
         vertices.add(new Vec(-0.6f, 0.1f, 0.f));
         vertices.add(new Vec(-0.7f, 0.00f, 0));
-        vertices.add(new Vec(-0.6f, -0.2f, 0));
+        vertices.add(new Vec(-0.6f, -0.1f, 0));
+        vertices.add(new Vec(-0.65f, 0, 0.12f));
+        vertices.add(new Vec(-0.55f, 0.07f, 0.15f));
+        vertices.add(new Vec(-0.75f, 0.05f, 0.2f));
+        vertices.add(new Vec(-0.7f, -0.05f, 0.f));
         vertices.add(new Vec(-0.65f, 0, 0.15f));
 
         TriangleMesh tetra = new TriangleMesh(vertices, mirrorMaterial);
