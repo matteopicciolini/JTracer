@@ -21,17 +21,23 @@ public class TriangleMesh extends Shape{
     public void createTetrahedron() {
 
 
-        // Creazione dei triangoli del tetraedro
-        Triangle t0 = new Triangle(vertices.get(0), vertices.get(1), vertices.get(2), material);
-        Triangle t1 = new Triangle(vertices.get(0), vertices.get(2), vertices.get(3), material);
-        Triangle t2 = new Triangle(vertices.get(0), vertices.get(3), vertices.get(1), material);
-        Triangle t3 = new Triangle(vertices.get(1), vertices.get(3), vertices.get(2), material);
+        int numVertices = vertices.size();
 
-        // Aggiunta dei triangoli alla lista
-        triangles.add(t0);
-        triangles.add(t1);
-        triangles.add(t2);
-        triangles.add(t3);
+        // Genera i triangoli
+        for (int i = 0; i < numVertices; i++) {
+            Vec v0 = vertices.get(i);
+
+            for (int j = i + 1; j < numVertices; j++) {
+                Vec v1 = vertices.get(j);
+
+                for (int k = j + 1; k < numVertices; k++) {
+                    Vec v2 = vertices.get(k);
+
+                    Triangle triangle = new Triangle(v0, v1, v2, material);
+                    triangles.add(triangle);
+                }
+            }
+        }
     }
 
     public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
