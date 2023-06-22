@@ -4,6 +4,8 @@ import org.mirrors.compiler.GrammarErrorException;
 import org.mirrors.compiler.InStream;
 import org.mirrors.compiler.Scene;
 import java.io.*;
+import java.util.ArrayList;
+
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.mirrors.Global.*;
 
@@ -63,7 +65,7 @@ public class Tracer {
         world.addShape(new Sphere(translation.times(rescale), skyMaterial));
 
         //CUBE
-        translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
+       /* translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
         world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
                 translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), DiffuseNavy));
 
@@ -74,16 +76,30 @@ public class Tracer {
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
         world.addShape(new Sphere(translation.times(rescale), groundMaterial));
-
+*/
         //SPHERE 2
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
-        translation = Transformation.translation(new Vec(0.4f, 0.3f, 0.0f));
+        translation = Transformation.translation(new Vec(-0.4f, 0.3f, 0.0f));
         world.addShape(new Sphere(translation.times(rescale), sphereMaterial2));
 
+        //add tetrahedron
+        ArrayList<Vec> vertices = new ArrayList<>();
+        vertices.add(new Vec(-0.6f, 0.1f, 0.f));
+        vertices.add(new Vec(-0.7f, 0.00f, 0));
+        vertices.add(new Vec(-0.6f, -0.2f, 0));
+        vertices.add(new Vec(-0.65f, 0, 0.15f));
+
+        TriangleMesh tetra = new TriangleMesh(vertices, mirrorMaterial);
+        tetra.createTetrahedron();
+        world.addShape(tetra);
+
         // MIRROR SPHERE
-        rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
-        translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
-        world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
+        //rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
+        //translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
+        //world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
+
+        //PLANE
+        world.addShape(new Plain(translation, groundMaterial));
 
         HDRImage image = new HDRImage(parameters.width, parameters.height);
         Camera camera = parameters.orthogonal ?
@@ -92,7 +108,7 @@ public class Tracer {
 
         ImageTracer tracer;
         if (parameters.antialiasing){
-            tracer = new ImageTracer(image, camera, 4, new PCG());
+            tracer = new ImageTracer(image, camera, 2, new PCG());
         }else{
             tracer = new ImageTracer(image, camera);
         }

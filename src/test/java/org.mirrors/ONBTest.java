@@ -20,9 +20,9 @@ class ONBTest {
             assertEquals(onb.e2.squaredNorm(), 1.f, 1e-5);
             assertEquals(onb.e3.squaredNorm(), 1.f, 1e-5);
 
-            assertEquals(onb.e1.dot(onb.e2, other, Vec.class), 0.f, 1e-5);
-            assertEquals(onb.e2.dot(onb.e3, other, Vec.class), 0.f, 1e-5);
-            assertEquals(onb.e3.dot(onb.e1, other, Vec.class), 0.f, 1e-5);
+            assertEquals(onb.e1.dot(onb.e2, Vec.class), 0.f, 1e-5);
+            assertEquals(onb.e2.dot(onb.e3, Vec.class), 0.f, 1e-5);
+            assertEquals(onb.e3.dot(onb.e1, Vec.class), 0.f, 1e-5);
         }
     }
 }
