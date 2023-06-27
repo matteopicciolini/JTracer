@@ -232,6 +232,12 @@ public class InStream {
             case "shape" -> new KeywordToken(tokenLocation, KeywordEnum.SHAPE);
             case "plane" -> new KeywordToken(tokenLocation, KeywordEnum.PLANE);
             case "sphere" -> new KeywordToken(tokenLocation, KeywordEnum.SPHERE);
+            case "triangle" -> new KeywordToken(tokenLocation, KeywordEnum.TRIANGLE);
+            case "triangleMesh" -> new KeywordToken(tokenLocation, KeywordEnum.TRIANGLEMESH);
+            case "tetrahedron" -> new KeywordToken(tokenLocation, KeywordEnum.TETRAHEDRON);
+            case "octahedron" -> new KeywordToken(tokenLocation, KeywordEnum.OCTAHEDRON);
+            case "dodecahedron" -> new KeywordToken(tokenLocation, KeywordEnum.DODECAHEDRON);
+            case "icosahedron" -> new KeywordToken(tokenLocation, KeywordEnum.ICOSAHEDRON);
             case "diffuse" -> new KeywordToken(tokenLocation, KeywordEnum.DIFFUSE);
             case "specular" -> new KeywordToken(tokenLocation, KeywordEnum.SPECULAR);
             case "uniform" -> new KeywordToken(tokenLocation, KeywordEnum.UNIFORM);
@@ -421,6 +427,7 @@ public class InStream {
 
         return new Point(x, y, z);
     }
+
 
     /**
      Parses a color from the input stream.
@@ -617,6 +624,117 @@ public class InStream {
 
         return new Sphere(transformation, scene.materials.get(materialName));
     }
+    public Triangle parseTriangle(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        Point v0 = this.parsePoint(scene);
+        this.expectSymbol(',');
+        Point v1 = this.parsePoint(scene);
+        this.expectSymbol(',');
+        Point v2 = this.parsePoint(scene);
+        this.expectSymbol(',');
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(')');
+
+        return new Triangle(v0, v1, v2, scene.materials.get(materialName));
+    }
+    public TriangleMesh parseTriangleMesh(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new TriangleMesh(scene.materials.get(materialName), transformation);
+    }
+
+    public TriangleMesh parseTetrahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+        TriangleMesh tetra= new TriangleMesh(scene.materials.get(materialName));
+        tetra.tetrahedron();
+
+        return new TriangleMesh(tetra.vertices, scene.materials.get(materialName), transformation);
+    }
+    public TriangleMesh parseOctahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+        TriangleMesh octa= new TriangleMesh(scene.materials.get(materialName));
+        octa.octahedron();
+
+        return new TriangleMesh(octa.vertices, scene.materials.get(materialName), transformation);
+    }
+
+    public TriangleMesh parseDodecahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+        TriangleMesh dode= new TriangleMesh(scene.materials.get(materialName));
+        dode.dodecahedron();
+
+        return new TriangleMesh(dode.vertices, scene.materials.get(materialName), transformation);
+    }
+
+    public TriangleMesh parseFileShape(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(',');
+        String fileName= this.expectIdentifier();
+        this.expectSymbol(')');
+
+        TriangleMesh mesh= new TriangleMesh(scene.materials.get(materialName));
+        mesh.createFileShape(fileName);
+
+        return new TriangleMesh(mesh.vertices, scene.materials.get(materialName), transformation);
+    }
+    public TriangleMesh parseIcosahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+
+        this.expectSymbol('(');
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+        TriangleMesh ico= new TriangleMesh(scene.materials.get(materialName));
+        ico.icosahedron();
+
+        return new TriangleMesh(ico.vertices, scene.materials.get(materialName), transformation);
+    }
 
     /**
      Parses a box from the input stream.
@@ -730,6 +848,18 @@ public class InStream {
                 scene.floatVariables.put(variableName, variableValue);
             } else if (keyword == KeywordEnum.SPHERE) {
                 scene.objects.add(this.parseSphere(scene));
+            } else if (keyword == KeywordEnum.TRIANGLE) {
+                scene.objects.add(this.parseTriangle(scene));
+            } else if (keyword == KeywordEnum.TETRAHEDRON) {
+                scene.objects.add(this.parseTetrahedron(scene));
+            } else if (keyword == KeywordEnum.OCTAHEDRON) {
+                scene.objects.add(this.parseOctahedron(scene));
+            } else if (keyword == KeywordEnum.DODECAHEDRON) {
+                scene.objects.add(this.parseDodecahedron(scene));
+            } else if (keyword == KeywordEnum.ICOSAHEDRON) {
+                scene.objects.add(this.parseFileShape(scene));
+            } else if (keyword == KeywordEnum.FILESHAPE) {
+                scene.objects.add(this.parseIcosahedron(scene));
             } else if (keyword == KeywordEnum.PLANE) {
                 scene.objects.add(this.parsePlane(scene));
             } else if (keyword == KeywordEnum.BOX) {

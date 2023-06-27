@@ -60,6 +60,10 @@ public abstract class OrientedObject extends Geometry {
         return (float) sqrt(this.squaredNorm());
     }
 
+    public float module(){
+        return (float) sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+    }
+
     /**
      * Returns the squared Euclidean norm of the current OrientedObject.
      *

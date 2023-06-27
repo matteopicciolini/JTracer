@@ -31,7 +31,15 @@ public enum KeywordEnum {
     CAMERA,
     ORTHOGONAL,
     PERSPECTIVE,
-    FLOAT
+    FLOAT,
+
+    TRIANGLE,
+    TRIANGLEMESH,
+    TETRAHEDRON,
+    OCTAHEDRON,
+    DODECAHEDRON,
+    ICOSAHEDRON,
+    FILESHAPE
 }
 
 

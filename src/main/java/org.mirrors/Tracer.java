@@ -47,14 +47,17 @@ public class Tracer {
         Material skyMaterial = new Material(new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White));
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
         Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
+        Material lightblue = new Material(new DiffuseBRDF(new UniformPigment(SkyBlue)));
+        Material brown = new Material(new DiffuseBRDF(new UniformPigment(DarkBrown)));
+        Material green =  new Material(new DiffuseBRDF(new UniformPigment(Green)));
         Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material groundMaterial = new Material(new DiffuseBRDF(new CheckeredPigment(
                                 new Color(0.f, 0.5f, 0.f),
                                 new Color(1f, 1f, 1f), 16)), new UniformPigment(Black));
 
-        //InputStream str = new FileInputStream("Plank.pfm");
-        //HDRImage worldImage = PfmCreator.readPfmImage(str);
-        //Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
+        InputStream str = new FileInputStream("Plank.pfm");
+        HDRImage worldImage = PfmCreator.readPfmImage(str);
+        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage)), new UniformPigment(White));
 
         Transformation rotation = Transformation.rotationZ(parameters.angleDeg);
         World world = new World();
@@ -78,24 +81,40 @@ public class Tracer {
         world.addShape(new Sphere(translation.times(rescale), groundMaterial));
 */
         //SPHERE 2
-        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
-        translation = Transformation.translation(new Vec(-0.4f, 0.3f, 0.0f));
-        world.addShape(new Sphere(translation.times(rescale), sphereMaterial2));
+        rescale = Transformation.scaling(new Vec(0.6f, 0.6f, 0.6f));
+        Transformation rot = Transformation.rotationX(40);
+        //world.addShape(new Sphere(tra.times(rescale), sphereMaterial2));
 
-        //add tetrahedron
-        ArrayList<Vec> vertices = new ArrayList<>();
-        vertices.add(new Vec(-0.6f, 0.1f, 0.f));
-        vertices.add(new Vec(-0.7f, 0.00f, 0));
-        vertices.add(new Vec(-0.6f, -0.1f, 0));
-        vertices.add(new Vec(-0.65f, 0, 0.12f));
-        vertices.add(new Vec(-0.55f, 0.07f, 0.15f));
-        vertices.add(new Vec(-0.75f, 0.05f, 0.2f));
-        vertices.add(new Vec(-0.7f, -0.05f, 0.f));
-        vertices.add(new Vec(-0.65f, 0, 0.15f));
+        Transformation tran = Transformation.translation(new Vec(-0.1f, -0.5f, 0.f));
 
-        TriangleMesh tetra = new TriangleMesh(vertices, mirrorMaterial);
-        tetra.createTetrahedron();
-        world.addShape(tetra);
+        TriangleMesh mesh= new TriangleMesh(green, (rescale).times(tran));
+        TriangleMesh mesh2= new TriangleMesh(sphereMaterial2, (tran));
+        TriangleMesh tree= new TriangleMesh(brown);
+        TriangleMesh tree2= new TriangleMesh(brown);
+        TriangleMesh lamp= new TriangleMesh(lightblue);
+        tree.createFileShape("tree.txt");
+        tree2.createFileShape("tree.txt");
+        lamp.createFileShape("birds.txt");
+        mesh.createFileShape("icosahedron.txt");
+        mesh2.createFileShape("icosahedron.txt");
+
+        //world.addShape(mesh);
+        world.addShape(lamp);
+        //world.addShape(tree);
+        //world.addShape(tree2);
+
+
+        ArrayList<Point> vert = new ArrayList<>();
+        vert.add(new Point(-0f, 0f, 0.5f));
+        vert.add(new Point(-0f, 0.5f, 0.f));
+        vert.add(new Point(-0.f, -0.5f, 0f));
+        vert.add(new Point(-0.5f, -0.0f, 0.0f));
+        Triangle tri = new Triangle(vert.get(0), vert.get(1),vert.get(2), DiffuseNavy);
+        Triangle tri2 = new Triangle(vert.get(0), vert.get(1),vert.get(2), (rot).times(rescale), sphereMaterial2);
+        TriangleMesh single= new TriangleMesh(vert, sphereMaterial2, (rescale).times(tran));
+
+        //world.addShape(single);
+        //world.addShape(tri2);
 
         // MIRROR SPHERE
         //rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
@@ -118,8 +137,6 @@ public class Tracer {
         }
 
         createPfmImageWithAlgorithm(parameters, world, image, tracer);
-
-
     }
 
     private static void createPfmImageWithAlgorithm(Parameters parameters, World world, HDRImage image, ImageTracer tracer) throws InvalidMatrixException, IOException {

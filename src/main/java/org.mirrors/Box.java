@@ -12,6 +12,12 @@ public class Box extends Shape {
         this.max = max;
         checkMinMax();
     }
+    public Box(Point min, Point max) {
+
+        this.min = min;
+        this.max = max;
+        checkMinMax();
+    }
 
     public Box() {
         this(new Point(-0.5f, -0.5f, -0.5f), new Point(0.5f, 0.5f, 0.5f), new Transformation(), new Material());
