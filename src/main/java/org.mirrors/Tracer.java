@@ -55,9 +55,9 @@ public class Tracer {
                                 new Color(0.f, 0.5f, 0.f),
                                 new Color(1f, 1f, 1f), 16)), new UniformPigment(Black));
 
-        InputStream str = new FileInputStream("Plank.pfm");
-        HDRImage worldImage = PfmCreator.readPfmImage(str);
-        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage)), new UniformPigment(White));
+        //InputStream str = new FileInputStream("Plank.pfm");
+        //HDRImage worldImage = PfmCreator.readPfmImage(str);
+        //Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage)), new UniformPigment(White));
 
         Transformation rotation = Transformation.rotationZ(parameters.angleDeg);
         World world = new World();
@@ -68,7 +68,7 @@ public class Tracer {
         world.addShape(new Sphere(translation.times(rescale), skyMaterial));
 
         //CUBE
-       /* translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
+        /* translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
         world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
                 translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), DiffuseNavy));
 
