@@ -109,7 +109,7 @@ public class Triangle extends Shape{
         // Calcola l'area del triangolo utilizzando il prodotto vettoriale tra due lati
         Vec side1 = p1.minus(p0);
         Vec side2 = p2.minus(p0);
-        return side1.dot(side2, Vec.class)*0.5f;
+        return side1.cross(side2).module()*0.5f;
     }
 
     public Vec2d calculateSurfacePoint(Point hit){
@@ -119,16 +119,15 @@ public class Triangle extends Shape{
         Vec2d uv2 = new Vec2d(0.0f, 1.0f);
 
         // Calcola i pesi w0, w1, w2 usando la formula del baricentro.
-
         float areaABC = calculateTriangleArea(v0, v1, v2);
-        float areaPBC = calculateTriangleArea(hit, v1, v2);
-        float areaPCA = calculateTriangleArea(v0, hit, v2);
-        float areaPAB = calculateTriangleArea(v0, v1, hit);
+        float areaPv1v2 = calculateTriangleArea(hit, v1, v2);
+        float areaPv0v2 = calculateTriangleArea(hit, v0, v2);
+        float areaPv0v1 = calculateTriangleArea(hit, v0, v1);
 
         // Calcola i pesi dividendo le aree relative.
-        float w0 = areaPBC / areaABC;
-        float w1 = areaPCA / areaABC;
-        float w2 = areaPAB / areaABC;
+        float w0 = areaPv1v2 / areaABC;
+        float w1 = areaPv0v2 / areaABC;
+        float w2 = areaPv0v1 / areaABC;
 
         // Calcola le coordinate di superficie (uv) come combinazioni lineari dei vertici.
         float u = w0 * uv0.u + w1 * uv1.u + w2 * uv2.u;
@@ -136,5 +135,6 @@ public class Triangle extends Shape{
 
         return new Vec2d(u, v);
     }
+
 
 }
