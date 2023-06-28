@@ -29,13 +29,13 @@ public class Triangle extends Shape{
         this.v0 = v0;
         this.v1 = v1;
         this.v2 = v2;
-        norm=calculateNormal();
+        norm = calculateNormal();
     }
     public Triangle(Point v0, Point v1, Point v2) {
         this.v0 = v0;
         this.v1 = v1;
         this.v2 = v2;
-        norm=calculateNormal();
+        norm = calculateNormal();
     }
 
 
@@ -44,7 +44,7 @@ public class Triangle extends Shape{
         // Applica la trasformazione inversa al raggio
         Ray iray = this.transformation.inverse().times(ray);
 
-        if (isNormalOrientationCorrect(iray)==true) {
+        if (isNormalOrientationCorrect(iray)) {
             norm = (Normal) norm.neg();}
 
         // Prodotto vettoriale tra direzione del raggio e il secondo lato del triangolo
