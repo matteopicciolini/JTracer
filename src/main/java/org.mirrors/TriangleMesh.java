@@ -80,14 +80,12 @@ public class TriangleMesh extends Shape{
                 }
             }
 
-
     } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     public void createGenericMesh() {
         int numVertices = vertices.size();
@@ -107,8 +105,8 @@ public class TriangleMesh extends Shape{
         Box aabb = AABB(vertices);
         Ray iray = this.transformation.inverse().times(ray);
         // Condizione di intersezione box AABB
-        if (aabb.rayIntersection(ray)==null) {
-           return null;}
+        //if (aabb.rayIntersection(ray)==null) {
+           //return null;}
 
         HitRecord closestHit = null;
         for (Triangle triangle : triangles) {
@@ -150,7 +148,7 @@ public class TriangleMesh extends Shape{
 
         Point min = new Point(minX, minY, minZ);
         Point max = new Point(maxX, maxY, maxZ);
-        return new Box(min, max);
+        return new Box(min, max, transformation);
     }
     public void tetrahedron(){
         this.vertices.add(new Point(0, 0.2f, 0));

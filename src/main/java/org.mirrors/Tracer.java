@@ -85,16 +85,16 @@ public class Tracer {
         Transformation rot = Transformation.rotationX(40);
         //world.addShape(new Sphere(tra.times(rescale), sphereMaterial2));
 
-        Transformation tran = Transformation.translation(new Vec(-0.1f, -0.5f, 0.f));
+        Transformation tran = Transformation.translation(new Vec(-0.5f, 0.1f, 0.f));
 
         TriangleMesh mesh= new TriangleMesh(green, (rescale).times(tran));
         TriangleMesh mesh2= new TriangleMesh(sphereMaterial2, (tran));
         TriangleMesh tree= new TriangleMesh(brown);
         TriangleMesh tree2= new TriangleMesh(brown);
-        TriangleMesh lamp= new TriangleMesh(lightblue);
+        TriangleMesh lamp= new TriangleMesh(lightblue, rescale.times(rot).times(tran));
         tree.createFileShape("tree.txt");
         tree2.createFileShape("tree.txt");
-        lamp.createFileShape("birds.txt");
+        lamp.createFileShape("icosahedron.txt");
         mesh.createFileShape("icosahedron.txt");
         mesh2.createFileShape("icosahedron.txt");
 
