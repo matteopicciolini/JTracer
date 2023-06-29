@@ -147,22 +147,38 @@ public class TriangleMeshTest {
         assertNotEquals(inter1.worldPoint.z, inter2.worldPoint.z);
     }
         @Test
-        void normal(){
-            ArrayList<Point> vertices = new ArrayList<>();
-            vertices.add(new Point(-0.7f, 0.00f, 0));
-            vertices.add(new Point(-0.6f, -0.1f, 0));
-            vertices.add(new Point(-0.65f, 0, 0f));
-            vertices.add(new Point(-0.55f, 0.07f, 0.0f));
-            //vertices.add(new Point(-0.75f, 0.05f, 0.2f));
-            vertices.add(new Point(-0.7f, -0.05f, 0.f));
+        void normal() throws InvalidMatrixException {
 
-            TriangleMesh tetra = new TriangleMesh(vertices);
+            Transformation rot = Transformation.rotationZ(90);
+            Transformation transl = Transformation.translation(new Vec(1, 1, 1));
+            Transformation scal = Transformation.scaling(new Vec(0.21f, 0.21f, 0.21f));
+            Material green =  new Material(new DiffuseBRDF(new UniformPigment(Green)));
 
-            for(int i=0; i<tetra.triangles.size(); i++){
-                System.out.println(tetra.triangles.get(i).norm.z);
-                System.out.println(i);
+            TriangleMesh file= new TriangleMesh(green);
+            TriangleMesh fileS= new TriangleMesh(green, scal);
+            TriangleMesh fileR= new TriangleMesh(green, rot);
+            TriangleMesh fileT= new TriangleMesh(green, transl);
+            fileS.createFileShape("tetra.txt");
+            fileR.createFileShape("tetra.txt");
+            fileT.createFileShape("tetra.txt");
+            file.createFileShape("tetra.txt");
+
+            Ray rayx = new Ray(new Point(-10f, 0.1f, 0.1f), VecX);
+            Ray rayy = new Ray(new Point(0.1f, -10f, 0.1f), VecY);
+            Ray rayz = new Ray(new Point(0.1f, 0.1f, -10f), VecZ);
+            Ray ray0 = new Ray(new Point(10f, 0.1f, 0.1f), InvVecX);
+            Ray ray01 = new Ray(new Point(10f, 1.1f, 1.1f), InvVecX);
+
+            HitRecord intersection0 = file.rayIntersection(ray0);
+            intersection0 = fileS.rayIntersection(ray0);
+
+            System.out.println(fileS.triangles.get(0).norm);
+            System.out.println(fileS.triangles.get(1).norm);
+            System.out.println(fileS.triangles.get(2).norm);
+            System.out.println(fileS.triangles.get(3).norm);
+
         }
     }
 
-}
+
 
