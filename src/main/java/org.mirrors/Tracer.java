@@ -81,21 +81,24 @@ public class Tracer {
         world.addShape(new Sphere(translation.times(rescale), groundMaterial));
 */
         //SPHERE 2
-        rescale = Transformation.scaling(new Vec(0.4f, 0.4f, 0.4f));
-        Transformation rot = Transformation.rotationZ(-90);
-        Transformation transl = Transformation.translation(new Vec(-0.f, -0.f, 0.4f));
+        rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
+        Transformation dilatation = Transformation.scaling(new Vec(6f, 1f, 1f));
+        Transformation rot = Transformation.rotationX(90);
+        Transformation rot2 = Transformation.rotationZ(90);
+        Transformation transl = Transformation.translation(new Vec(0.3f, 0.3f, 0f));
+        Transformation transl2 = Transformation.translation(new Vec(-1f, 0.3f, 0f));
         //world.addShape(new Sphere(tra.times(rescale), sphereMaterial2));
 
-        Transformation tran = Transformation.translation(new Vec(-0.5f, 0.1f, 0.f));
+        Transformation tran = Transformation.translation(new Vec(-0.5f, -0.1f, -0.2f));
 
         TriangleMesh mesh= new TriangleMesh(green, (tran));
         TriangleMesh mesh2= new TriangleMesh(sphereMaterial2, (tran));
         TriangleMesh tree= new TriangleMesh(brown);
         TriangleMesh tree2= new TriangleMesh(brown);
-        TriangleMesh lamp= new TriangleMesh(sphereMaterial2 , rot.times(transl));
+        TriangleMesh lamp= new TriangleMesh(sphereMaterial2 , tran.times((rot.times(transl)).times(rescale).times(dilatation)));
         tree.createFileShape("tree.txt");
         tree2.createFileShape("tree.txt");
-        lamp.createFileShape("icosahedron.txt");
+        lamp.createFileShape("birds.txt");
         mesh.createFileShape("icosahedron.txt");
         mesh2.createFileShape("icosahedron.txt");
 
