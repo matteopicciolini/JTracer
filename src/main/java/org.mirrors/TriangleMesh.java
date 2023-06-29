@@ -1,6 +1,5 @@
 package org.mirrors;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class TriangleMesh extends Shape{
         super(transformation, material);
         this.vertices = new ArrayList<>();
         triangles = new ArrayList<>();
+
 
     }
     public TriangleMesh(ArrayList<Point> vertices, Material material, Transformation transformation) {
@@ -80,7 +80,6 @@ public class TriangleMesh extends Shape{
                 }
             }
 
-
     } catch (IOException e) {
 
             throw new RuntimeException(e);
@@ -104,13 +103,14 @@ public class TriangleMesh extends Shape{
         public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
         Box aabb = AABB(vertices);
         Ray iray = this.transformation.inverse().times(ray);
+
         // Condizione di intersezione box AABB
-        //if (aabb.rayIntersection(ray)==null) {
-           //return null;}
+        if (aabb.rayIntersection(iray)==null) {
+           return null;}
 
         HitRecord closestHit = null;
         for (Triangle triangle : triangles) {
-            HitRecord hit = triangle.rayIntersection(iray);
+            HitRecord hit = triangle.rayIntersection(ray);
             if (hit != null) {
                 if (closestHit == null || hit.t < closestHit.t) {
                     closestHit = hit;
@@ -126,12 +126,12 @@ public class TriangleMesh extends Shape{
      * in rayInterception prima di calcolare tutte le normali e le intersezioni dei triangoli*/
 
     public Box AABB(ArrayList<Point> vertices){
-        float minX = 0;
-        float minY = 0;
-        float minZ = 0;
-        float maxX = 0;
-        float maxY = 0;
-        float maxZ = 0;
+        float minX = vertices.get(0).x;
+        float minY = vertices.get(0).y;
+        float minZ = vertices.get(0).z;
+        float maxX = vertices.get(0).x;
+        float maxY = vertices.get(0).y;
+        float maxZ = vertices.get(0).z;
 
         for (Point point : vertices) {
             float x = point.x;
@@ -148,7 +148,7 @@ public class TriangleMesh extends Shape{
 
         Point min = new Point(minX, minY, minZ);
         Point max = new Point(maxX, maxY, maxZ);
-        return new Box(min, max, transformation);
+        return new Box(min, max);
     }
     public void tetrahedron(){
         this.vertices.add(new Point(0, 0.2f, 0));

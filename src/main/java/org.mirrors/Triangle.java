@@ -88,6 +88,7 @@ public class Triangle extends Shape{
         // Applica la trasformazione al punto di intersezione e alla normale
         point = (Point) transformation.times(point);
         norm = (Normal) transformation.times(norm);
+        norm.normalize();
 
         // Calcola le coordinate di superficie per il punto di intersezione
         Vec2d surfacePoint = calculateSurfacePoint(point);
