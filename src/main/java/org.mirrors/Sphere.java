@@ -1,5 +1,9 @@
 package org.mirrors;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.*;
 
 
@@ -33,77 +37,85 @@ public class Sphere extends Shape{
      * @throws InvalidMatrixException If the transformation matrix is invalid.
      */
     @Override
-
-    public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+    public HitRecord rayIntersection(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
         Vec originVec = invRay.origin.toVec();
+
         float b = originVec.dot(invRay.dir);
         float a = invRay.dir.squaredNorm();
         float c = originVec.squaredNorm() - 1f;
         float delta = b * b - a * c;
-        if (delta <= 0)
-        {
-            return null;
-        }
-        float delta_sqrt = (float) Math.sqrt(delta);
-        float tmin = (-b-delta_sqrt)/a;
-        float tmax = (-b+delta_sqrt)/a;
-        float hit_t;
-        if (tmin > invRay.tMin && tmin < invRay.tMax)
-        {
-            hit_t = tmin;
-        }else if (tmax > invRay.tMin && tmax < invRay.tMax)
-        {
-            hit_t= tmax;
-        }
+
+        if (delta <= 0) return null;
+
+        float deltaSqrt = (float) Math.sqrt(delta);
+        float tMin = (-b - deltaSqrt) / a;
+        float tMax = (-b + deltaSqrt) / a;
+        float firstHit;
+        if (tMin > invRay.tMin && tMin < invRay.tMax) firstHit = tMin;
+        else if (tMax > invRay.tMin && tMax < invRay.tMax) firstHit = tMax;
         else return null;
 
-        Point hit_point = invRay.at(hit_t);
-        return new HitRecord((Point)transformation.times(hit_point), (Normal)transformation.times(sphereNormal(hit_point, ray.dir)),
-                spherePointToUV(hit_point),hit_t, ray, this);
-    }
-
-
-
-
-
-
-
-
-
-        /*
-        Ray invRay = ray.transform(this.transformation.inverse());
-        Vec originVec = invRay.origin.toVec();
-        float a = invRay.dir.squaredNorm();
-        float b = 2.f * originVec.dot(invRay.dir);
-        float c = originVec.squaredNorm() - 1.f;
-        float delta = b * b - 4 * a * c;
-        if (delta <= 0.f){
-            return null;
-        }
-
-        float sqrtDelta = (float) sqrt(delta);
-        float tMin = (-b - sqrtDelta) / (2 * a);
-        float tMax = (-b + sqrtDelta) / (2 * a);
-
-        float firstHit;
-        if ((tMin >= invRay.tMin) && (tMin <= invRay.tMax)){
-            firstHit = tMin;
-        }
-        else if ((tMax > invRay.tMin) && (tMax < invRay.tMax)){
-            firstHit = tMax;
-        }
-        else{
-            return null;
-        }
-
         Point hitPoint = invRay.at(firstHit);
-        return new HitRecord((Point) this.transformation.times(hitPoint),
-                (Normal) this.transformation.times(sphereNormal(hitPoint, invRay.dir)),
+        return new HitRecord(
+                (Point) transformation.times(hitPoint),
+                (Normal) transformation.times(sphereNormal(hitPoint, ray.dir)),
                 spherePointToUV(hitPoint),
                 firstHit,
-                ray, this);
-    }*/
+                ray,
+                this
+        );
+    }
+
+    @Override
+    public List<HitRecord> rayIntersectionList(Ray ray) {
+        Ray invRay = ray.transform(this.transformation.inverse());
+        Vec originVec = invRay.origin.toVec();
+
+        float a = invRay.dir.squaredNorm();
+        float b = originVec.dot(invRay.dir);
+        float c = originVec.squaredNorm() - 1f;
+        float delta = b * b - a * c;
+
+        if (delta <= 0) return null;
+
+        float deltaSqrt = (float) Math.sqrt(delta);
+        float tMin = (-b - deltaSqrt) / a;
+        float tMax = (-b + deltaSqrt) / a;
+
+        List<HitRecord> intersections = new ArrayList<HitRecord>();
+        Point hitPoint1 = invRay.at(tMin);
+        Point hitPoint2 = invRay.at(tMax);
+
+        if (tMin < invRay.tMax && tMin > invRay.tMin) {
+            intersections.add(new HitRecord(
+                    (Point) this.transformation.times(hitPoint1),
+                    (Normal) this.transformation.times(sphereNormal(hitPoint1, invRay.dir)),
+                    spherePointToUV(hitPoint1),
+                    tMin,
+                    ray,
+                    this
+            ));
+        }
+        if (tMax < invRay.tMax && tMax > invRay.tMin) {
+            intersections.add(new HitRecord(
+                    (Point) this.transformation.times(hitPoint2),
+                    (Normal) this.transformation.times(sphereNormal(hitPoint2, invRay.dir)),
+                    spherePointToUV(hitPoint2),
+                    tMax,
+                    ray,
+                    this
+            ));
+        }
+
+        return intersections.isEmpty() ? null : intersections;
+    }
+
+    @Override
+    public boolean isInternal(Point point) {
+        point = (Point) this.transformation.inverse().times(point);
+        return point.toVec().squaredNorm() < 1.f;
+    }
 
     /**
      * Computes the normal of the sphere at the given point and with the given ray direction.
