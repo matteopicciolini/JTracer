@@ -1,5 +1,8 @@
 package org.mirrors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.*;
 
 public class Plain extends Shape{
@@ -12,7 +15,7 @@ public class Plain extends Shape{
     }
 
     @Override
-    public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+    public HitRecord rayIntersection(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
         if (Math.abs(invRay.dir.z) < 1e-5) return null;
 
@@ -26,6 +29,21 @@ public class Plain extends Shape{
                 t,
                 ray,
                 this);
+    }
+
+    @Override
+    public List<HitRecord> rayIntersectionList(Ray ray) {
+        HitRecord hit = this.rayIntersection(ray);
+        if (hit == null) return null;
+        List<HitRecord> intersections = new ArrayList<HitRecord>();
+        intersections.add(hit);
+        return intersections;
+    }
+
+    @Override
+    public boolean isInternal(Point point) {
+        point = (Point) this.transformation.times(point);
+        return abs(point.z) < 1e-3;
     }
 }
 
