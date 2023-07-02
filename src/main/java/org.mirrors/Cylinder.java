@@ -39,8 +39,8 @@ public class Cylinder extends Shape {
         float tMax = (-b + sqrtDelta) / (2.0f * a);
 
         List<HitRecord> intersections = new ArrayList<>();
-
         Point hitPoint1 = invRay.at(tMin);
+
         float phi1 = (float) Math.atan2(hitPoint1.y, hitPoint1.x);
         if (phi1 < 0) phi1 += 2.0f * (float) Math.PI;
         if (tMin < invRay.tMax && tMin > invRay.tMin && (hitPoint1.z > 0.0f && hitPoint1.z < 1.0f)) {
@@ -56,7 +56,7 @@ public class Cylinder extends Shape {
                     ray,
                     this));
         }
-        Point hitPoint2 = invRay.at(tMin);
+        Point hitPoint2 = invRay.at(tMax);
         float phi2 = (float) Math.atan2(hitPoint2.y, hitPoint2.x);
         if (phi2 < 0) phi2 += 2.0f * (float) Math.PI;
         if (tMax < invRay.tMax && tMax > invRay.tMin && (hitPoint2.z > 0.0f && hitPoint2.z < 1.0f)) {
