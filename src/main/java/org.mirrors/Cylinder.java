@@ -22,6 +22,8 @@ public class Cylinder extends Shape {
         super(transformation, material);
     }
 
+
+
     @Override
     public List<HitRecord> rayIntersectionList(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
@@ -130,8 +132,8 @@ public class Cylinder extends Shape {
     }
 
 
-
     /*
+
     @Override
     public List<HitRecord> rayIntersectionList(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
@@ -149,10 +151,7 @@ public class Cylinder extends Shape {
         float tMin = (-b - sqrtDelta) / (2.0f * a);
         float tMax = (-b + sqrtDelta) / (2.0f * a);
 
-        if (a == 0.0f) {
-            tMin = Float.POSITIVE_INFINITY;
-            tMax = Float.POSITIVE_INFINITY;
-        }
+
 
         float xypos = invRay.origin.x * invRay.origin.x + invRay.origin.y * invRay.origin.y;
         // tempo per raggiungere la faccia superiore
@@ -163,7 +162,7 @@ public class Cylinder extends Shape {
         // Se l'origine del raggio si trova all'interno del cilindro infinito con r = 1
         // Verifica le possibili intersezioni con la faccia superiore/inferiore
 
-        if (xypos <= 1.0f) {
+        if (xypos < 1.0f) {
             if (tzUp >= ray.tMin && tzUp <= tMax) {
                 Point hit = invRay.at(tzUp);
                 hits.add(new HitRecord(
@@ -241,7 +240,7 @@ public class Cylinder extends Shape {
         }
         // inside the cylinder already checked for bases intersection
         // so we add eventually an intersection with the lateral surface
-        if (xypos <= 1.0f) {
+        if (xypos < 1.0f) {
             Point hit2 = invRay.at(tMax);
             if (tMax >= ray.tMin && tMax <= ray.tMax && hit2.z >= -0.5f && hit2.z <= 0.5f) {
                 hits.add(new HitRecord(

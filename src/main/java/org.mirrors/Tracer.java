@@ -230,7 +230,7 @@ public class Tracer {
 
         // CYLINDER
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
-        translation = Transformation.translation(new Vec(-0.5f, 0.15f, -0.01f));
+        translation = Transformation.translation(new Vec(-0.5f, 0.15f, -0.05f));
         world.addShape(new Cylinder(translation.times(Transformation.rotationZ(40).times(Transformation.rotationX(90).times(rescale))), DiffuseLime));
 
 
