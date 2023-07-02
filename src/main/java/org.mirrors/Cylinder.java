@@ -214,7 +214,7 @@ public class Cylinder extends Shape {
                     Point hit = invRay.at(tz);
                     hits.add(new HitRecord(
                             (Point) this.transformation.times(hit),
-                            (Normal) this.transformation.times((Vec) VecZ.toNormal().neg()),
+                            (Normal) this.transformation.times(VecZ.toNormal().neg()),
                             toSurfacePoint(hit),
                             tz,
                             ray,
