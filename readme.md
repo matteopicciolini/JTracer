@@ -5,10 +5,10 @@
 [![Maintenance](https://img.shields.io/github/commit-activity/m/andreasala98/NM4PIG?color=yellow)](https://GitHub.com/andreasala98/NM4PIG/graphs/commit-activity)
 
 
-# Ray Tracing project
+ <h1 align="center">  Ray Tracing Progect </h1> <br>
 
 
-<img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati" height="200" width="200">
+<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati" height="200" width="200">
 This is a project developed by Matteo Picciolini and Francesco Villa to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called **Numeric calculus for photorealistic images generation**, directed by our professor Maurizio Tomasi.
 Our library is written in java, a very powerful lenguage we learned in this course. 
 
@@ -27,7 +27,7 @@ Our library is written in java, a very powerful lenguage we learned in this cour
 - [Issue-tracking](#Issue-tracking)
 - [Overview](#Overview)
 
-## Overview {#Overview}
+## Overview 
 
 The purpose of the course is precisely the generation of photorealistic images using a Ray Tracer, a library provided on this website called J-Tracer, written in Java.
 The algorithm used employs the backwards ray tracing method, where for each pixel of the desired image, a user-defined number of rays are launched, tracing the geometric path of the light rays back to the source. The presence of a camera behind the screen is simulated to form a proper image.
