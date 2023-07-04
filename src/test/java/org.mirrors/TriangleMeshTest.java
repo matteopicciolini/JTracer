@@ -158,10 +158,10 @@ public class TriangleMeshTest {
             TriangleMesh fileS= new TriangleMesh(green, scal);
             TriangleMesh fileR= new TriangleMesh(green, rot);
             TriangleMesh fileT= new TriangleMesh(green, transl);
-            fileS.createFileShape("tetra.txt");
-            fileR.createFileShape("tetra.txt");
-            fileT.createFileShape("tetra.txt");
-            file.createFileShape("tetra.txt");
+            fileS.createFileShape("icosahedron.txt");
+            fileR.createFileShape("icosahedron.txt");
+            fileT.createFileShape("icosahedron.txt");
+            file.createFileShape("icosahedron.txt");
 
             Ray rayx = new Ray(new Point(-10f, 0.1f, 0.1f), VecX);
             Ray rayy = new Ray(new Point(0.1f, -10f, 0.1f), VecY);
@@ -172,10 +172,44 @@ public class TriangleMeshTest {
             HitRecord intersection0 = file.rayIntersection(ray0);
             intersection0 = fileS.rayIntersection(ray0);
 
-            System.out.println(fileS.triangles.get(0).norm);
-            System.out.println(fileS.triangles.get(1).norm);
-            System.out.println(fileS.triangles.get(2).norm);
-            System.out.println(fileS.triangles.get(3).norm);
+            //Verifica normali normalizzate
+
+            System.out.println("riscalato");
+            for(int i=0; i<fileS.triangles.size(); i++) {
+
+                System.out.println(fileS.triangles.get(i).norm.module());
+                assertEquals(fileS.triangles.get(i).norm.module(), 1, 1e-5);
+            }
+            System.out.println("traslato");
+            for(int i=0; i<fileT.triangles.size(); i++) {
+
+                System.out.println(fileT.triangles.get(i).norm.module());
+                assertEquals(fileT.triangles.get(i).norm.module(), 1, 1e-5);
+            }
+            System.out.println("ruotato");
+            for(int i=0; i<fileR.triangles.size(); i++) {
+
+                System.out.println(fileR.triangles.get(i).norm.module());
+                assertEquals(fileR.triangles.get(i).norm.module(), 1, 1e-5);
+            }
+
+        }
+        @Test
+        void RotationMesh() throws InvalidMatrixException {
+            Transformation rot = Transformation.rotationY(-90);
+            Material green =  new Material(new DiffuseBRDF(new UniformPigment(Green)));
+
+            System.out.println(green);
+            TriangleMesh fileR= new TriangleMesh(green, rot);
+            fileR.createFileShape("tetra2x.txt");
+
+            Ray rayx = new Ray(new Point(10f, 0.1f, 0.1f), InvVecX);
+
+            HitRecord hit = fileR.rayIntersection(rayx);
+            System.out.println(fileR.triangles.get(0).norm);
+            System.out.println(fileR.triangles.get(0).material);
+            System.out.println(hit.worldPoint);
+
 
         }
     }

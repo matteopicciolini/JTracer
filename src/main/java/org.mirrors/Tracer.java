@@ -1,5 +1,6 @@
 package org.mirrors;
 
+import com.sun.jdi.connect.TransportTimeoutException;
 import org.mirrors.compiler.GrammarErrorException;
 import org.mirrors.compiler.InStream;
 import org.mirrors.compiler.Scene;
@@ -49,8 +50,11 @@ public class Tracer {
         Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
         Material lightblue = new Material(new DiffuseBRDF(new UniformPigment(SkyBlue)));
         Material brown = new Material(new DiffuseBRDF(new UniformPigment(DarkBrown)));
+        Material orange = new Material(new DiffuseBRDF(new UniformPigment(DarkOrange)));
         Material green =  new Material(new DiffuseBRDF(new UniformPigment(Green)));
         Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
+        Material black = new Material(new DiffuseBRDF(new UniformPigment(Black)));
+        Material gray = new Material(new DiffuseBRDF(new UniformPigment(Gray)));
         Material groundMaterial = new Material(new DiffuseBRDF(new CheckeredPigment(
                                 new Color(0.f, 0.5f, 0.f),
                                 new Color(1f, 1f, 1f), 16)), new UniformPigment(Black));
@@ -81,28 +85,31 @@ public class Tracer {
         world.addShape(new Sphere(translation.times(rescale), groundMaterial));
 */
         //SPHERE 2
-        rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
-        Transformation dilatation = Transformation.scaling(new Vec(6f, 1f, 1f));
+        rescale = Transformation.scaling(new Vec(0.5f, 0.5f, 0.5f));
+        Transformation dilatation = Transformation.scaling(new Vec(0.8f, 0.4f, 0.4f));
         Transformation rot = Transformation.rotationX(90);
-        Transformation rot2 = Transformation.rotationZ(90);
-        Transformation transl = Transformation.translation(new Vec(0.3f, 0.3f, 0f));
-        Transformation transl2 = Transformation.translation(new Vec(-1f, 0.3f, 0f));
+        Transformation rot2 = Transformation.rotationZ(180);
+        Transformation transl = Transformation.translation(new Vec(-0.25f, 0f, 0.25f));
+        Transformation transl2 = Transformation.translation(new Vec(-1.1f, 0.4f, 0f));
         //world.addShape(new Sphere(tra.times(rescale), sphereMaterial2));
 
-        Transformation tran = Transformation.translation(new Vec(-0.5f, -0.1f, -0.2f));
+        Transformation tran = Transformation.translation(new Vec(1f, -0.5f, -0.f));
 
-        TriangleMesh mesh= new TriangleMesh(green, (tran));
-        TriangleMesh mesh2= new TriangleMesh(sphereMaterial2, (tran));
-        TriangleMesh tree= new TriangleMesh(brown);
-        TriangleMesh tree2= new TriangleMesh(brown);
-        TriangleMesh lamp= new TriangleMesh(sphereMaterial2 , tran.times((rot.times(transl)).times(rescale).times(dilatation)));
-        tree.createFileShape("tree.txt");
-        tree2.createFileShape("tree.txt");
-        lamp.createFileShape("birds.txt");
-        mesh.createFileShape("icosahedron.txt");
-        mesh2.createFileShape("icosahedron.txt");
 
-        world.addShape(lamp);
+
+        TriangleMesh cat= new TriangleMesh(sphereMaterial2,
+                dilatation.times(transl2.times(rot2.times(rot)).times(rescale)));
+        TriangleMesh deer= new TriangleMesh(gray,
+                transl.times(rot2.times(rot)).times(rescale));
+        TriangleMesh wolf= new TriangleMesh(gray);
+
+
+        cat.createFileShape("cat.txt");
+        wolf.createFileShape("wolf.txt");
+
+
+        world.addShape(wolf);
+        //world.addShape(cat);
 
         ArrayList<Point> vert = new ArrayList<>();
         vert.add(new Point(-0f, 0f, 0.5f));
@@ -122,6 +129,8 @@ public class Tracer {
         //world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
 
         //PLANE
+        //world.addShape(new Plain(Transformation.translation(new Vec(-0.35f, 0, 0)).times(Transformation.rotationY(90)),
+          //      brown));
         world.addShape(new Plain(translation, groundMaterial));
 
         HDRImage image = new HDRImage(parameters.width, parameters.height);
