@@ -11,13 +11,13 @@ Our library is written in java, a very powerful lenguage we learned in this cour
 - [Prerequisites](Prerequisites)
 - [Usage](Usage)
 - [Render-mode](Render-mode)
-- [How to create input files](How to create input files)
-- [Demo mode](Demo mode)
-- [Convert mode](Convert mode)
+- [How-to-create-input-files](How-to-create-input-files)
+- [Demo-mode](Demo-mode)
+- [Convert-mode](Convert-mode)
 - [Documentation](Documentation)
 - [License](License)
 - [Gallery](Gallery)
-- [Issue tracking](Issue tracking)
+- [Issue-tracking](Issue-tracking)
 - [Overview](Overview)
 
 ## Overview
