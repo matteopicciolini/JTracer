@@ -1,3 +1,10 @@
+[![Unit tests](https://github.com/andreasala98/NM4PIG/actions/workflows/test.yml/badge.svg)](https://github.com/andreasala98/NM4PIG/actions/workflows/test.yml)
+ [![DocFX Build and Publish](https://github.com/andreasala98/NM4PIG/actions/workflows/docfx-build-publish.yml/badge.svg?branch=master)](https://github.com/andreasala98/NM4PIG/actions/workflows/docfx-build-publish.yml)
+ [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+ [![GitHub contributors](https://img.shields.io/github/contributors/andreasala98/NM4PIG?color=lightblue&style=flat)](https://GitHub.com/andreasala98/NM4PIG/graphs/contributors/)
+[![Maintenance](https://img.shields.io/github/commit-activity/m/andreasala98/NM4PIG?color=yellow)](https://GitHub.com/andreasala98/NM4PIG/graphs/commit-activity)
+
+
 # Ray Tracing project
 
 
@@ -7,18 +14,18 @@ Our library is written in java, a very powerful lenguage we learned in this cour
 
 
 ## Table of Contents
-- [Overview](Overview)
-- [Prerequisites](Prerequisites)
-- [Usage](Usage)
-- [Render-mode](Render-mode)
-- [How-to-create-input-files](How-to-create-input-files)
-- [Demo-mode](Demo-mode)
-- [Convert-mode](Convert-mode)
-- [Documentation](Documentation)
-- [License](License)
-- [Gallery](Gallery)
-- [Issue-tracking](Issue-tracking)
-- [Overview](Overview)
+- [Overview](#Overview)
+- [Prerequisites](#Prerequisites)
+- [Usage](#Usage)
+- [Render-mode](#Render-mode)
+- [How-to-create-input-files](#How-to-create-input-files)
+- [Demo-mode](#Demo-mode)
+- [Convert-mode](#Convert-mode)
+- [Documentation](#Documentation)
+- [License](#License)
+- [Gallery](#Gallery)
+- [Issue-tracking](#Issue-tracking)
+- [Overview](#Overview)
 
 ## Overview {#Overview}
 
