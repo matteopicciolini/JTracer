@@ -10,7 +10,7 @@ Our library is written in java, a very powerful lenguage we learned in this cour
 - [Overview](Overview)
 - [Prerequisites](Prerequisites)
 - [Usage](Usage)
-- [Render-mode](Render mode)
+- [Render-mode](Render-mode)
 - [How to create input files](How to create input files)
 - [Demo mode](Demo mode)
 - [Convert mode](Convert mode)
