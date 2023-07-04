@@ -1,7 +1,7 @@
 # Ray Tracing project
 
-![cervo e gatto specchiati]("C:\Users\Francesco\OneDrive\Desktop\galleria immagini\deer&cat.png")
-This is a project developed by Matteo Picciolini and Francesco Villa to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called *Numeric calculus for photorealistic images generation*, directed by our professor Maurizio Tomasi.
+![cervo e gatto specchiati](https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b)
+ to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called *Numeric calculus for photorealistic images generation*, directed by our professor Maurizio Tomasi.
 
 Our library is written in java, a very powerful lenguage we learned in this course. 
 
@@ -21,7 +21,7 @@ Our library is written in java, a very powerful lenguage we learned in this cour
 - [Overview](Overview)
 
 ## Overview
-
+<a name="Overview"></a>
 The purpose of the course is precisely the generation of photorealistic images using a Ray Tracer, a library provided on this website called J-Tracer, written in Java.
 The algorithm used employs the backwards ray tracing method, where for each pixel of the desired image, a user-defined number of rays are launched, tracing the geometric path of the light rays back to the source. The presence of a camera behind the screen is simulated to form a proper image.
 Our code allows for the implementation of various types of materials (we will provide the complete table in a .txt file later) as well as different types of shapes, such as spheres, planes, cubes, various types of conics, triangles, and triangle meshes (the use of triangle meshes will be thoroughly explained).
