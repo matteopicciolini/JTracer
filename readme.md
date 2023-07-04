@@ -1,28 +1,28 @@
 # Ray Tracing project
 
-This is a project developed by Matteo Picciolini and Francesco Villa to reproduce (we hope!) a 2-D photorealistic image by the end of the course we are attending in Unimi, called *Numeric calculus for photorealistic images generation*.
+![cervo e gatto specchiati]("C:\Users\Francesco\OneDrive\Desktop\galleria immagini\deer&cat.png")
+This is a project developed by Matteo Picciolini and Francesco Villa to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called *Numeric calculus for photorealistic images generation*, directed by our professor Maurizio Tomasi.
 
-We're coding in Java, in order to improve our skills in that cornerstone of code lenguadge.
-
-The aim of the code deal with resolving the rendering equation given by the light inciding on some kind of surfaces, and we'll do it numerically, using dome montecarlo methods to resolve those integrals. 
-
-The rendering equation:
-
-$$
-\begin{aligned}
-L(x \rightarrow \Theta) = &amp;L_e(x \rightarrow \Theta) + \int_{\Omega_x} f_r(x, \Psi \rightarrow \Theta)\,L(x \leftarrow
-\Psi)\,\cos(N_x, \Psi)\,\mathrm{d}\omega_\Psi,
-\end{aligned}
-$$
-
-So far, we have implemented the following topics
-
--   Color class:
-    -   Class used to set the color of a single pixel of an image. It contains many methods as sum, product and scalar product between two pixels RGB triad.
- 
--   HDR image class:
-    -    Class used to build an HDR image with the following public variables: number of rows & columns and the intensity of the three colors RGB for every pixel.
-    -    PfmCreator Class used to build the read_pfm_image function containing 4 sub-functions used in the main function.
+Our library is written in java, a very powerful lenguage we learned in this course. 
 
 
-We're going to upthate this repository gradually until the end of June. 
+## Table of Contents
+- [Overview](Overview)
+- [Prerequisites](Prerequisites)
+- [Usage](Usage)
+- [Render mode](Render mode)
+- [How to create input files](How to create input files)
+- [Demo mode](Demo mode)
+- [Convert mode](Convert mode)
+- [Documentation](Documentation)
+- [License](License)
+- [Gallery](Gallery)
+- [Issue tracking](Issue tracking)
+- [Overview](Overview)
+
+## Overview
+
+The purpose of the course is precisely the generation of photorealistic images using a Ray Tracer, a library provided on this website called J-Tracer, written in Java.
+The algorithm used employs the backwards ray tracing method, where for each pixel of the desired image, a user-defined number of rays are launched, tracing the geometric path of the light rays back to the source. The presence of a camera behind the screen is simulated to form a proper image.
+Our code allows for the implementation of various types of materials (we will provide the complete table in a .txt file later) as well as different types of shapes, such as spheres, planes, cubes, various types of conics, triangles, and triangle meshes (the use of triangle meshes will be thoroughly explained).
+Once the desired shapes are defined and the scene is rendered using the methods described earlier, the resulting image is in HDR format (a .pfm file), and subsequently converted into an LDR file such as .jpg or .png based on the user's needs.
