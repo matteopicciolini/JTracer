@@ -3,9 +3,9 @@
  <h1 align="center">  Ray Tracing Progect </h1> <br>
 
 
-*Cervo e gatto specchiati*
+*Specular view of deer and cat, realized with two triangle mashes*
 
-This is a project developed by Matteo Picciolini and Francesco Villa to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called *Numeric calculus for photorealistic images generation*, directed by our professor Maurizio Tomasi.
+This is a project developed by Matteo Picciolini and [Francesco Villa][1] to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called *Numeric calculus for photorealistic images generation*, directed by our professor [Maurizio Tomasi][2].
 Our library is written in java, a very powerful lenguage we learned in this course. 
 
 
@@ -29,3 +29,6 @@ The purpose of the course is precisely the generation of photorealistic images u
 The algorithm used employs the backwards ray tracing method, where for each pixel of the desired image, a user-defined number of rays are launched, tracing the geometric path of the light rays back to the source. The presence of a camera behind the screen is simulated to form a proper image.
 Our code allows for the implementation of various types of materials (we will provide the complete table in a .txt file later) as well as different types of shapes, such as spheres, planes, cubes, various types of conics, triangles, and triangle meshes (the use of triangle meshes will be thoroughly explained).
 Once the desired shapes are defined and the scene is rendered using the methods described earlier, the resulting image is in HDR format (a .pfm file), and subsequently converted into an LDR file such as .jpg or .png based on the user's needs.
+
+[1]: https://github.com/fravij99
+[2]: https://github.com/ziotom78
