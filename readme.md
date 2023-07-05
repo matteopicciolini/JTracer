@@ -39,5 +39,15 @@ Having Java 18 correttoy installed and Gradle v7.6.1 are the only prerequisites 
 - [Java-corretto-v18](https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html)
 - [Gradle-compiler](https://gradle.org/releases/)
 
+## Usage
+
+To use this library, you need to clone the repository into a local folder using the command:
+
+`git clone git@github.com:matteopicciolini/ray_tracing.git`
+
+Then, you can run the command "gradlew test" to verify that the package functions correctly by executing the tests.
+Afterwards, you can run the code in different modes to meet the user's specific needs:
+- [demo-mode]
+
 [1]: https://github.com/fravij99
 [2]: https://github.com/ziotom78
