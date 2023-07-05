@@ -75,7 +75,7 @@ Afterwards, you can run the code in different modes to meet the user's specific 
   - `--nThreads`             int: Number of threads to use for parallelization. Default: 4.
   - `--orthogonal`          bool: Use an orthogonal camera. Default: false.
   - `--output`       string: Path of the output ldr file. Default: img.pfm.
-  - v--parallelAntialiasing` bool: Parallelize antialiasing algorithm. Default: false.
+  - `--parallelAntialiasing` bool: Parallelize antialiasing algorithm. Default: false.
   - `--russianRouletteLimit` int: Russian roulette limit. Default: 3.
   - `--version`              Print version information and exit.
   - `--width`                int: Width of the image. Default: 480.
