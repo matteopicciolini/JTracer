@@ -133,12 +133,12 @@ IN this section there are part of the images we managed to renderize:
  <p float="center">
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/b65d86ed-dec6-400e-94a0-27c83ba3741c" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/04ccd682-2dd5-4dcb-a958-99a90671ec32" height="200" /> 
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/04ccd682-2dd5-4dcb-a958-99a90671ec32" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/e658e38c-c220-4cc1-842b-e66fa8495a42" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/261a6b5e-18ba-4bd6-8545-628deb9d0c87" height="200" />
+   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/53b846d7-d331-4170-9fbc-4d174101661e" height="200" /> 
+
   
 </p>
 
+![cornell box](https://github.com/matteopicciolini/ray_tracing/assets/116730685/53b846d7-d331-4170-9fbc-4d174101661e)
 
 
 ## Issue-Tracking
