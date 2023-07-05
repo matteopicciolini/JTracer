@@ -55,30 +55,30 @@ Afterwards, you can run the code in different modes to meet the user's specific 
 
   now it follows the full list fo args and their default settings:
   
-  - --angle-deg            float: Angle of view. Default: 0.
-  - --algorithm            string: Algorithm of rendering. Default: pathTracer.
-  - --antialiasing         bool: Use antialiasing algorithm. Default: false.
-  - --convertToPNG         bool: At the end of the program execution, automatically convert the PFM file to PNG.
+  - `--angle-deg`            float: Angle of view. Default: 0.
+  - `--algorithm`            string: Algorithm of rendering. Default: pathTracer.
+  - `--antialiasing`         bool: Use antialiasing algorithm. Default: false.
+  - `--convertToPNG`         bool: At the end of the program execution, automatically convert the PFM file to PNG.
                                Default: true.
-  - --deletePFM            bool: At the end of the program execution, keep only the LDR image, deleting the PFM.
+  - `--deletePFM`            bool: At the end of the program execution, keep only the LDR image, deleting the PFM.
                                Default: false.
-  - --factor               float: Multiplicative factor. Default: 0.18.
-  - --flushFrequence       int: Frequency of flush (expressed in number of processed pixels) of the progress bar.
+  - `--factor`               float: Multiplicative factor. Default: 0.18.
+  - `--flushFrequence`       int: Frequency of flush (expressed in number of processed pixels) of the progress bar.
                                Default: 100         
-  - --gamma                float: Exponent for gamma-correction. Default: 2.2.
-  - --help                 Show this help message and exit.
-  - --height               int: Height of the image. Default: 480.
-  - --luminosity           float: Luminosity of the image. 	 Default: It is calculated for the pathTracer; otherwise,
+  - `--gamma`                float: Exponent for gamma-correction. Default: 2.2.
+  - `--help`                 Show this help message and exit.
+  - `--height`               int: Height of the image. Default: 480.
+  - `--luminosity`           float: Luminosity of the image. 	 Default: It is calculated for the pathTracer; otherwise,
                                it is set to 0.5.
-  - --maxDepth             int: Maximum recursion depth
-  - --numRays              int: Number of rays per pixel
-  - --nThreads             int: Number of threads to use for parallelization. Default: 4.
-  - --orthogonal           bool: Use an orthogonal camera. Default: false.
-  - --output       string: Path of the output ldr file. Default: img.pfm.
-  - --parallelAntialiasing bool: Parallelize antialiasing algorithm. Default: false.
-  - --russianRouletteLimit int: Russian roulette limit. Default: 3.
-  - --version              Print version information and exit.
-  - --width                int: Width of the image. Default: 480.
+  - `--maxDepth`             int: Maximum recursion depth
+  - `--numRays`              int: Number of rays per pixel
+  - `--nThreads`             int: Number of threads to use for parallelization. Default: 4.
+  - `--orthogonal`          bool: Use an orthogonal camera. Default: false.
+  - `--output`       string: Path of the output ldr file. Default: img.pfm.
+  - v--parallelAntialiasing` bool: Parallelize antialiasing algorithm. Default: false.
+  - `--russianRouletteLimit` int: Russian roulette limit. Default: 3.
+  - `--version`              Print version information and exit.
+  - `--width`                int: Width of the image. Default: 480.
 
 
 
