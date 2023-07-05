@@ -1,6 +1,6 @@
 <img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati"  width="250">
 
- <h1 align="center">  Ray Tracing Progect </h1> <br>
+ <h1 align="center">  Ray Tracing Project </h1> <br>
 
 
 *Specular view of deer and cat, realized with two triangle mashes*
