@@ -104,7 +104,7 @@ The main feature of the program is the ***renderer mode***, which reads an exter
   - Cubes
   - Quadratics shapes
   - Trinagles
-  - Triangle Meshes
+  - Triangle Meshes 💎
 
 Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
 
@@ -127,6 +127,19 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
 ## Documentation
 
 ## Gallery
+
+IN this section there are part of the images we managed to renderize:
+
+ <p float="center">
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/b65d86ed-dec6-400e-94a0-27c83ba3741c" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/04ccd682-2dd5-4dcb-a958-99a90671ec32" height="200" /> 
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/04ccd682-2dd5-4dcb-a958-99a90671ec32" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/e658e38c-c220-4cc1-842b-e66fa8495a42" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/261a6b5e-18ba-4bd6-8545-628deb9d0c87" height="200" />
+  
+</p>
+
+
 
 ## Issue-Tracking
 
