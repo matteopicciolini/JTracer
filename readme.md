@@ -16,12 +16,11 @@ Our library is written in java, a very powerful lenguage we learned in this cour
     - [Examples](#Examples)
     - [Demo-mode](#Demo-mode)
     - [Shapes](#Shapes)
-    - [Convert-mode](#Convert-mode)
 - [Documentation](#Documentation)
 - [License](#License)
 - [Gallery](#Gallery)
 - [Issue-tracking](#Issue-tracking)
-- [Overview](#Overview)
+
 
 ## Overview 
 
@@ -81,9 +80,11 @@ The main feature of the program is the ***renderer mode***, which reads an exter
   - `--version`              Print version information and exit.
   - `--width`                int: Width of the image. Default: 480.
 
+  BY the end of the execution, there's no need to specify the conversion from HDR image to LDR image cause of the default settings of `--convertToPNG=true`
+
 - ### Examples
   Our code needs very specific sintax rules, so There are many examples on how to write a `.txt` file with correct instructions:
- - Cornell Box [Example-1]()
+ - [Cornell Box]()
  - [Example-2]()
 
 - ### Demo mode
@@ -122,6 +123,13 @@ f 2 3 4
 ```
 
 In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
+
+## Documentation
+
+## Gallery
+
+## Issue-Tracking
+
 
 
 
