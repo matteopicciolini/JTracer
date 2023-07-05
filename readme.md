@@ -27,6 +27,7 @@ Our library is written in java, a very powerful lenguage we learned in this cour
 
 The purpose of the course is precisely the generation of photorealistic images using a Ray Tracer, a library provided on this website called J-Tracer, written in Java.
 The algorithm used employs the backwards ray tracing method, where for each pixel of the desired image, a user-defined number of rays are launched, tracing the geometric path of the light rays back to the source. The presence of a camera behind the screen is simulated to form a proper image.
+
 Our code allows for the implementation of various types of materials (we will provide the complete table in a `.txt` file later) as well as different types of shapes, such as spheres, planes, cubes, various types of conics, triangles, and triangle meshes (the use of triangle meshes will be thoroughly explained).
 Once the desired shapes are defined and the scene is rendered using the methods described earlier, the resulting image is in HDR format (a `.pfm` file), and subsequently converted into an LDR file such as `.jpg` or .png based on the user's needs.
 
@@ -35,7 +36,7 @@ Once the desired shapes are defined and the scene is rendered using the methods 
 
 Using the Java language and the Gradle compiler, our luck was that we didn't need to install external libraries. In fact, it was enough to include the necessary libraries for converting from HDR to LDR images and for running the tests in the Gradle.build file.
 Having Java 18 correttoy installed and Gradle v7.6.1 are the only prerequisites to use this program.
-- [Java-corretto-v18](https://download.oracle.com/java/18/archive/jdk-18.0.2.1_linux-aarch64_bin.tar.gz)
+- [Java-corretto-v18](https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html)
 - [Gradle-compiler](https://gradle.org/releases/)
 
 [1]: https://github.com/fravij99
