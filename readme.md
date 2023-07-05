@@ -82,6 +82,9 @@ The main feature of the program is the ***renderer mode***, which reads an exter
   - `--width`                int: Width of the image. Default: 480.
 
 - ### Examples
+  Our code needs very specific sintax rules, so There are many examples on how to write a `.txt` file with correct instructions:
+ - Cornell Box [Example-1]()
+ - [Example-2]()
 
 - ### Demo mode
    This peculiar mode is usually called where there is some need tu build a quick scene without pass trough the `.txt` file.
