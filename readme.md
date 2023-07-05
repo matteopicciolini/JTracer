@@ -82,12 +82,12 @@ The main feature of the program is the ***renderer mode***, which reads an exter
 
   BY the end of the execution, there's no need to specify the conversion from HDR image to LDR image cause of the default settings of `--convertToPNG=true`
 
-- ### Examples
+ ### Examples
   Our code needs very specific sintax rules, so There are many examples on how to write a `.txt` file with correct instructions:
  - [Cornell Box]()
  - [Example-2]()
 
-- ### Demo mode
+ ### Demo mode
    This peculiar mode is usually called where there is some need tu build a quick scene without pass trough the `.txt` file.
    To strart running **demo mode**, the user should use the main command:
 
@@ -97,7 +97,7 @@ The main feature of the program is the ***renderer mode***, which reads an exter
 
       gradlew run demo -h
 
-- ### Shapes
+### Shapes
    The complete list of available shapes are the following:
   - Sphere
   - Planes
