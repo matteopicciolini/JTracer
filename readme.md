@@ -45,13 +45,14 @@ To use this library, you need to clone the repository into a local folder using 
 
     git clone git@github.com:matteopicciolini/ray_tracing.git
 
-Then, you can run the command "gradlew test" to verify that the package functions correctly by executing the tests.
-Afterwards, you can run the code in different modes to meet the user's specific needs:
-- Demo-mode
-  This mode is desighed to do fast projects in order to design the true scene that will be implemented inthe following points.
-  To strart running **demo mode**, the user should use the main command:
+Then, you can run the command 
 
-      gradlew run demo
+    gradlew test
+    
+to verify that the package functions correctly by executing the tests.
+The main feature of the program is the ***renderer mode***, which reads an externali file `.txt` containing the scene that will be renderized. It is necessary to use this command to activate the renderer mode
+
+     gradlew run --args --all_the_arguments_needed
 
   now it follows the full list fo args and their default settings:
   
@@ -79,6 +80,45 @@ Afterwards, you can run the code in different modes to meet the user's specific 
   - `--russianRouletteLimit` int: Russian roulette limit. Default: 3.
   - `--version`              Print version information and exit.
   - `--width`                int: Width of the image. Default: 480.
+
+- ### Examples
+
+- ### Demo mode
+   This peculiar mode is usually called where there is some need tu build a quick scene without pass trough the `.txt` file.
+   To strart running **demo mode**, the user should use the main command:
+
+      gradlew run demo --args
+
+  To obtain the full list of arguments the command is the following:
+
+      gradlew run demo -h
+
+- ### Shapes
+   The complete list of available shapes are the following:
+  - Sphere
+  - Planes
+  - Cubes
+  - Quadratics shapes
+  - Trinagles
+  - Triangle Meshes
+
+Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
+
+```
+# vertices
+v 0.00 0.00 0.00
+v 1.00 0.00 0.00
+v 0.00 1.00 0.00
+v 0.00 0.00 1.00
+ 
+# faces
+f 1 3 2
+f 1 2 4
+f 1 3 4
+f 2 3 4
+```
+
+In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
 
 
 
