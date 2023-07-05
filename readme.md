@@ -1,4 +1,4 @@
-<img align="left" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati"  width="300">
+<img align="left" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati"  width="280">
 
  <h1 align="center">  Ray Tracing Progect </h1> <br>
 
