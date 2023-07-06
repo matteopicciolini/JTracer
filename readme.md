@@ -3,11 +3,10 @@
  <h1 align="center">  Ray Tracing Project </h1> <br>
 
 
-*Specular view of deer and cat, realized with two triangle mashes*
-
 This is a project developed by Matteo Picciolini and [Francesco Villa][1] to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called *Numeric calculus for photorealistic images generation*, directed by our professor [Maurizio Tomasi][2].
 Our library is written in java, a very powerful lenguage we learned in this course. 
 
+*Specular view of deer and cat, realized with two triangle mashes*
 
 ## Table of Contents
 - [Overview](#Overview)
