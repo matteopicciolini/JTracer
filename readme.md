@@ -87,7 +87,7 @@ The main feature of the program is the ***renderer mode***, which reads an exter
  - [Example-2]()
 
 
-<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="250">
+<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="280">
 
  ### Demo mode
    This peculiar mode is usually called where there is some need tu build a quick scene without pass trough the `.txt` file.
