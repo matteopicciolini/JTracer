@@ -86,6 +86,8 @@ The main feature of the program is the ***renderer mode***, which reads an exter
  - [Cornell Box]()
  - [Example-2]()
 
+
+<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/3471e6c1-5d3f-4877-8196-ea9dad6296b1"  width="200">
  ### Demo mode
    This peculiar mode is usually called where there is some need tu build a quick scene without pass trough the `.txt` file.
    To strart running **demo mode**, the user should use the main command:
