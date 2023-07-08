@@ -1,4 +1,7 @@
 package org.mirrors;
+
+import java.util.List;
+
 public class Hyperboloid extends Shape {
     private float a; // Parametro che influenza la dimensione del raggio dell'iperboloide lungo l'asse x
     private float b; // Parametro che influenza la dimensione del raggio dell'iperboloide lungo l'asse y
@@ -19,7 +22,7 @@ public class Hyperboloid extends Shape {
     }
 
     @Override
-    public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+    public HitRecord rayIntersection(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
         float a = this.a * (invRay.dir.x * invRay.dir.x + invRay.dir.y * invRay.dir.y) - this.c * invRay.dir.z * invRay.dir.z;
         float b = 2.f * (this.a * (invRay.dir.x * invRay.origin.x + invRay.dir.y * invRay.origin.y) - this.c * invRay.dir.z * invRay.origin.z);
@@ -67,6 +70,16 @@ public class Hyperboloid extends Shape {
                 ray,
                 this
         );
+    }
+
+    @Override
+    public List<HitRecord> rayIntersectionList(Ray ray) {
+        return null;
+    }
+
+    @Override
+    public boolean isInternal(Point point) {
+        return false;
     }
 
 }

@@ -10,6 +10,6 @@ readonly angleNNN=$(printf "%03d" $angle)
 readonly pfmfile=image$angleNNN.pfm
 readonly pngfile=image$angleNNN.png
 
-time ./build/install/raytracing/bin/raytracing -d 460 460 $angle false $pfmfile flat
+time ./gradlew run --args="-d 500 500 $angle false $pfmfile pathTracer true false"
 
 #parallel -j NUM_OF_CORES ./generate-image.sh '{}' ::: $(seq 0 359)
