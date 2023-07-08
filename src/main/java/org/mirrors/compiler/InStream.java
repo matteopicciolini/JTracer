@@ -716,10 +716,10 @@ public class InStream {
         String fileName= this.expectIdentifier();
         this.expectSymbol(')');
 
-        TriangleMesh mesh= new TriangleMesh(scene.materials.get(materialName));
+        TriangleMesh mesh= new TriangleMesh(scene.materials.get(materialName), transformation);
         mesh.createFileShape(fileName + ".txt");
 
-        return new TriangleMesh(mesh.vertices, scene.materials.get(materialName), transformation);
+        return new TriangleMesh(mesh.vertices, mesh.triangles, scene.materials.get(materialName), transformation);
     }
     public TriangleMesh parseIcosahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
 
