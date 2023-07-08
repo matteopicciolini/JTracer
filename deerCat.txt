@@ -1,0 +1,53 @@
+# Cornell Box
+
+# This is a standard benchmark for raytracing programs. The rendered image should be than compared to a real
+# photograph of the box. More information may be found at the following link:
+#               https://en.wikipedia.org/wiki/Cornell_box
+
+#Set the materials
+# 1 light source
+# others are diffusive
+
+material red_wall   (diffuse(uniform(<red>)),   uniform(<black>))
+material green_wall (diffuse(uniform(<green>)), uniform(<black>))
+material white_mat (diffuse(uniform(<white>)), uniform(<black>))
+material yell (diffuse(uniform(<yellow>)), uniform(<black>))
+
+material light_mat (diffuse(uniform(<0.8, 0.8, 0.8>)), uniform(<1.0, 1.0, 0.784>))
+
+
+# The coloured lateral walls are planes
+
+plane (green_wall,
+       translation([0 , 0 , 0])
+       )
+
+# The light
+sphere(
+	light_mat,
+	scaling([50, 50, 50])
+	)
+
+# deer
+fileshape(
+          red_wall,
+          #translation([-0.25, 0, 0.25]) * rotationZ(180) * rotationX(90) * scaling([0.5, 0.5, 0.5]),
+          scaling([1.5, 1.5, 1.5]) * rotationX(90) * translation([1, 0.5, 0]) * rotationY(45),
+          deer
+)
+
+#cat
+fileshape(
+          yell,
+          scaling([1, 1, 1]) * rotationX(90) * rotationY(45) * scaling([0.6, 0.15, 0.15]),
+          cat
+)
+
+fileshape(
+          white_mat,
+          scaling([0.6, 0.9, 0.6]) * rotationX(90) * translation([1.5, 0.5, 1.5]) * rotationY(90) ,
+          wolf
+)
+
+# Set the camera
+camera(perspective, translation([0, 0, 1]), 1.0, 1.0)
