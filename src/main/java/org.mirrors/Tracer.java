@@ -166,14 +166,15 @@ public class Tracer {
         Material skyMaterial = new Material(
                 new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White)
         );
-        Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
+        Material specular = new Material(new SpecularBRDF(new UniformPigment(new Color(1.f, 1.f, 1.f))));
+        Material specularDarkOrange = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
         Material DiffuseLime = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.f, 0.5f, 0.f))));
         Material DiffuseYellow = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
 
         Material DiffuseOrange = new Material(new DiffuseBRDF(new UniformPigment(DarkOrange)));
         Material DiffuseIndigo = new Material(new DiffuseBRDF(new UniformPigment(Indigo)));
-        Material DiffuseDarkBlue = new Material(new DiffuseBRDF(new UniformPigment(DarkGreen)));
+        Material DiffuseDarkGreen = new Material(new DiffuseBRDF(new UniformPigment(DarkGreen)));
 
         Material specularDarkRed = new Material(new SpecularBRDF(new UniformPigment(DarkRed)));
 
@@ -234,7 +235,7 @@ public class Tracer {
         // MIRROR SPHERE
         //rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
         //translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
-        //world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
+        //world.addShape(new Sphere(translation.times(rescale), specularDarkOrange));
 
 */
 
@@ -246,13 +247,13 @@ public class Tracer {
 
 
         // CONE
-        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.3f));
-        translation = Transformation.translation(new Vec(-0.3f, -0.3f, 0.2f));
-        Cone cone = new Cone(translation.times(rescale.times(Transformation.rotationX(180))), DiffuseDarkBlue);
-        //world.addShape(cone);
+        rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
+        translation = Transformation.translation(new Vec(-0.2f, -0.25f, -0.2f));
+        Cone cone = new Cone(translation.times(rescale), specular, 0.4f, 2.f);
+        world.addShape(cone);
 
-        CSGDifference diff = new CSGDifference(cone, sphere1);
-        world.addShape(diff);
+        //CSGDifference diff = new CSGDifference(cone, sphere1);
+        //world.addShape(diff);
 
         //SPHERE
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
@@ -286,7 +287,7 @@ public class Tracer {
                 ),
                 new Sphere(
                         Transformation.translation(new Vec(0f, 0f, 0.15f)).times(Transformation.scaling(new Vec(0.19f, 0.19f, 0.19f))),
-                        mirrorMaterial
+                        specularDarkOrange
                 )
         );
 
