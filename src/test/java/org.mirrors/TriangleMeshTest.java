@@ -49,9 +49,9 @@ public class TriangleMeshTest {
         TriangleMesh fileS= new TriangleMesh(green, scal);
         TriangleMesh fileR= new TriangleMesh(green, rot);
         TriangleMesh fileT= new TriangleMesh(green, transl);
-        fileS.createFileShape("tetra2x.txt");
-        fileR.createFileShape("tetra2x.txt");
-        fileT.createFileShape("tetra2x.txt");
+        fileS.createFileShape("tetraSingle.txt");
+        fileR.createFileShape("tetraSingle.txt");
+        fileT.createFileShape("tetraSingle.txt");
 
         Ray rayx = new Ray(new Point(10.f, 0.1f, 0.1f), InvVecX);
         Ray rayy = new Ray(new Point(0.1f, 10f, 0.1f), InvVecY);
