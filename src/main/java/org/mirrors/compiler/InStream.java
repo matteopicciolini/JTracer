@@ -254,6 +254,7 @@ public class InStream {
             case "perspective" -> new KeywordToken(tokenLocation, KeywordEnum.PERSPECTIVE);
             case "float" -> new KeywordToken(tokenLocation, KeywordEnum.FLOAT);
             case "box" -> new KeywordToken(tokenLocation, KeywordEnum.BOX);
+            case "fileshape" -> new KeywordToken(tokenLocation, KeywordEnum.FILESHAPE);
             case "cylinder" -> new KeywordToken(tokenLocation, KeywordEnum.CYLINDER);
             case "hyperboloid" -> new KeywordToken(tokenLocation, KeywordEnum.HYPERBOLOID);
             case "union" -> new KeywordToken(tokenLocation, KeywordEnum.CSGUNION);
@@ -716,7 +717,7 @@ public class InStream {
         this.expectSymbol(')');
 
         TriangleMesh mesh= new TriangleMesh(scene.materials.get(materialName));
-        mesh.createFileShape(fileName);
+        mesh.createFileShape(fileName + ".txt");
 
         return new TriangleMesh(mesh.vertices, scene.materials.get(materialName), transformation);
     }
@@ -857,9 +858,9 @@ public class InStream {
             } else if (keyword == KeywordEnum.DODECAHEDRON) {
                 scene.objects.add(this.parseDodecahedron(scene));
             } else if (keyword == KeywordEnum.ICOSAHEDRON) {
-                scene.objects.add(this.parseFileShape(scene));
-            } else if (keyword == KeywordEnum.FILESHAPE) {
                 scene.objects.add(this.parseIcosahedron(scene));
+            } else if (keyword == KeywordEnum.FILESHAPE) {
+                scene.objects.add(this.parseFileShape(scene));
             } else if (keyword == KeywordEnum.PLANE) {
                 scene.objects.add(this.parsePlane(scene));
             } else if (keyword == KeywordEnum.BOX) {
