@@ -42,6 +42,11 @@ public class TriangleMesh extends Shape{
         triangles = new ArrayList<>();
         createGenericMesh();
     }
+    public TriangleMesh(ArrayList<Point> vertices, ArrayList<Triangle> tria, Material material, Transformation transformation) {
+        super(transformation, material);
+        this.vertices = vertices;
+        triangles = tria;
+    }
     public TriangleMesh(ArrayList vertices) {
         triangles = new ArrayList<>();
         this.vertices = vertices;
