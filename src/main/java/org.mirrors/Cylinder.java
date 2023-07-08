@@ -33,7 +33,7 @@ public class Cylinder extends Shape {
         float c = invRay.origin.x * invRay.origin.x + invRay.origin.y * invRay.origin.y - 1.f;
 
         float delta = b * b - 4.f * a * c;
-        if (delta <= 0.0f) return null;
+        if (delta < 0.0f) return null;
         float sqrtDelta = (float) sqrt(delta);
         float tMin = (-b - sqrtDelta) / (2.0f * a);
         float tMax = (-b + sqrtDelta) / (2.0f * a);
@@ -80,7 +80,7 @@ public class Cylinder extends Shape {
     public boolean isInternal(Point point) {
         point = (Point) this.transformation.inverse().times(point);
         float dist = point.x * point.x + point.y * point.y;
-        return dist < 1.0f && (point.z > 0.0f && point.z < 1.0f);
+        return dist <= 1.0f && point.z >= 0.0f && point.z <= 1.0f;
     }
 
 

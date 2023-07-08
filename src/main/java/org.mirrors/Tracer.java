@@ -94,7 +94,7 @@ public class Tracer {
                     if (dArgs.length >= 6 && dArgs.length <= 9) algorithm = dArgs[5];
                     if (dArgs.length >= 7 && dArgs.length <= 9) antialiasing = parseBoolean(dArgs[6]);
                     if (dArgs.length >= 8 && dArgs.length <= 9) parallelAntialiasing = parseBoolean(dArgs[7]);
-                    if (dArgs.length == 8) nThreads = parseInt(dArgs[8]);
+                    if (dArgs.length == 9) nThreads = parseInt(dArgs[8]);
                     if (dArgs.length > 9) {
                         System.err.println("Error: ");
                         formatter.printHelp("Tracer", options);
@@ -167,8 +167,10 @@ public class Tracer {
                 new DiffuseBRDF(new UniformPigment(Black)), new UniformPigment(White)
         );
         Material mirrorMaterial = new Material(new SpecularBRDF(new UniformPigment(DarkOrange)));
-        Material DiffuseLime = new Material(new DiffuseBRDF(new UniformPigment(LimeGreen)));
+        Material DiffuseLime = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.f, 0.5f, 0.f))));
+        Material DiffuseYellow = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
+        Material specularDarkRed = new Material(new SpecularBRDF(new UniformPigment(DarkRed)));
         Material sphereMaterial2 = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material groundMaterial = new Material(
                 new DiffuseBRDF(
@@ -205,15 +207,14 @@ public class Tracer {
         Transformation rescale = Transformation.scaling(new Vec(50f, 50f, 50f));
         Transformation translation = Transformation.translation(new Vec(0.f, 0.f, 0.f));
         world.addShape(new Sphere(translation.times(rescale), skyMaterial));
-
+/*
         //CUBE
         translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
         world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
                 translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), DiffuseNavy));
-
+*/
         //PLANE
-        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.1f)), groundMaterial));
-        //SPHERE 1
+        world.addShape(new Plain(Transformation.translation(new Vec(0.f, 0.f, -0.2f)), groundMaterial));/*       //SPHERE 1
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(0.f, 0.5f, 0.1f));
         world.addShape(new Sphere(translation.times(rescale), groundMaterial));
@@ -232,12 +233,54 @@ public class Tracer {
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         translation = Transformation.translation(new Vec(-0.5f, 0.15f, -0.05f));
         world.addShape(new Cylinder(translation.times(Transformation.rotationZ(40).times(Transformation.rotationX(90).times(rescale))), DiffuseLime));
+*/
 
+        float lBox = 0.145f;
+        CSGIntersection boxSphereIntersection = new CSGIntersection(
+                new Box(
+                        new Point(-lBox,-lBox,-lBox),
+                        new Point(lBox, lBox, lBox),
+                        Transformation.translation(new Vec(0f, 0f, 0.15f)),
+                        specularDarkRed
+                ),
+                new Sphere(
+                        Transformation.translation(new Vec(0f, 0f, 0.15f)).times(Transformation.scaling(new Vec(0.19f, 0.19f, 0.19f))),
+                        mirrorMaterial
+                )
+        );
 
+        float zScale = 0.4f;
+        Transformation rescaleCSG = Transformation.scaling(new Vec(0.09f, 0.09f, zScale));
+        Transformation translationCSG = Transformation.translation(new Vec(0f, 0f, -0.05f));
+        Transformation translationCSG2 = Transformation.translation(new Vec(0f - zScale/2, 0f, -0.05f + zScale/2));
+        Transformation translationCSG3 = Transformation.translation(new Vec(0f, 0f + zScale/2, -0.05f + zScale/2));
+        Transformation rotationCSG2 = Transformation.rotationY(90);
+        Transformation rotationCSG3 = Transformation.rotationX(90);
+        Cylinder firstCylinder = new Cylinder(
+                translationCSG.times(rescaleCSG),
+                DiffuseLime
+        );
+        Cylinder secondCylinder = new Cylinder(
+                translationCSG2.times(rotationCSG2.times(rescaleCSG)),
+                DiffuseLime
+        );
+        Cylinder thirdCylinder = new Cylinder(
+                translationCSG3.times(rotationCSG3.times(rescaleCSG)),
+                DiffuseLime
+        );
+        CSGUnion cilinderCross2d = new CSGUnion(
+                firstCylinder, secondCylinder
+        );
+        CSGUnion cilinderCross3d = new CSGUnion(
+                cilinderCross2d, thirdCylinder
+        );
+        //world.addShape(boxSphereIntersection);
+        //world.addShape(cilinderCross3d);
+        world.addShape(new CSGDifference(new CSGDifference(new CSGDifference(boxSphereIntersection, firstCylinder), secondCylinder), thirdCylinder));
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
+                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.3f, 0f, 0.1f)).times(Transformation.rotationY(3))));
 
         ImageTracer tracer;
         if (antialiasing == true){
