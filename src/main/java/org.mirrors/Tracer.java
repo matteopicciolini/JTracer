@@ -235,23 +235,45 @@ public class Tracer {
         //rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
         //translation = Transformation.translation(new Vec(0.2f, -0.5f, 0.1f));
         //world.addShape(new Sphere(translation.times(rescale), mirrorMaterial));
+
 */
+
+        //SPHERE
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(-0.3f, -0.2f, 0.0f));
+        Sphere sphere1 = new Sphere(translation.times(rescale), sphereMaterial2);
+        //world.addShape(sphere1);
+
 
         // CONE
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.3f));
         translation = Transformation.translation(new Vec(-0.3f, -0.3f, 0.2f));
-        world.addShape(new Cone(translation.times(rescale.times(Transformation.rotationX(180))), DiffuseDarkBlue));
+        Cone cone = new Cone(translation.times(rescale.times(Transformation.rotationX(180))), DiffuseDarkBlue);
+        //world.addShape(cone);
 
+        CSGDifference diff = new CSGDifference(cone, sphere1);
+        world.addShape(diff);
+
+        //SPHERE
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(-0.3f, 0.2f, 0.0f));
+        Sphere sphere = new Sphere(translation.times(rescale), sphereMaterial2);
+        //world.addShape(sphere);
 
         // HYPERBOLA
-        rescale = Transformation.scaling(new Vec(0.05f, 0.05f, 0.1f));
-        translation = Transformation.translation(new Vec(-0.4f, 0.2f, 0f));
-        world.addShape(new Hyperboloid(translation.times(rescale), DiffuseOrange, 1f, 1f, 2f));
+        rescale = Transformation.scaling(new Vec(0.05f, 0.05f, 0.06f));
+        translation = Transformation.translation(new Vec(-0.3f, 0.2f, 0f));
+        Hyperboloid hyperboloid = new Hyperboloid(translation.times(rescale), DiffuseOrange, -2.25f, 2.25f);
+        world.addShape(hyperboloid);
 
+/*
         // CYLINDER
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         translation = Transformation.translation(new Vec(-0.5f, 0.15f, -0.05f));
         world.addShape(new Cylinder(translation.times(Transformation.rotationZ(40).times(Transformation.rotationX(90).times(rescale))), DiffuseLime));
+*/
+        //CSGDifference minus = new CSGDifference(sphere, hyperboloid);
+        //world.addShape(minus);
 
 
         float lBox = 0.145f;
