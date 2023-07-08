@@ -1,5 +1,7 @@
 package org.mirrors;
 
+import java.util.List;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
 public class Cone extends Shape {
@@ -17,7 +19,7 @@ public class Cone extends Shape {
     }
 
     @Override
-    public HitRecord rayIntersection(Ray ray) throws InvalidMatrixException {
+    public HitRecord rayIntersection(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
         float a = invRay.dir.x * invRay.dir.x + invRay.dir.y * invRay.dir.y - invRay.dir.z * invRay.dir.z;
         float b = 2.0f * (invRay.dir.x * invRay.origin.x + invRay.dir.y * invRay.origin.y - invRay.dir.z * invRay.origin.z);
@@ -63,5 +65,15 @@ public class Cone extends Shape {
                 ray,
                 this
         );
+    }
+
+    @Override
+    public List<HitRecord> rayIntersectionList(Ray ray) {
+        return null;
+    }
+
+    @Override
+    public boolean isInternal(Point point) {
+        return false;
     }
 }
