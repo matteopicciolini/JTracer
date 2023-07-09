@@ -10,6 +10,6 @@ readonly angleNNN=$(printf "%03d" $angle)
 readonly pfmfile=image$angleNNN.pfm
 readonly pngfile=image$angleNNN.png
 
-time ./gradlew run --args="-d 500 500 $angle false $pfmfile pathTracer true false"
+time ./gradlew run --args="-d 500 500 $angle false $pfmfile pathTracer true false 1"
 
 #parallel -j NUM_OF_CORES ./generate-image.sh '{}' ::: $(seq 0 359)

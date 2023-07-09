@@ -137,11 +137,12 @@ public class Hyperboloid extends Shape {
         );
     }
 
-    private Vec2d toSurPoint(Point hit) {
-        float u = ((float) Math.atan2(hit.y, hit.x) + (2.0F * (float) Math.PI)) % (2.0F * (float) Math.PI) / (2.0F * (float) Math.PI);
-        float v = hit.z + 0.5F;
+    private Vec2d toSurPoint(Point hitPoint) {
+        float u = (float) ((Math.atan2(hitPoint.y, hitPoint.x) + Math.PI) / (2.0 * Math.PI));
+        float v = (hitPoint.z - minZ) / (maxZ - minZ);
         return new Vec2d(u, v);
     }
+
 
 
     private Normal getNormal(Point p, Vec rayDir) {

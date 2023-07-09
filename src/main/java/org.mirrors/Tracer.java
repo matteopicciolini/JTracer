@@ -171,7 +171,7 @@ public class Tracer {
         Material DiffuseLime = new Material(new DiffuseBRDF(new UniformPigment(new Color(0.f, 0.5f, 0.f))));
         Material DiffuseYellow = new Material(new DiffuseBRDF(new UniformPigment(Yellow)));
         Material DiffuseNavy = new Material(new DiffuseBRDF(new UniformPigment(Navy)));
-
+        Material DiffuseDarkRed = new Material(new DiffuseBRDF(new UniformPigment(DarkRed)));
         Material DiffuseOrange = new Material(new DiffuseBRDF(new UniformPigment(DarkOrange)));
         Material DiffuseIndigo = new Material(new DiffuseBRDF(new UniformPigment(Indigo)));
         Material DiffuseDarkGreen = new Material(new DiffuseBRDF(new UniformPigment(DarkGreen)));
@@ -187,11 +187,19 @@ public class Tracer {
                         )
                 ), new UniformPigment(Black)
         );
+        Material hyperboloidmaterial = new Material(
+                new DiffuseBRDF(
+                        new CheckeredPigment(
+                                DarkOrange,
+                                new Color(1f, 1f, 1f), 16
+                        )
+                ), new UniformPigment(Black)
+        );
 
 
-        //InputStream str = new FileInputStream("Plank.pfm");
-        //HDRImage worldImage = PfmCreator.readPfmImage(str);
-        //Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
+        InputStream str = new FileInputStream("Moon.pfm");
+        HDRImage worldImage = PfmCreator.readPfmImage(str);
+        Material worldSphere = new Material(new DiffuseBRDF(new ImagePigment(worldImage), 1.f));
 
 
         Transformation rotation = Transformation.rotationZ(angleDeg);
@@ -238,34 +246,62 @@ public class Tracer {
         //world.addShape(new Sphere(translation.times(rescale), specularDarkOrange));
 
 */
+        //CUBE
+        translation = Transformation.translation(new Vec(0.25f, -0.3f, -0.13f));
+        Box cube2 = new Box(new Point(-0.07f,-0.07f,-0.07f), new Point(0.07f, 0.07f, 0.07f),
+                translation, specular);
+        Box cube3 = new Box(new Point(-0.07f,-0.07f,-0.07f), new Point(0.07f, 0.07f, 0.07f),
+                translation.times(Transformation.rotationZ(45).times(Transformation.rotationY(45))), hyperboloidmaterial);
+        world.addShape(new CSGDifference(cube2, cube3));
+
+
+
+
+
+
+        //SPHERE
+        rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
+        translation = Transformation.translation(new Vec(0.2f, 0.2f, -0.1f));
+        Sphere sphere2 = new Sphere(translation.times(rescale), worldSphere);
+        //world.addShape(sphere2);
+
+        //CUBE
+        translation = Transformation.translation(new Vec(0.25f, 0.25f, -0.01f));
+        Box cube = new Box(new Point(-0.07f,-0.07f,-0.07f), new Point(0.07f, 0.07f, 0.07f),
+        translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), hyperboloidmaterial);
+        //world.addShape(cube);
+
+        CSGDifference sphereCube = new CSGDifference(sphere2, cube);
+        world.addShape(sphereCube);
 
         //SPHERE
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         translation = Transformation.translation(new Vec(-0.3f, -0.2f, 0.0f));
-        Sphere sphere1 = new Sphere(translation.times(rescale), sphereMaterial2);
+        Sphere sphere1 = new Sphere(translation.times(rescale), specular);
         //world.addShape(sphere1);
 
 
         // CONE
         rescale = Transformation.scaling(new Vec(0.2f, 0.2f, 0.2f));
         translation = Transformation.translation(new Vec(-0.2f, -0.25f, -0.2f));
-        Cone cone = new Cone(translation.times(rescale), specular, 0.4f, 2.f);
-        world.addShape(cone);
+        Cone cone = new Cone(translation.times(rescale), specular, 0.5f, 2.f);
+        //world.addShape(cone);
 
-        //CSGDifference diff = new CSGDifference(cone, sphere1);
-        //world.addShape(diff);
+        CSGDifference diff = new CSGDifference(cone, sphere1);
+        world.addShape(diff);
 
         //SPHERE
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
-        translation = Transformation.translation(new Vec(-0.3f, 0.2f, 0.0f));
-        Sphere sphere = new Sphere(translation.times(rescale), sphereMaterial2);
+        translation = Transformation.translation(new Vec(-0.2f, 0.2f, -0.1f));
+        Sphere sphere = new Sphere(translation.times(rescale), specularDarkOrange);
         //world.addShape(sphere);
 
         // HYPERBOLA
-        rescale = Transformation.scaling(new Vec(0.05f, 0.05f, 0.06f));
-        translation = Transformation.translation(new Vec(-0.3f, 0.2f, 0f));
-        Hyperboloid hyperboloid = new Hyperboloid(translation.times(rescale), DiffuseOrange, -2.25f, 2.25f);
-        world.addShape(hyperboloid);
+        Transformation rotationHyp = Transformation.rotationY(120);
+        rescale = Transformation.scaling(new Vec(0.035f, 0.035f, 0.05f));
+        translation = Transformation.translation(new Vec(-0.2f, 0.2f, -0.1f));
+        Hyperboloid hyperboloid = new Hyperboloid(translation.times(rotationHyp.times(rescale)), hyperboloidmaterial, -2.25f, 2.25f);
+        //world.addShape(hyperboloid);
 
 /*
         // CYLINDER
@@ -273,8 +309,8 @@ public class Tracer {
         translation = Transformation.translation(new Vec(-0.5f, 0.15f, -0.05f));
         world.addShape(new Cylinder(translation.times(Transformation.rotationZ(40).times(Transformation.rotationX(90).times(rescale))), DiffuseLime));
 */
-        //CSGDifference minus = new CSGDifference(sphere, hyperboloid);
-        //world.addShape(minus);
+        CSGDifference minus = new CSGDifference(sphere, hyperboloid);
+        world.addShape(minus);
 
 
         float lBox = 0.145f;
@@ -283,7 +319,7 @@ public class Tracer {
                         new Point(-lBox,-lBox,-lBox),
                         new Point(lBox, lBox, lBox),
                         Transformation.translation(new Vec(0f, 0f, 0.15f)),
-                        specularDarkRed
+                        DiffuseDarkRed
                 ),
                 new Sphere(
                         Transformation.translation(new Vec(0f, 0f, 0.15f)).times(Transformation.scaling(new Vec(0.19f, 0.19f, 0.19f))),
@@ -300,15 +336,15 @@ public class Tracer {
         Transformation rotationCSG3 = Transformation.rotationX(90);
         Cylinder firstCylinder = new Cylinder(
                 translationCSG.times(rescaleCSG),
-                DiffuseLime
+                hyperboloidmaterial
         );
         Cylinder secondCylinder = new Cylinder(
                 translationCSG2.times(rotationCSG2.times(rescaleCSG)),
-                DiffuseLime
+                hyperboloidmaterial
         );
         Cylinder thirdCylinder = new Cylinder(
                 translationCSG3.times(rotationCSG3.times(rescaleCSG)),
-                DiffuseLime
+                hyperboloidmaterial
         );
         CSGUnion cilinderCross2d = new CSGUnion(
                 firstCylinder, secondCylinder
@@ -322,7 +358,7 @@ public class Tracer {
         HDRImage image = new HDRImage(width, height);
         Camera camera = orthogonal ?
                 new OrthogonalCamera((float) width/height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.3f, 0f, 0.1f)).times(Transformation.rotationY(3))));
+                new PerspectiveCamera(1f, (float) width/height, rotation.times(Transformation.translation(new Vec(0.3f, 0f, 0.1f)).times(Transformation.rotationY(20))));
 
         ImageTracer tracer;
         if (antialiasing == true){
