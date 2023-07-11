@@ -8,13 +8,13 @@ public class CheckeredPigment extends Pigment{
     public Color secondColor;
     public int stepsNumber;
 
-    CheckeredPigment(Color firstColor, Color secondColor, int stepsNumber){
+    public CheckeredPigment(Color firstColor, Color secondColor, int stepsNumber){
         this.firstColor = firstColor;
         this.secondColor = secondColor;
         this.stepsNumber = stepsNumber;
     }
 
-    CheckeredPigment(Color firstColor, Color secondColor){
+    public CheckeredPigment(Color firstColor, Color secondColor){
         this.firstColor = firstColor;
         this.secondColor = secondColor;
         this.stepsNumber = 10;

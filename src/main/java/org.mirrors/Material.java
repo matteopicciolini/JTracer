@@ -3,8 +3,8 @@ package org.mirrors;
 import static org.mirrors.Global.Black;
 
 public class Material {
-    BRDF brdf;
-    Pigment emittedRadiance;
+    public BRDF brdf;
+    public Pigment emittedRadiance;
 
     public Material(){
         this.brdf = new DiffuseBRDF();
