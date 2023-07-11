@@ -1,10 +1,9 @@
 <img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati"  width="300">
+<h1 align="center">  Ray Tracing Project </h1> <br>
 
- <h1 align="center">  Ray Tracing Project </h1> <br>
-
-
-This is a project developed by Matteo Picciolini and [Francesco Villa][1] to reproduce some photorealistic images by using Numerical Methods. This came from a course we attended in Unimi, called ***Numeric calculus for photorealistic images generation***, directed by our professor [Maurizio Tomasi][2].
-Our library is written in java, a very powerful lenguage we learned in this course. 
+This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by solving the rendering equation using Numerical Methods.
+This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
+The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`.
 
 *Specular view of deer and cat, realized with two triangle mashes*
 
@@ -30,12 +29,23 @@ Our code allows for the implementation of various types of materials (we will pr
 Once the desired shapes are defined and the scene is rendered using the methods described earlier, the resulting image is in HDR format (a `.pfm` file), and subsequently converted into an LDR file such as `.jpg` or .png based on the user's needs.
 
 ## Prerequisites
+For this project, we are using [version 18.0.2][corretto] of `Amazon Corretto`, an `OpenJDK` distribution
+provided by `Amazon Web Services` (`AWS`) designed to be a stable, secure, and free version of `Java`.
+It is possible to download the correct version of `Java` for your operating system on the `Oracle` website at this [link][correttoDownload].
+
+For the project compilation, we relied on the `Gradle` build automation tool. 
+`Gradle` allows specifying project dependencies in the [build file][build] so that it can automatically 
+download the necessary external libraries during the compilation phase, ensuring that the required 
+classes and methods are available for the proper execution of the program. 
+
+For this project, the following external libraries have been imported:
+- `JUnit Jupiter` ([version 5.9.2][junit5]), required for writing automated tests;
+- `Apache Commons CLI` ([version 1.4][cli]), used for creating a command-line interface.
+
+It is not necessary to install `Gradle`, as the project provides an executable [`gradlew`][gradlew] 
+that can be used to avoid local installation of `Gradle`.
 
 
-Using the Java language and the Gradle compiler, our luck was that we didn't need to install external libraries. In fact, it was enough to include the necessary libraries for converting from HDR to LDR images and for running the tests in the Gradle.build file.
-Having Java 18 correttoy installed and Gradle v7.6.1 are the only prerequisites to use this program.
-- [Java-corretto-v18](https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html)
-- [Gradle-compiler](https://gradle.org/releases/)
 
 ## Usage
 
@@ -151,5 +161,12 @@ In this section there are part of the images we've generated:
 
 
 
-[1]: https://github.com/fravij99
-[2]: https://github.com/ziotom78
+[fravi]: https://github.com/fravij99
+[ziotom]: https://github.com/ziotom78
+[piccio]: https://github.com/matteopicciolini
+[build]: https://github.com/matteopicciolini/ray_tracing/blob/master/build.gradle
+[cli]: https://commons.apache.org/proper/commons-cli/
+[junit5]: https://junit.org/junit5/
+[corretto]: https://aws.amazon.com/it/about-aws/whats-new/2022/03/amazon-corretto-18/
+[correttoDownload]: https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html
+[gradlew]: https://github.com/matteopicciolini/ray_tracing/blob/master/gradlew
