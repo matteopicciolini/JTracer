@@ -263,7 +263,7 @@ public class Tracer {
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
         translation = Transformation.translation(new Vec(0.2f, 0.2f, -0.1f));
         Sphere sphere2 = new Sphere(translation.times(rescale), worldSphere);
-        //world.addShape(sphere2);
+        world.addShape(sphere2);
 
         //CUBE
         translation = Transformation.translation(new Vec(0.25f, 0.25f, -0.01f));
@@ -271,8 +271,8 @@ public class Tracer {
         translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), hyperboloidmaterial);
         //world.addShape(cube);
 
-        CSGDifference sphereCube = new CSGDifference(sphere2, cube);
-        world.addShape(sphereCube);
+        //CSGDifference sphereCube = new CSGDifference(sphere2, cube);
+        //world.addShape(sphereCube);
 
         //SPHERE
         rescale = Transformation.scaling(new Vec(0.1f, 0.1f, 0.1f));
