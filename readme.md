@@ -32,6 +32,18 @@ Once the desired shapes are defined and the scene is rendered using the methods 
 For this project, we are using [version 18.0.2][corretto] of `Amazon Corretto`, an `OpenJDK` distribution
 provided by `Amazon Web Services` (`AWS`) designed to be a stable, secure, and free version of `Java`.
 It is possible to download the correct version of `Java` for your operating system on the `Oracle` website at this [link][correttoDownload].
+On a Debian-based system, you can install it by executing the following commands:
+```
+wget https://download.oracle.com/java/18/archive/jdk-18.0.2.1_linux-x64_bin.tar.gz
+tar -xvf jdk-18.0.2.1_linux-x64_bin.tar.gz
+```
+Additionally, add the following line to the `.bashrc` file:
+```
+export JAVA_HOME=/path/to/.jdks/corretto-18.0.2
+```
+Please note that the provided path `/path/to/.jdks/corretto-18.0.2` assumes a specific directory structure. 
+Make sure to adjust the path according to your actual system configuration.
+
 
 For the project compilation, we relied on the `Gradle` build automation tool. 
 `Gradle` allows specifying project dependencies in the [build file][build] so that it can automatically 
@@ -42,7 +54,7 @@ For this project, the following external libraries have been imported:
 - `JUnit Jupiter` ([version 5.9.2][junit5]), required for writing automated tests;
 - `Apache Commons CLI` ([version 1.4][cli]), used for creating a command-line interface.
 
-It is not necessary to install `Gradle`, as the project provides an executable [`gradlew`][gradlew] 
+It is not necessary to install `Gradle`, as the project provides an executable [`./gradlew`][gradlew] 
 that can be used to avoid local installation of `Gradle`.
 
 
