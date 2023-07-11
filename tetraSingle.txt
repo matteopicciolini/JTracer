@@ -1,0 +1,12 @@
+# tetrahedron.obj created by hand.
+#
+
+g tetrahedron
+
+v 0.00 0.00 0.00
+v 1.00 0.00 0.00
+v 0.00 1.00 0.00
+
+
+
+f 1 2 3
