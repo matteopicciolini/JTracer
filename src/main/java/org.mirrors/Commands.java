@@ -61,16 +61,19 @@ public class Commands implements Runnable{
     @Command(name = "convert", description = "Convert pfm file to png.", mixinStandardHelpOptions = true)
     public void convert(
             @Parameters(index = "0", paramLabel = "-i", description = "String: Path of the input file") String inputFilename,
-            @Option(names = {"-o", "--outputFileName"}, description = "String: Path of the output ldr file") String outputFilename,
-            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction") Float gamma,
-            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor") Float factor)
+            @Option(names = {"-o", "--outputFileName"}, description = "String: Path of the output ldr file. \t Default: <inputFileName>.png") String outputFilename,
+            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. \t Default: 2.2.") Float gamma,
+            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. \t Default: 0.18.") Float factor,
+            @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: If it is not specified, it is calculated; otherwise, it is set to 0.5.") Float luminosity
+    )
     {
         if (outputFilename == null) outputFilename = inputFilename.substring(0, inputFilename.length() - 3) + "png";
         if (gamma == null) gamma = 2.2f;
         if (factor == null) factor = 0.18f;
 
         try {
-            Tracer.pfm2image(factor, gamma, inputFilename, outputFilename);
+            if (luminosity == null){ Tracer.pfm2image(factor, gamma, inputFilename, outputFilename);}
+            else Tracer.pfm2image(factor, gamma, inputFilename, outputFilename, luminosity);
         } catch (Exception | InvalidPfmFileFormatException e) {
             throw new RuntimeException(e);
         }
@@ -120,7 +123,14 @@ public class Commands implements Runnable{
         }
     }
 
-    private void conversion(@Option(names = {"--output"}, description = "string: Path of the output ldr file. Default: ${DEFAULT-VALUE}.", defaultValue = "img.pfm") String outputFilename, @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG, @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM, @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma, @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor, @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: It is calculated for the pathTracer; otherwise, it is set to 0.5.") Float luminosity) throws IOException, InvalidPfmFileFormatException {
+    private void conversion(
+            @Option(names = {"--output"}, description = "string: Path of the output ldr file. Default: ${DEFAULT-VALUE}.", defaultValue = "img.pfm") String outputFilename,
+            @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
+            @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
+            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma,
+            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
+            @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: If it is not specified, it is calculated; otherwise, it is set to 0.5.") Float luminosity
+    ) throws IOException, InvalidPfmFileFormatException {
         if(convertInPNG){
             String fileOutputPNG = outputFilename.substring(0, outputFilename.length() - 3) + "png";
             if (luminosity == null){ Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);}
