@@ -60,16 +60,23 @@ that can be used to avoid local installation of `Gradle`.
 
 
 ## Usage
+In order to use and modify the code you can clone the repository with the command:
+```
+git clone git@github.com:matteopicciolini/ray_tracing.git
+```
+Then, you can run the command `./gradlew test` to verify that the package functions correctly by executing the tests.
+Project can be built from source code running the command `./gradlew build`.
 
-To use this library, you need to clone the repository into a local folder using the command:
+To run the code, you can proceed in two ways:
 
-    git clone git@github.com:matteopicciolini/ray_tracing.git
+1. By generating an executable using the command ```./gradlew installDist``` and you can launch it with the specified parameters below.
+2. By using the file `./gradlew` and running it in `run` mode: `./gradlew run`.
+With the `--args` flag, you can pass parameters from the command line. For example:
+```
+./gradlew run --args="render --input=image.txt"
+```
 
-Then, you can run the command 
 
-    gradlew test
-    
-to verify that the package functions correctly by executing the tests.
 The main feature of the program is the ***renderer mode***, which reads an externali file `.txt` containing the scene that will be renderized. It is necessary to use this command to activate the renderer mode
 
      gradlew run --args --all_the_arguments_needed
