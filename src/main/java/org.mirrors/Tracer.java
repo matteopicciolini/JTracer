@@ -57,7 +57,7 @@ public class Tracer {
         Material gray = new Material(new DiffuseBRDF(new UniformPigment(Gray)));
         Material groundMaterial = new Material(new DiffuseBRDF(new CheckeredPigment(
                                 new Color(0.f, 0.5f, 0.f),
-                                new Color(1f, 1f, 1f), 16)), new UniformPigment(Black));
+                                new Color(1f, 1f, 1f), 1)), new UniformPigment(Black));
 
         //InputStream str = new FileInputStream("Plank.pfm");
         //HDRImage worldImage = PfmCreator.readPfmImage(str);
@@ -108,7 +108,7 @@ public class Tracer {
         wolf.createFileShape("wolf.txt");
 
 
-        world.addShape(wolf);
+        //world.addShape(wolf);
         //world.addShape(cat);
 
         ArrayList<Point> vert = new ArrayList<>();
@@ -121,7 +121,7 @@ public class Tracer {
         TriangleMesh single= new TriangleMesh(vert, sphereMaterial2);
 
         //world.addShape(single);
-        //world.addShape(tri2);
+        world.addShape(tri2);
 
         // MIRROR SPHERE
         //rescale = Transformation.scaling(new Vec(0.25f, 0.2f, 0.2f));
@@ -140,7 +140,7 @@ public class Tracer {
 
         ImageTracer tracer;
         if (parameters.antialiasing){
-            tracer = new ImageTracer(image, camera, 2, new PCG());
+            tracer = new ImageTracer(image, camera, 1, new PCG());
         }else{
             tracer = new ImageTracer(image, camera);
         }
