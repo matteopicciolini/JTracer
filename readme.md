@@ -169,6 +169,8 @@ In this section there are part of the images we've generated:
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/3fc5292b-b65c-4160-b08c-4e6a9f44b7f7" height="200" /> 
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/77a3f104-5e0c-42b1-9674-5bdc1823f874" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/ef222fc3-8a45-4b92-a90c-172a93023777" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f9b36d44-0663-402b-ab25-75c4f1466532" height="200" />
+
 
   
 </p>
