@@ -178,7 +178,9 @@ In this section there are part of the images we've generated:
 
 
 ## Issue-Tracking
-
+If the user ecounters a bug or any type of issues related to the code we have written, please let us know. Contact us via e-mail of the following addresses:
+- fravilla30@gmail.com
+- picciolinimatteo@sgmail.com
 
 
 
