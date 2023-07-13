@@ -219,6 +219,7 @@ In this section there are part of the images we've generated:
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/ef222fc3-8a45-4b92-a90c-172a93023777" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f9b36d44-0663-402b-ab25-75c4f1466532" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/364d3295-a575-4c23-b316-136c81beaa53" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/cbc5062a-3d4a-4a5d-8e56-00e89a4c02c4" height="200" />
 
 
 
