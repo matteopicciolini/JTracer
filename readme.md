@@ -8,7 +8,6 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
 
 *Competition between deer, cat and wolf, realized with boxes, triangle meshes, sphere and plane*
 
-
 ## Table of Contents
 - [Overview](#Overview)
 - [Prerequisites](#Prerequisites)
