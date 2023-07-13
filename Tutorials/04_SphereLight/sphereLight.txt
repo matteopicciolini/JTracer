@@ -1,0 +1,34 @@
+material skyMaterial(diffuse(uniform(<black>)), uniform(<white>))
+material diffuseNavy(diffuse(uniform(<navy>)), uniform(<navy>))
+material diffuseIndigo(diffuse(uniform(<indigo>)), uniform(<indigo>))
+material specularIndigo(specular(uniform(<indigo>)), uniform(<black>))
+material groundMaterial(diffuse(checkered(<0, 0.5, 0>, <1, 1, 1>, 16)), uniform(<black>))
+material diffuseYellow(diffuse(uniform(<yellow>)), uniform(<yellow>))
+material diffuseDarkOrange(diffuse(uniform(<darkOrange>)), uniform(<black>))
+material specularDarkOrange(specular(uniform(<darkOrange>)), uniform(<black>))
+material specularMirror(specular(uniform(<white>)), uniform(<black>))
+material pfmImage(diffuse(image("PfmFiles/Moon.pfm")), uniform(<black>))
+material checkeredOrange(diffuse(checkered(<darkOrange>, <white>, 16)), uniform(<black>))
+material diffuseLime(diffuse(uniform(<0., 0.5, 0.>)), uniform(<black>))
+material diffuseDarkRed(diffuse(uniform(<darkRed>)), uniform(<black>))
+material diffuseBrown(diffuse(uniform(<saddleBrown>)), uniform(<black>))
+
+
+plane(
+    diffuseBrown,
+    translation([0, 0., -0.2])
+)
+
+sphere(
+    diffuseBrown,
+    scaling([0.2, 0.2, 0.2])
+)
+sphere(
+    skyMaterial,
+    translation([0, 0, 0.4]) * scaling([0.2, 0.2, 0.2])
+)
+
+
+
+
+camera(perspective, translation([0.1, 0, 0.1]) * rotationY(3), 1, 1)
