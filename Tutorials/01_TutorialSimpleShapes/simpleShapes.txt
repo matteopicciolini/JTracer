@@ -1,0 +1,62 @@
+material skyMaterial(diffuse(uniform(<black>)), uniform(<white>))
+material diffuseNavy(diffuse(uniform(<navy>)), uniform(<navy>))
+material diffuseIndigo(diffuse(uniform(<indigo>)), uniform(<indigo>))
+material specularIndigo(specular(uniform(<indigo>)), uniform(<black>))
+material groundMaterial(diffuse(checkered(<0, 0.5, 0>, <1, 1, 1>, 16)), uniform(<black>))
+material diffuseYellow(diffuse(uniform(<yellow>)), uniform(<yellow>))
+material diffuseDarkOrange(diffuse(uniform(<darkOrange>)), uniform(<darkOrange>))
+material specularDarkOrange(specular(uniform(<darkOrange>)), uniform(<black>))
+material specularMirror(specular(uniform(<white>)), uniform(<black>))
+material pfmImage(diffuse(image("Moon.pfm")), uniform(<black>))
+material checkeredOrange(diffuse(checkered(<darkOrange>, <white>, 16)), uniform(<black>))
+material diffuseLime(diffuse(uniform(<0., 0.5, 0.>)), uniform(<black>))
+material diffuseDarkRed(diffuse(uniform(<darkRed>)), uniform(<black>))
+
+sphere(
+    skyMaterial,
+    scaling([50,50,50])
+)
+
+box(
+    [-0.2,-0.2,-0.2],
+    [0.2,0.2,0.2],
+    diffuseNavy,
+    rotationX(40) * rotationY(45)
+)
+
+plane(
+    groundMaterial,
+    translation([0, 0., -0.1])
+)
+
+sphere(
+    pfmImage,
+    translation([0, 0.5, 0.1]) * scaling([0.2, 0.2, 0.2])
+)
+
+hyperboloid(
+    -1.5, 1.5,
+    specularMirror,
+    translation([-0.35, 0.4, 0.0]) * scaling([0.06, 0.06, 0.075])
+)
+
+sphere(
+    specularDarkOrange,
+    translation([0.2, -0.5, 0.1]) * scaling([0.25, 0.2, 0.2])
+)
+
+cone(
+    0.3, 1.2,
+    specularMirror,
+    translation([-0.5, -0.25, -0.1]) * scaling([0.2, 0.2, 0.2])
+)
+
+cylinder(
+    diffuseLime,
+    translation([-0.5, 0.15, 0]) * rotationZ(40) * rotationX(90) * scaling([0.1, 0.1, 0.1])
+)
+
+
+
+
+camera(perspective, translation([0.1, 0, 0.1]) * rotationY(3), 1, 1)
