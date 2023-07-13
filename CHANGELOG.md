@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ## v0.2.0
 #### New Features
-- Define mathematical operators (`Vector`, `Normal`, `Point`, `ransformation`) and opteration [#1](https://github.com/matteopicciolini/ray_tracing/pull/1).
+- Define mathematical operators (`Vector`, `Normal`, `Point`, `transformation`) and opteration [#1](https://github.com/matteopicciolini/ray_tracing/pull/1).
 - Conversion of the build system from IntelliJ to Gradle in order to take advantage of CI Builds [#2](https://github.com/matteopicciolini/ray_tracing/pull/2).
 - Define Camera class that allows specifying the position and orientation of the observer [#3](https://github.com/matteopicciolini/ray_tracing/pull/3).
 - First demo [#5](https://github.com/matteopicciolini/ray_tracing/pull/5).
