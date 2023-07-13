@@ -3,6 +3,7 @@ import org.mirrors.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.security.Key;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -52,6 +53,8 @@ public class InStream {
         put("saddleBrown", SaddleBrown);
         put("darkBrown", DarkBrown);
         put("yellow", Yellow);
+        put("indigo", Indigo);
+        put("darkGreen", DarkGreen);
     }};
 
 
@@ -250,6 +253,7 @@ public class InStream {
             case "box" -> new KeywordToken(tokenLocation, KeywordEnum.BOX);
             case "cylinder" -> new KeywordToken(tokenLocation, KeywordEnum.CYLINDER);
             case "hyperboloid" -> new KeywordToken(tokenLocation, KeywordEnum.HYPERBOLOID);
+            case "cone" -> new KeywordToken(tokenLocation, KeywordEnum.CONE);
             case "union" -> new KeywordToken(tokenLocation, KeywordEnum.CSGUNION);
             case "difference" -> new KeywordToken(tokenLocation, KeywordEnum.CSGDIFFERENCE);
             case "intersection" -> new KeywordToken(tokenLocation, KeywordEnum.CSGINTERSECTION);
@@ -645,6 +649,137 @@ public class InStream {
         return new Box(min, max, transformation, scene.materials.get(materialName));
     }
 
+    public Cylinder parseCylinder(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new Cylinder(transformation, scene.materials.get(materialName));
+    }
+
+    public Cone parseCone(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+        float radius = this.expectNumber(scene);
+        expectSymbol(',');
+        float height = this.expectNumber(scene);
+        expectSymbol(',');
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new Cone(transformation, scene.materials.get(materialName), radius, height);
+    }
+
+    public Hyperboloid parseHyperboloid(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        this.expectSymbol('(');
+        float minZ = this.expectNumber(scene);
+        expectSymbol(',');
+        float maxZ = this.expectNumber(scene);
+        expectSymbol(',');
+        String materialName = this.expectIdentifier();
+        if (!scene.materials.containsKey(materialName)) {
+            throw new GrammarErrorException(this.location, "unknown material " + materialName);
+        }
+
+        this.expectSymbol(',');
+        Transformation transformation = this.parseTransformation(scene);
+        this.expectSymbol(')');
+
+        return new Hyperboloid(transformation, scene.materials.get(materialName), minZ, maxZ);
+    }
+
+    public CSGUnion parseUnion(Scene scene) throws IOException, GrammarErrorException, InvalidMatrixException {
+        this.expectSymbol('(');
+        Shape firstShape = parseShape(scene);
+        Shape secondShape = parseShape(scene);
+        Transformation transformation = parseTransformation(scene);
+        expectSymbol(')');
+        return new CSGUnion(transformation, firstShape, secondShape);
+    }
+
+    public CSGDifference parseDifference(Scene scene) throws IOException, GrammarErrorException, InvalidMatrixException {
+        this.expectSymbol('(');
+        Shape firstShape = parseShape(scene);
+        Shape secondShape = parseShape(scene);
+        Transformation transformation = parseTransformation(scene);
+        expectSymbol(')');
+        return new CSGDifference(transformation, firstShape, secondShape);
+    }
+
+    public CSGIntersection parseIntersection(Scene scene) throws IOException, GrammarErrorException, InvalidMatrixException {
+        this.expectSymbol('(');
+        Shape firstShape = parseShape(scene);
+        Shape secondShape = parseShape(scene);
+        Transformation transformation = parseTransformation(scene);
+        expectSymbol(')');
+        return new CSGIntersection(transformation, firstShape, secondShape);
+    }
+
+
+    private Shape parseShape(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
+        Shape firstShape = null;
+        KeywordEnum keyword = this.expectKeywords(
+                Arrays.asList(
+                        KeywordEnum.SPHERE,
+                        KeywordEnum.PLANE,
+                        KeywordEnum.CYLINDER,
+                        KeywordEnum.BOX,
+                        KeywordEnum.CONE,
+                        KeywordEnum.HYPERBOLOID,
+                        KeywordEnum.CSGUNION,
+                        KeywordEnum.CSGDIFFERENCE,
+                        KeywordEnum.CSGINTERSECTION
+                )
+        );
+
+        switch (keyword) {
+            case SPHERE:
+                firstShape = parseSphere(scene);
+                break;
+            case PLANE:
+                firstShape = parsePlane(scene);
+                break;
+            case CYLINDER:
+                firstShape = parseCylinder(scene);
+                break;
+            case BOX:
+                firstShape = parseBox(scene);
+                break;
+            case CONE:
+                firstShape = parseCone(scene);
+                break;
+            case HYPERBOLOID:
+                firstShape = parseHyperboloid(scene);
+                break;
+            case CSGUNION:
+                firstShape = parseUnion(scene);
+                break;
+            case CSGDIFFERENCE:
+                firstShape = parseDifference(scene);
+                break;
+            case CSGINTERSECTION:
+                firstShape = parseIntersection(scene);
+                break;
+            default:
+                assert false : "This line should be unreachable.";
+                break;
+        }
+        expectSymbol(',');
+        return firstShape;
+    }
+
     /**
      Parses a plane from the input stream.
      @param scene the scene object containing float variables
@@ -734,6 +869,18 @@ public class InStream {
                 scene.objects.add(this.parsePlane(scene));
             } else if (keyword == KeywordEnum.BOX) {
                 scene.objects.add(this.parseBox(scene));
+            } else if (keyword == KeywordEnum.CYLINDER) {
+                scene.objects.add(this.parseCylinder(scene));
+            } else if (keyword == KeywordEnum.CONE) {
+                scene.objects.add(this.parseCone(scene));
+            } else if (keyword == KeywordEnum.HYPERBOLOID) {
+                scene.objects.add(this.parseHyperboloid(scene));
+            } else if (keyword == KeywordEnum.CSGDIFFERENCE) {
+                scene.objects.add(this.parseDifference(scene));
+            } else if (keyword == KeywordEnum.CSGINTERSECTION) {
+                scene.objects.add(this.parseIntersection(scene));
+            }else if (keyword == KeywordEnum.CSGUNION) {
+                    scene.objects.add(this.parseUnion(scene));
             } else if (keyword == KeywordEnum.CAMERA) {
                 if (scene.camera != null) {
                     throw new GrammarErrorException(what.location, "You cannot define more than one camera");

@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 public class CSGDifference extends CSG{
 
-    public CSGDifference(Transformation transformation, Material material, Shape shape1, Shape shape2) {
-        super(transformation, material, shape1, shape2);
+    public CSGDifference(Transformation transformation, Shape shape1, Shape shape2) {
+        super(transformation, shape1, shape2);
     }
 
     public CSGDifference(Shape shape1, Shape shape2) {

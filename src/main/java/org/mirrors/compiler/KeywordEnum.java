@@ -13,6 +13,7 @@ public enum KeywordEnum {
     SPHERE,
     BOX,
     CYLINDER,
+    CONE,
     HYPERBOLOID,
     CSGUNION,
     CSGDIFFERENCE,
