@@ -11,9 +11,11 @@ import java.util.Objects;
 
 @Command(name = "", description = ".NET Core console app with argument parsing.", mixinStandardHelpOptions = true)
 public class Commands implements Runnable{
-    public static Float valueOfLuminosity(String algorithm){
-        if(!Objects.equals(algorithm, "pathTracer")) return 0.5f;
-        else return null;
+    public static Float valueOfLuminosity(Float luminosity, String algorithm){
+        if(!Objects.equals(algorithm, "pathTracer") && luminosity == null){
+            return 0.5f;
+        }
+        else return luminosity;
     }
     @Command(name = "demo", description = "JTracer demo.", mixinStandardHelpOptions = true)
     public void demo(
@@ -42,7 +44,7 @@ public class Commands implements Runnable{
         if(!convertInPNG && deletePFM){
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
         }
-        luminosity = valueOfLuminosity(algorithm);
+        luminosity = valueOfLuminosity(luminosity, algorithm);
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(width, height, angleDeg,
                 outputFilename, orthogonal, algorithm, antialiasing, parallelAntialiasing, nThreads,
@@ -108,7 +110,7 @@ public class Commands implements Runnable{
         if(!convertInPNG && deletePFM){
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
         }
-        luminosity = valueOfLuminosity(algorithm);
+        luminosity = valueOfLuminosity(luminosity, algorithm);
 
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(inputFileNameTXT, width, height, angleDeg,
