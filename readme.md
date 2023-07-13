@@ -1,11 +1,13 @@
-<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f3f3a503-224d-4669-ae42-efb1931727b7" alt="Competizione tra cervo gatto e lupo"  width="300">
+<!--<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f3f3a503-224d-4669-ae42-efb1931727b7" alt="Competizione tra cervo gatto e lupo"  width="300">
+-->
+<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7"  width="300"
 <h1 align="center">  Ray Tracing Project </h1> <br>
 
 This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by solving the rendering equation using Numerical Methods.
 This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
 The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`.
 
-*Competition between deer, cat and wolf, realized with boxes, triangle meshes, sphere and plane*
+<!--*Competition between deer, cat and wolf, realized with boxes, triangle meshes, sphere and plane*-->
 
 ## Table of Contents
 - [Overview](#Overview)
