@@ -1,11 +1,13 @@
-<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f64d7b32-25f2-4a6d-a465-07ba183f2b0b" alt="cervo e gatto specchiati"  width="300">
+
+<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f3f3a503-224d-4669-ae42-efb1931727b7" alt="Competizione tra cervo gatto e lupo"  width="300">
 <h1 align="center">  Ray Tracing Project </h1> <br>
 
 This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by solving the rendering equation using Numerical Methods.
 This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
 The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`.
 
-*Specular view of deer and cat, realized with two triangle mashes*
+*Competition between deer, cat and wolf, realized with boxes, triangle meshes, sphere and plane*
+
 
 ## Table of Contents
 - [Overview](#Overview)
@@ -43,6 +45,7 @@ Additionally, add the following line to the `.bashrc` file:
 ```
 export JAVA_HOME=/path/to/.jdks/corretto-18.0.2
 ```
+
 Please note that the provided path `/path/to/.jdks/corretto-18.0.2` assumes a specific directory structure.
 Make sure to adjust the path according to your actual system configuration.
 
@@ -74,14 +77,15 @@ To run the code, you can proceed in two ways:
 
 1. By generating an executable using the command ```./gradlew installDist``` and you can launch it with the specified parameters below.
 2. By using the file `./gradlew` and running it in `run` mode: `./gradlew run`.
-   With the `--args` flag, you can pass parameters from the command line. For example:
+
+With the `--args` flag, you can pass parameters from the command line. For example:
+
 ```
 ./gradlew run --args="render --input=image.txt"
 ```
 
 Below are the available execution modes and parameters using the `Gradle` `run` task, as it avoids the generation of the binary file. 
 However, please note that what follows is also (and especially) valid for the binary file generated with the `installDist` task.
-
 
 ### Modes
 This program can be executed in three different modes:
@@ -213,6 +217,8 @@ In this section there are part of the images we've generated:
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/3fc5292b-b65c-4160-b08c-4e6a9f44b7f7" height="200" /> 
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/77a3f104-5e0c-42b1-9674-5bdc1823f874" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/ef222fc3-8a45-4b92-a90c-172a93023777" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f9b36d44-0663-402b-ab25-75c4f1466532" height="200" />
+
 
 
 </p>
@@ -220,7 +226,9 @@ In this section there are part of the images we've generated:
 
 
 ## Issue-Tracking
-
+If the user ecounters a bug or any type of issues related to the code we have written, please let us know. Contact us via e-mail of the following addresses:
+- fravilla30@gmail.com
+- picciolinimatteo@gmail.com
 
 
 
