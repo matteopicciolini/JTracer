@@ -5,7 +5,7 @@ This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][
 This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
 The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`.
 
-*Specular view of deer and cat, realized with two triangle mashes*
+*Competition between deer, cat and wolf, realized with boxes, triangle meshes, sphere and plane*
 
 ## Table of Contents
 - [Overview](#Overview)
