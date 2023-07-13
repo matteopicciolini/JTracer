@@ -14,10 +14,8 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
 - [Prerequisites](#Prerequisites)
 - [Usage](#Usage)
     - [Modes](#Modes)
-        - [pfm2png](#pfm2png-mode)
-    - [Examples](#Examples)
+    - [Tutorials](#Tutorials)
     - [Shapes](#Shapes)
-- [Documentation](#Documentation)
 - [License](#License)
 - [Gallery](#Gallery)
 - [Issue-tracking](#Issue-tracking)
@@ -158,32 +156,24 @@ Below are the available options for the render mode. Note that the options for t
 
 By the end of the execution, there's no need to specify the conversion from HDR image to LDR image cause of the default settings of `--convertToPNG=true`.
 
-### Examples
-Our code needs very specific sintax rules, so There are many examples on how to write a `.txt` file with correct instructions:
-- [Cornell Box]()
-- [Example-2]()
+### Tutorials
+For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary TXT files for the program, you can refer to the documentation or use the tutorials provided in the `Tutorials` folder.
 
 
 <img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="280">
 
-### Demo mode
-This peculiar mode is usually called where there is some need tu build a quick scene without pass trough the `.txt` file.
-To strart running **demo mode**, the user should use the main command:
-
-      gradlew run demo --args
-
-To obtain the full list of arguments the command is the following:
-
-      gradlew run demo -h
-
 ### Shapes
-The complete list of available shapes are the following:
+This raytracer implements the following shapes:
 - Sphere
 - Planes
-- Cubes
-- Quadratics shapes
+- Boxes
+- Cones
+- Hyperboloid
+- CSG Union
+- CSG Difference
+- CSG Intersection
 - Triangles
-- Triangle Meshes 💎
+- Triangle Meshes
 
 Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
 
@@ -202,8 +192,6 @@ f 2 3 4
 ```
 
 In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
-
-## Documentation
 
 ## Gallery
 
@@ -226,9 +214,7 @@ In this section there are part of the images we've generated:
 
 
 ## Issue-Tracking
-If the user ecounters a bug or any type of issues related to the code we have written, please let us know. Contact us via e-mail of the following addresses:
-- fravilla30@gmail.com
-- picciolinimatteo@gmail.com
+If you encounter any issues while using this project or find a bug in the code, please feel free to let us know! You can reach us at picciolinimatteo@gmail.com or fravilla30@gmail.com.
 
 
 
