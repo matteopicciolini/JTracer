@@ -6,8 +6,8 @@ public abstract class CSG extends Shape{
     public Shape shape1;
     public Shape shape2;
 
-    public CSG(Transformation transformation, Material material, Shape shape1, Shape shape2){
-        super(transformation, material);
+    public CSG(Transformation transformation, Shape shape1, Shape shape2){
+        super(transformation);
         this.shape1 = shape1;
         this.shape2 = shape2;
     }

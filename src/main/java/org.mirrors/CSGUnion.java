@@ -6,8 +6,8 @@ import java.util.List;
 
 public class CSGUnion extends CSG{
 
-    public CSGUnion(Transformation transformation, Material material, Shape shape1, Shape shape2) {
-        super(transformation, material, shape1, shape2);
+    public CSGUnion(Transformation transformation, Shape shape1, Shape shape2) {
+        super(transformation, shape1, shape2);
     }
 
     public CSGUnion(Shape shape1, Shape shape2) {

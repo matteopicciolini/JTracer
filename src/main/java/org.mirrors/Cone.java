@@ -98,13 +98,13 @@ public class Cone extends Shape {
 
         float sqrtDelta = (float) Math.sqrt(delta);
         float tMin;
-        float tmax;
+        float tMax;
         if (abs(a) < 1e-4f) {
             tMin = -c / b;
-            tmax = Float.POSITIVE_INFINITY;
+            tMax = Float.POSITIVE_INFINITY;
         } else {
             tMin = (-b - sqrtDelta) / (2.0f * a);
-            tmax = (-b + sqrtDelta) / (2.0f * a);
+            tMax = (-b + sqrtDelta) / (2.0f * a);
         }
 
         if (tMin > invRay.tMin && tMin < invRay.tMax) {
@@ -119,14 +119,14 @@ public class Cone extends Shape {
                         this));
             }
         }
-        if (tmax > invRay.tMin && tmax < invRay.tMax) {
-            Point hitPoint = invRay.at(tmax);
+        if (tMax > invRay.tMin && tMax < invRay.tMax) {
+            Point hitPoint = invRay.at(tMax);
             if (hitPoint.z >= 0f && hitPoint.z <= this.height) {
                 hits.add(new HitRecord(
                         (Point) this.transformation.times(hitPoint),
                         (Normal) this.transformation.times(getNormal(hitPoint, ray.dir)),
                         conePointToUV(hitPoint),
-                        tmax,
+                        tMax,
                         ray,
                         this));
             }

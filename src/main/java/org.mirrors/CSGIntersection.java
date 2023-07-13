@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 public class CSGIntersection extends CSG{
 
-    public CSGIntersection(Transformation transformation, Material material, Shape shape1, Shape shape2) {
-        super(transformation, material, shape1, shape2);
+    public CSGIntersection(Transformation transformation, Shape shape1, Shape shape2) {
+        super(transformation, shape1, shape2);
     }
     public CSGIntersection(Shape shape1, Shape shape2) {
         super(shape1, shape2);
