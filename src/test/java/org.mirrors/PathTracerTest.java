@@ -11,7 +11,7 @@ class PathTracerTest {
     @Test
     void testFurnace() throws InvalidMatrixException {
         PCG pcg = new PCG();
-        for (int i = 0; i < 5; ++i){
+        for (int i = 0; i < 15; ++i){
             World world = new World();
 
 
@@ -30,7 +30,7 @@ class PathTracerTest {
 
             float colorExpected = emittedRadianceFloat / (1.f - reflectanceFloat);
 
-
+            System.out.println(colorExpected-color.r);
             assertEquals(colorExpected, color.r, 1e-3);
             assertEquals(colorExpected, color.g, 1e-3);
             assertEquals(colorExpected, color.b, 1e-3);
