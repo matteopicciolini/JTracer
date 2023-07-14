@@ -172,7 +172,7 @@ This raytracer implements the following shapes:
 - CSG Union
 - CSG Difference
 - CSG Intersection
-- Triangles
+<!-- - Triangles
 - Triangle Meshes
 
 Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
@@ -192,7 +192,7 @@ f 2 3 4
 ```
 
 In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
-
+-->
 ## Gallery
 
 In this section there are part of the images we've generated:
@@ -218,6 +218,7 @@ In this section there are part of the images we've generated:
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/364d3295-a575-4c23-b316-136c81beaa53" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7" height="200" />
 
+<img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/e159d160-c8ea-49a3-9741-9f097bf81b73", height="200" />
 
 
 </p>
