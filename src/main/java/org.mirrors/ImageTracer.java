@@ -1,18 +1,12 @@
 package org.mirrors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
+
 import static java.lang.Math.pow;
 import static org.mirrors.Global.Black;
-import static org.mirrors.Global.White;
 
 /**
  A class that performs ray tracing on an HDR image using a camera object.
@@ -37,6 +31,12 @@ public class ImageTracer {
         this.image = image;
         this.camera = camera;
         this.samplesPerSide = samplesPerSide;
+        this.pcg = pcg;
+    }
+
+    public ImageTracer(HDRImage image, Camera camera, PCG pcg){
+        this.image = image;
+        this.camera = camera;
         this.pcg = pcg;
     }
     /**
@@ -83,7 +83,7 @@ public class ImageTracer {
     }
 
 
-    public void fireAllRaysParallel(RayToColor f, int numThreads, int progBarFlushFrequence) throws InvalidMatrixException {
+    public void fireAllRaysParallel(RayToColor f, int numThreads, int progBarFlushFrequence) {
         int totalPixels = this.image.width * this.image.height;
         Map<Thread, Integer> threadCountMap = new HashMap<>();
 
@@ -113,7 +113,7 @@ public class ImageTracer {
                         this.image.setPixel(x, y, cumColor.prod(1f / (float) Math.pow(this.samplesPerSide, 2)));
                     } else {
                         Ray ray = this.fireRay(x, y, 0.5f, 0.5f);
-                        Color color = null;
+                        Color color;
                         try {
                             color = f.call(ray);
                         } catch (InvalidMatrixException e) {
@@ -130,7 +130,7 @@ public class ImageTracer {
             }
         }
 
-        executor.shutdown(); // Attendere la terminazione di tutti i thread
+        executor.shutdown();
 
         while (!executor.isTerminated()) {
             // Attendi il completamento di tutti i thread

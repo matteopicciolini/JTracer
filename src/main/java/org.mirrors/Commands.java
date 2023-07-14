@@ -5,6 +5,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -91,13 +92,13 @@ public class Commands implements Runnable{
             @Option(names = {"--algorithm"}, description = "string: Algorithm of rendering. Default: ${DEFAULT-VALUE}.", defaultValue = "pathTracer") String algorithm,
             //@Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean orthogonal,
             @Option(names = {"--antialiasing"}, description = "bool: Use antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean antialiasing,
-            @Option(names = {"--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean parallelAntialiasing,
+            @Option(names = {"--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallelAntialiasing,
             @Option(names = {"--nThreads"}, description = "int: Number of threads to use for parallelization. Default: ${DEFAULT-VALUE}.", defaultValue = "8") Integer nThreads,
             @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
             @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
             @Option(names = {"-s", "--samplePerSide"}, description = "int: In antialiasing algorithm, the number of samples per side. Default: ${DEFAULT-VALUE}.", defaultValue = "4") Integer samplesPerSide,
             //ProgressBar
-            @Option(names = {"--flushFrequence"}, description = "int: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: ${DEFAULT-VALUE}", defaultValue = "100") Integer progBarFlushFrequence,
+            @Option(names = {"--flushFrequency"}, description = "int: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: ${DEFAULT-VALUE}", defaultValue = "100") Integer progBarFlushFrequence,
             //Screen features
             @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma,
             @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
@@ -105,7 +106,9 @@ public class Commands implements Runnable{
             //pathTracer
             @Option(names = {"-n", "--numRays"}, description = "int: Number of rays per pixel", defaultValue = "10") Integer numOfRays,
             @Option(names = {"--maxDepth"}, description = "int: Maximum recursion depth", defaultValue = "2") Integer maxDepth,
-            @Option(names = {"--russianRouletteLimit"}, description = "int: Russian roulette limit. Default: ${DEFAULT-VALUE}.", defaultValue = "3") Integer russianRouletteLimit
+            @Option(names = {"--russianRouletteLimit"}, description = "int: Russian roulette limit. Default: ${DEFAULT-VALUE}.", defaultValue = "3") Integer russianRouletteLimit,
+            @Option(names = {"--initState"}, description = "int: PCG starter parameter. Default: ${DEFAULT-VALUE}.", defaultValue = "42") Integer initState,
+            @Option(names = {"--initSeq"}, description = "int: PCG starter parameter. Default: ${DEFAULT-VALUE}.", defaultValue = "54") Integer initSeq
     ) throws InvalidOptionException{
         if(!convertInPNG && deletePFM){
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
@@ -115,7 +118,7 @@ public class Commands implements Runnable{
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(inputFileNameTXT, width, height, angleDeg,
                 outputFileName,  algorithm, antialiasing, parallelAntialiasing, nThreads, convertInPNG,
-                deletePFM, samplesPerSide, progBarFlushFrequence, gamma, factor, luminosity, numOfRays, maxDepth, russianRouletteLimit);
+                deletePFM, samplesPerSide, progBarFlushFrequence, gamma, factor, luminosity, numOfRays, maxDepth, russianRouletteLimit, initState, initSeq);
 
         try {
             Tracer.render(parameters);
@@ -139,6 +142,18 @@ public class Commands implements Runnable{
             else Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG, luminosity);
             if(deletePFM) Tracer.RemoveFile(outputFilename);
         }
+    }
+
+    @Command(name = "sum", description = "JTracer sum.", mixinStandardHelpOptions = true)
+    private void sum(
+            @Option(names = {"--firstImage"}, required = true, description = "string: Path of the first pfm file. REQUIRES") String firstImagePath,
+            @Option(names = {"--secondImage"}, required = true, description = "string: Path of the second pfm file. REQUIRED") String secondImagePath)
+            throws IOException, InvalidPfmFileFormatException {
+
+        HDRImage firstImage = PfmCreator.readPfmImage(new FileInputStream(firstImagePath));
+        HDRImage secondImage = PfmCreator.readPfmImage(new FileInputStream(secondImagePath));
+        Tracer.sum(firstImage, secondImage);
+        Tracer.pfm2image(2.2f, 0.18f, "output.pfm", "outputSum.png");
     }
 
     @Override

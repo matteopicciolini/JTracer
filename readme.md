@@ -16,19 +16,21 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
     - [Modes](#Modes)
     - [Tutorials](#Tutorials)
     - [Shapes](#Shapes)
-- [License](#License)
 - [Gallery](#Gallery)
-- [Issue-tracking](#Issue-tracking)
+- [Issue Tracking](#Issue-Tracking)
 
 
 ## Overview
 
-The purpose of the course is precisely the generation of photorealistic images using a Ray Tracer, a library provided on this website called J-Tracer, written in Java.
-The algorithm used employs the backwards ray tracing method, where for each pixel of the desired image, a user-defined number of rays are launched, tracing the geometric path of the light rays back to the source. The presence of a camera behind the screen is simulated to form a proper image.
-
-Our code allows for the implementation of various types of materials (we will provide the complete table in a `.txt` file later) as well as different types of shapes, such as spheres, planes, cubes, various types of conics, triangles, and triangle meshes (the use of triangle meshes will be thoroughly explained).
-Once the desired shapes are defined and the scene is rendered using the methods described earlier, the resulting image is in HDR format (a `.pfm` file), and subsequently converted into an LDR file such as `.jpg` or .png based on the user's needs.
-
+The main purpose of this library is to generate photorealistic images from input files that describe 
+a specific scene. 
+The scene consists of geometric shapes (please refer to the list of available shapes), 
+each defined by its coordinates and material. 
+Our code allows you to choose between diffusive, emissive, or reflective materials. 
+The code incorporates different backward ray tracing algorithms to simulate the propagation of light rays. 
+A camera (perspective or orthogonal), representing the observer, will view the world through a 
+two-dimensional screen positioned in front of it. The camera is defined by its position, 
+distance from the screen, and aspect ratio.
 ## Prerequisites
 For this project, we are using [version 18.0.2][corretto] of `Amazon Corretto`, an `OpenJDK` distribution
 provided by `Amazon Web Services` (`AWS`) designed to be a stable, secure, and free version of `Java`.
@@ -222,7 +224,7 @@ In this section there are part of the images we've generated:
 
 
 
-## Issue-Tracking
+## Issue Tracking
 If you encounter any issues while using this project or find a bug in the code, please feel free to let us know! You can reach us at picciolinimatteo@gmail.com or fravilla30@gmail.com.
 
 

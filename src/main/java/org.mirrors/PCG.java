@@ -9,6 +9,7 @@ public class PCG {
     public long state;
     public long inc;
 
+
     /**
      * Constructs a PCG object with default initial state and sequence values.
      * The generator is seeded with two initial random numbers.

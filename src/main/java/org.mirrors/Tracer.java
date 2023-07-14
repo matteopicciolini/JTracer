@@ -14,6 +14,16 @@ public class Tracer {
         commandLine.execute(args);
     }
 
+    public static void sum(HDRImage firstImage, HDRImage secondImage) throws IOException {
+        HDRImage image = new HDRImage(500, 500);
+        for(int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                image.setPixel(i, j, firstImage.getPixel(i, j).sum(secondImage.getPixel(i, j)));
+            }
+        }
+        image.writePfm(new FileOutputStream("output.pfm"), LITTLE_ENDIAN);
+    }
+
     public static void pfm2image(float factor, float gamma, String inputFile, String outputFile) throws IOException, InvalidPfmFileFormatException {
         Parameters param = new Parameters(factor, gamma, inputFile, outputFile);
         OutputStream out = new FileOutputStream(param.outputFileName);
@@ -286,27 +296,25 @@ public class Tracer {
                 new OrthogonalCamera((float) parameters.width/parameters.height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
                 new PerspectiveCamera(1f, (float) parameters.width/parameters.height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
 
+        PCG pcg = new PCG();
         ImageTracer tracer;
         if (parameters.antialiasing){
-            tracer = new ImageTracer(image, camera, 4, new PCG());
+            tracer = new ImageTracer(image, camera, 4, pcg);
         }else{
             tracer = new ImageTracer(image, camera);
         }
-
-        createPfmImageWithAlgorithm(parameters, world, image, tracer);
-
-
+        createPfmImageWithAlgorithm(parameters, world, image, tracer, pcg);
     }
 
-    private static void createPfmImageWithAlgorithm(Parameters parameters, World world, HDRImage image, ImageTracer tracer) throws InvalidMatrixException, IOException {
+    private static void createPfmImageWithAlgorithm(Parameters parameters, World world, HDRImage image, ImageTracer tracer, PCG pcg) throws InvalidMatrixException, IOException {
         switch (parameters.algorithm) {
             case "flat" -> tracer.fireAllRays(new FlatRenderer(world), parameters.progBarFlushFrequence);
             case "onOff" -> tracer.fireAllRays(new OnOffRenderer(world), parameters.progBarFlushFrequence);
             case "pathTracer" -> {
                 if (parameters.parallelAntialiasing) {
-                    tracer.fireAllRaysParallel(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit), parameters.nThreads, parameters.progBarFlushFrequence);
+                    tracer.fireAllRaysParallel(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit, pcg), parameters.nThreads, parameters.progBarFlushFrequence);
                 } else {
-                    tracer.fireAllRays(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit), parameters.progBarFlushFrequence);
+                    tracer.fireAllRays(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit, pcg), parameters.progBarFlushFrequence);
                 }
             }
         }
@@ -340,16 +348,17 @@ public class Tracer {
 
         HDRImage image = new HDRImage(parameters.width, parameters.height);
         ImageTracer tracer;
+        PCG pcg = new PCG(parameters.initState, parameters.initSeq);
         if (parameters.antialiasing){
-            tracer = new ImageTracer(image, scene.camera, parameters.samplesPerSide, new PCG());
+            tracer = new ImageTracer(image, scene.camera, parameters.samplesPerSide, pcg);
         }else{
-            tracer = new ImageTracer(image, scene.camera);
+            tracer = new ImageTracer(image, scene.camera, pcg);
         }
 
         World world = new World();
         for (int i = 0; i < scene.objects.size();  ++i){
             world.addShape(scene.objects.get(i));
         }
-        createPfmImageWithAlgorithm(parameters, world, image, tracer);
+        createPfmImageWithAlgorithm(parameters, world, image, tracer, pcg);
     }
 }
