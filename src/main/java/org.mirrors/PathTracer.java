@@ -62,6 +62,14 @@ public class PathTracer extends Renderer{
         this.russianRouletteLimit = russianRouletteLimit;
     }
 
+    public PathTracer(World world, int numOfRays, int maxDepth, int russianRouletteLimit, PCG pcg) {
+        super(world);
+        this.pcg = pcg;
+        this.numOfRays = numOfRays;
+        this.maxDepth = maxDepth;
+        this.russianRouletteLimit = russianRouletteLimit;
+    }
+
     /**
      * {@inheritDoc}
      */

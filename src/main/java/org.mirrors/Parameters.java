@@ -28,6 +28,8 @@ public class Parameters {
     public int samplesPerSide;
 
     public int russianRouletteLimit;
+    public int initState;
+    public int initSeq;
     public Parameters(float factor, float gamma, String inputFileName, String outputFileName){
         this.factor = factor;
         this.gamma = gamma;
@@ -40,7 +42,7 @@ public class Parameters {
                       boolean parallelAntialiasing, int nThreads, boolean convertInPNG,
                       boolean deletePFM, int samplesPerSide, int progBarFlushFrequence, float gamma,
                       float factor, Float luminosity, int numOfRays, int maxDepth,
-                      int russianRouletteLimit){
+                      int russianRouletteLimit, int state, int inc){
         this.inputFileNameTXT = inputFileNameTXT;
         this.width = width;
         this.height = height;
@@ -56,10 +58,12 @@ public class Parameters {
         this.progBarFlushFrequence = progBarFlushFrequence;
         this.gamma = gamma;
         this.factor = factor;
-        this. luminosity = luminosity;
+        this.luminosity = luminosity;
         this.numOfRays = numOfRays;
         this.maxDepth = maxDepth;
         this.russianRouletteLimit = russianRouletteLimit;
+        this.initState = state;
+        this.initSeq = inc;
     }
 
     public Parameters(int width, int height, float angleDeg, String outputFileName,
@@ -82,7 +86,7 @@ public class Parameters {
         this.progBarFlushFrequence = progBarFlushFrequence;
         this.gamma = gamma;
         this.factor = factor;
-        this. luminosity = luminosity;
+        this.luminosity = luminosity;
         this.numOfRays = numOfRays;
         this.maxDepth = maxDepth;
         this.russianRouletteLimit = russianRouletteLimit;
