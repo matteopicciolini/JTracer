@@ -14,15 +14,43 @@ public class Tracer {
         commandLine.execute(args);
     }
 
-    public static void sum(HDRImage firstImage, HDRImage secondImage) throws IOException {
+    public static void calculateAverage(HDRImage firstImage, HDRImage secondImage, String outputFileName) throws IOException {
         HDRImage image = new HDRImage(500, 500);
         for(int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
-                image.setPixel(i, j, firstImage.getPixel(i, j).sum(secondImage.getPixel(i, j)));
+                image.setPixel(i, j, firstImage.getPixel(i, j).sum(secondImage.getPixel(i, j)).prod(0.5f));
             }
         }
-        image.writePfm(new FileOutputStream("output.pfm"), LITTLE_ENDIAN);
+        image.writePfm(new FileOutputStream(outputFileName), LITTLE_ENDIAN);
     }
+
+    public static void calculateAverage(HDRImage[] images, String outputFileName) throws Exception {
+        int numImages = images.length;
+
+        int width = images[0].width;
+        int height = images[0].height;
+
+        HDRImage averageImage = new HDRImage(width, height);
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Color ave = new Color(0.f, 0.f, 0.f);
+                for (int k = 0; k < numImages; k++) {
+                    HDRImage currentImage = images[k];
+                    if (currentImage.width != width || currentImage.height != height){
+                        throw new Exception("Dimension error!");
+                    }
+                    Color pixel = currentImage.getPixel(i, j);
+                    ave = ave.sum(pixel);
+                }
+                //ave = ave.prod(1.f/numImages);
+                averageImage.setPixel(i, j, ave);
+            }
+        }
+
+        averageImage.writePfm(new FileOutputStream(outputFileName), LITTLE_ENDIAN);
+    }
+
 
     public static void pfm2image(float factor, float gamma, String inputFile, String outputFile) throws IOException, InvalidPfmFileFormatException {
         Parameters param = new Parameters(factor, gamma, inputFile, outputFile);

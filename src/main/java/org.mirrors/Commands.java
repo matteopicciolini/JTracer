@@ -7,7 +7,6 @@ import picocli.CommandLine.Parameters;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 @Command(name = "", description = ".NET Core console app with argument parsing.", mixinStandardHelpOptions = true)
@@ -146,14 +145,45 @@ public class Commands implements Runnable{
 
     @Command(name = "sum", description = "JTracer sum.", mixinStandardHelpOptions = true)
     private void sum(
-            @Option(names = {"--firstImage"}, required = true, description = "string: Path of the first pfm file. REQUIRES") String firstImagePath,
-            @Option(names = {"--secondImage"}, required = true, description = "string: Path of the second pfm file. REQUIRED") String secondImagePath)
-            throws IOException, InvalidPfmFileFormatException {
+            @Option(names = {"--firstImage"}, description = "string: Path of the first pfm file. REQUIRES") String firstImagePath,
+            @Option(names = {"--secondImage"}, description = "string: Path of the second pfm file. REQUIRED") String secondImagePath,
 
-        HDRImage firstImage = PfmCreator.readPfmImage(new FileInputStream(firstImagePath));
-        HDRImage secondImage = PfmCreator.readPfmImage(new FileInputStream(secondImagePath));
-        Tracer.sum(firstImage, secondImage);
-        Tracer.pfm2image(2.2f, 0.18f, "output.pfm", "outputSum.png");
+            @Option(names = {"--imageNamePattern"}, description = "string: Pattern of the pfm file. REQUIRED") String imageNamePattern,
+            @Option(names = {"--numOfImages"}, description = "int: number of images. REQUIRED") Integer numOfImages,
+
+            @Option(names = {"--outputFileName"}, description = "string: output file name (.pfm). Default: ${DEFAULT-VALUE}.", defaultValue = "outputSum.pfm") String outputFileName,
+            @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
+            @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. Default: ${DEFAULT-VALUE}.", defaultValue = "2.2") Float gamma,
+            @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: If it is not specified, it is calculated; otherwise, it is set to 0.5.") Float luminosity
+
+    ) throws Exception, InvalidPfmFileFormatException {
+
+        String outputFileNamePNG = outputFileName.substring(0, outputFileName.length() - 3) + "png";
+
+        if(firstImagePath != null && secondImagePath != null) {
+            HDRImage firstImage = PfmCreator.readPfmImage(new FileInputStream(firstImagePath));
+            HDRImage secondImage = PfmCreator.readPfmImage(new FileInputStream(secondImagePath));
+            Tracer.calculateAverage(firstImage, secondImage, outputFileName);
+        }
+        else if(imageNamePattern != null && numOfImages != null){
+            int numDigits = (int) Math.log10(numOfImages) + 1;
+
+            // Creazione del vettore per contenere le immagini
+            HDRImage[] imageArray = new HDRImage[numOfImages];
+
+            for (int i = 1; i <= numOfImages; i++) {
+                // Formattazione del numero dell'immagine con il numero di cifre desiderato
+                String imageNumber = String.format("%0" + numDigits + "d", i);
+
+                // Creazione del nome dell'immagine combinando il pattern e il numero
+                String imageName = imageNamePattern + imageNumber +".pfm";
+                HDRImage imageHDR = PfmCreator.readPfmImage(new FileInputStream(imageName));
+                // Aggiunta del nome dell'immagine al vettore
+                imageArray[i - 1] = imageHDR;
+            }
+            Tracer.calculateAverage(imageArray, outputFileName);
+        }
+        Tracer.pfm2image(factor, gamma, outputFileName, outputFileNamePNG);
     }
 
     @Override
