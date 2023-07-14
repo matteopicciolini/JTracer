@@ -1,5 +1,5 @@
 material skyMaterial(diffuse(uniform(<black>)), uniform(<white>))
-material diffuseNavy(diffuse(uniform(<navy>)), uniform(<navy>))
+material diffuseNavy(diffuse(uniform(<navy>)), uniform(<black>))
 material diffuseIndigo(diffuse(uniform(<indigo>)), uniform(<indigo>))
 material specularIndigo(specular(uniform(<indigo>)), uniform(<black>))
 material groundMaterial(diffuse(checkered(<0, 0.5, 0>, <1, 1, 1>, 16)), uniform(<black>))
