@@ -243,7 +243,7 @@ In this section there are part of the images we've generated:
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/364d3295-a575-4c23-b316-136c81beaa53" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5aab2522-2844-4e42-a44a-4f621176e6dc" height="200" />
-
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8c940470-39d0-452a-82b5-ec85b53e3423" height="200" />
 </p>
 
 
