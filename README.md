@@ -97,7 +97,13 @@ This program can be executed in three different modes:
    a .txt file using some simple rules, and generate your photorealistic image without touching the source code.
 4. `sum` mode. This technique allows to "combine" multiple images of the same scene generated with different seeds, in order to reduce the noise present in the image. It is typically used after generating many images in parallel.
 
-All of these modes include the `-h` option which displays specifications for each one. 
+All of these modes include the `-h` option which displays specifications for each one.
+
+The `demo` and `render` modes are the modes that actually allow for the creation of a photorealistic image. Therefore, it is important to focus on the fundamental parameter `--algorithm`, which is accepted by both modes. This parameter specifies the algorithm to use for rendering the image, and you can choose from the following options:
+1. `onOff`: simply estimates if a ray hits the point;
+2. `flat`: a bit more advanced than the previous, estimates the surface color;
+3. `pathTracer`: the "real" ray tracer, uses the ray tracing equation.
+
 Below is a summary of the specifications and usage for each mode.
 
 #### `convert` mode
@@ -141,15 +147,15 @@ Below are the available options for the render mode. Note that the options for t
 - `-c, --convertToPNG`            `bool`: At the end of the program execution, automatically convert the PFM file to PNG. Default: `true`.
 - `-d, --deletePFM`               `bool`: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: `false`.
 - `-f, --factor`                  `float`: Multiplicative factor. Default: `0.18`.
-- `--flushFrequence`              `int`: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: `100`
+- `--flushFrequence`              `int`: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: `100`.
 - `-g, --gamma`                   `float`: Exponent for gamma-correction. Default: `2.2`.
 - `--height`                      `int`: Height of the image. Default: `480`.
 - `-i, --input`                   `string`: Path of the input TXT file. REQUIRED.
 - `--initState`                   `int`: PCG starter parameter. Default: `42`.
 - `--initSeq`                     `int`: PCG starter parameter. Default: `52`.
 - `-l, --luminosity`              `float`: Luminosity of the image.     Default: It is calculated for the pathTracer; otherwise, it is set to `0.5`.
-- `--maxDepth`                    `int`: Maximum recursion depth
-- `-n, --numRays`                 `int`: Number of rays per pixel
+- `--maxDepth`                    `int`: Maximum recursion depth. Default: `2`.
+- `-n, --numRays`                 `int`: Number of rays per pixel. Default: `10`.
 - `--nThreads`                    `int`: Number of threads to use for parallelization. Default: `8`.
 - `--output`                      `string`: Path of the output ldr file. Default: `img.pfm`.
 - `--parallelAntialiasing`        `bool`: Parallelize antialiasing algorithm. Default: `true`.
