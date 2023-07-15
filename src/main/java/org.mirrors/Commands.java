@@ -145,10 +145,10 @@ public class Commands implements Runnable{
 
     @Command(name = "sum", description = "JTracer sum.", mixinStandardHelpOptions = true)
     private void sum(
-            @Option(names = {"--firstImage"}, description = "string: Path of the first pfm file. REQUIRES") String firstImagePath,
-            @Option(names = {"--secondImage"}, description = "string: Path of the second pfm file. REQUIRED") String secondImagePath,
+            @Option(names = {"--firstImage"}, description = "string: Path of the first pfm file.") String firstImagePath,
+            @Option(names = {"--secondImage"}, description = "string: Path of the second pfm file.") String secondImagePath,
 
-            @Option(names = {"--imageNamePattern"}, description = "string: Pattern of the pfm file. REQUIRED") String imageNamePattern,
+            @Option(names = {"--imageNamePattern"}, description = "string: Pattern of the pfm file.") String imageNamePattern,
             @Option(names = {"--numOfImages"}, description = "int: number of images. REQUIRED") Integer numOfImages,
 
             @Option(names = {"--outputFileName"}, description = "string: output file name (.pfm). Default: ${DEFAULT-VALUE}.", defaultValue = "outputSum.pfm") String outputFileName,
