@@ -17,7 +17,7 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
     - [Tutorials](#Tutorials)
     - [Shapes](#Shapes)
 - [Gallery](#Gallery)
-- [Issue Tracking](#Issue-Tracking)
+- [Issue Tracking](#Issue%20Tracking)
 
 
 ## Overview
