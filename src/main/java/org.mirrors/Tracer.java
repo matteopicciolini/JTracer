@@ -43,7 +43,7 @@ public class Tracer {
                     Color pixel = currentImage.getPixel(i, j);
                     ave = ave.sum(pixel);
                 }
-                //ave = ave.prod(1.f/numImages);
+                ave = ave.prod(1.f/numImages);
                 averageImage.setPixel(i, j, ave);
             }
         }
