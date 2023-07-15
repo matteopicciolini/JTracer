@@ -95,7 +95,7 @@ This program can be executed in three different modes:
    generated. Editing the source code is recommended for advanced users only.
 3. `render` mode. That's the main feature of this program. With this mode, you can describe the scene inside
    a .txt file using some simple rules, and generate your photorealistic image without touching the source code.
-
+4. `sum` mode. This technique allows to "combine" multiple images of the same scene generated with different seeds, in order to reduce the noise present in the image. It is typically used after generating many images in parallel.
 
 All of these modes include the `-h` option which displays specifications for each one. 
 Below is a summary of the specifications and usage for each mode.
@@ -107,10 +107,10 @@ This mode can be executed by launching the following command from the command li
 ./gradlew run --args="convert image.pfm"
 ```
 Below we show the available options:
-- `-f, --factor`            Float: Multiplicative factor. Default: 0.18.
-- `-g, --gamma`             Float: Exponent for gamma-correction. Default: 2.2.
-- `-o, --outputFileName`    String: Path of the output LDR file. Default: <inputFileName>.png.
-- `-l, --luminosity`      Float: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to 0.5.
+- `-f, --factor`            `float`: Multiplicative factor. Default: `0.18`.
+- `-g, --gamma`             `float`: Exponent for gamma-correction. Default: `2.2`.
+- `-o, --outputFileName`    `string`: Path of the output LDR file. Default: `<inputFileName>.png`.
+- `-l, --luminosity`      `float`: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to `0.5`.
 
 
 If the output LDR file extension is not specified using the `-o` option, 
@@ -135,28 +135,45 @@ where `inputFile.txt` is the file that describes the scene.
 
 
 Below are the available options for the render mode. Note that the options for the demo mode are very similar.
-- `-a, --angle-deg`               float: Angle of view. Default: 0.
-- `--algorithm`                   string: Algorithm of rendering. Default: pathTracer.
-- `--antialiasing`                bool: Use antialiasing algorithm. Default: false.
-- `-c, --convertToPNG`            bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: true.
-- `-d, --deletePFM`               bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: false.
-- `-f, --factor`                  float: Multiplicative factor. Default: 0.18.
-- `--flushFrequence`              int: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: 100
-- `-g, --gamma`                   float: Exponent for gamma-correction. Default: 2.2.
-- `--height`                      int: Height of the image. Default: 480.
-- `-i, --input`                   string: Path of the input TXT file. REQUIRED.
-- `-l, --luminosity`              float: Luminosity of the image.     Default: It is calculated for the pathTracer; otherwise, it is set to 0.5.
-- `--maxDepth`                    int: Maximum recursion depth
-- `-n, --numRays`                 int: Number of rays per pixel
-- `--nThreads`                    int: Number of threads to use for parallelization. Default: 8.
-- `--output`                      string: Path of the output ldr file. Default: img.pfm.
-- `--parallelAntialiasing`        bool: Parallelize antialiasing algorithm. Default: true.
-- `--russianRouletteLimit`        int: Russian roulette limit. Default: 3.
-- `-s, --samplePerSide`           int: In antialiasing algorithm, the number of samples per side. Default: 4.
-- `-w, --width`                   int: Width of the image. Default: 480.
+- `-a, --angle-deg`               `float`: Angle of view. Default: `0`.
+- `--algorithm`                   `string`: Algorithm of rendering. Default: `pathTracer`.
+- `--antialiasing`                `bool`: Use antialiasing algorithm. Default: `false`.
+- `-c, --convertToPNG`            `bool`: At the end of the program execution, automatically convert the PFM file to PNG. Default: `true`.
+- `-d, --deletePFM`               `bool`: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: `false`.
+- `-f, --factor`                  `float`: Multiplicative factor. Default: `0.18`.
+- `--flushFrequence`              `int`: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: `100`
+- `-g, --gamma`                   `float`: Exponent for gamma-correction. Default: `2.2`.
+- `--height`                      `int`: Height of the image. Default: `480`.
+- `-i, --input`                   `string`: Path of the input TXT file. REQUIRED.
+- `--initState`                   `int`: PCG starter parameter. Default: `42`.
+- `--initSeq`                     `int`: PCG starter parameter. Default: `52`.
+- `-l, --luminosity`              `float`: Luminosity of the image.     Default: It is calculated for the pathTracer; otherwise, it is set to `0.5`.
+- `--maxDepth`                    `int`: Maximum recursion depth
+- `-n, --numRays`                 `int`: Number of rays per pixel
+- `--nThreads`                    `int`: Number of threads to use for parallelization. Default: `8`.
+- `--output`                      `string`: Path of the output ldr file. Default: `img.pfm`.
+- `--parallelAntialiasing`        `bool`: Parallelize antialiasing algorithm. Default: `true`.
+- `--russianRouletteLimit`        `int`: Russian roulette limit. Default: `3`.
+- `-s, --samplePerSide`           `int`: In antialiasing algorithm, the number of samples per side. Default: `4`.
+- `-w, --width`                   `int:` Width of the image. Default: `480`.
 
 
 By the end of the execution, there's no need to specify the conversion from HDR image to LDR image cause of the default settings of `--convertToPNG=true`.
+#### `sum` mode
+This last method allows for effective utilization of parallel programming. By using certain bash scripts, it is possible to run the same program in parallel on multiple cores with different `--initState` and `--initSeq` parameters for each core. Afterwards, this method can be used to "average" each pixel of the generated PFM images and reduce the noise.
+
+The following options are available for this mode:
+- `--firstImage` `string`: Path of the first pfm file.
+- `--secondImage` `string`: Path of the second pfm file.
+
+- `--imageNamePattern` `string`: Pattern of the pfm file.
+- `--numOfImages` `int`: number of images.
+- `--outputFileName` `string`: output file name (.pfm). Default: `outputSum.pfm`.
+- `-f`, `--factor` `float`: Multiplicative factor. Default: `0.18`.
+- `-g`, `--gamma` `float`: Exponent for gamma-correction. Default: `2.2`
+- `-l`, `--luminosity` `float`: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to `0.5`.
+
+This mode can be used in two different ways: by averaging between two images using the `--firstImage` and `--secondImage` parameters, or by averaging between multiple images with the same pattern using the `--imageNamePattern` parameter. For example, if `--numOfImages=20` images have been generated with the pattern `image`, the program will assume the existence of files `image01.pfm`, `image02.pfm`, ..., `image20.pfm`, and it will average all 20 images together.
 
 ### Tutorials
 For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary TXT files for the program, you can refer to the documentation or use the tutorials provided in the `Tutorials` folder.
