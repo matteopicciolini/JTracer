@@ -26,7 +26,7 @@ public class Commands implements Runnable{
             @Option(names = {"--algorithm"}, description = "string: Algorithm of rendering. Default: ${DEFAULT-VALUE}.", defaultValue = "pathTracer") String algorithm,
             @Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean orthogonal,
             @Option(names = {"--antialiasing"}, description = "bool: Use antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean antialiasing,
-            @Option(names = {"--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallelAntialiasing,
+            @Option(names = {"--parallel"}, description = "bool: Parallelize the code. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallel,
             @Option(names = {"--nThreads"}, description = "int: Number of threads to use for parallelization. Default: ${DEFAULT-VALUE}.", defaultValue = "4") Integer nThreads,
             @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
             @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
@@ -47,7 +47,7 @@ public class Commands implements Runnable{
         luminosity = valueOfLuminosity(luminosity, algorithm);
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(width, height, angleDeg,
-                outputFilename, orthogonal, algorithm, antialiasing, parallelAntialiasing, nThreads,
+                outputFilename, orthogonal, algorithm, antialiasing, parallel, nThreads,
                 convertInPNG, deletePFM, progBarFlushFrequence, gamma, factor, luminosity, numOfRays,
                 maxDepth, russianRouletteLimit);
 
@@ -91,7 +91,7 @@ public class Commands implements Runnable{
             @Option(names = {"--algorithm"}, description = "string: Algorithm of rendering. Default: ${DEFAULT-VALUE}.", defaultValue = "pathTracer") String algorithm,
             //@Option(names = {"-o", "--orthogonal"}, description = "bool: Use an orthogonal camera. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean orthogonal,
             @Option(names = {"--antialiasing"}, description = "bool: Use antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean antialiasing,
-            @Option(names = {"--parallelAntialiasing"}, description = "bool: Parallelize antialiasing algorithm. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallelAntialiasing,
+            @Option(names = {"--parallel"}, description = "bool: Parallelize the code. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean parallel,
             @Option(names = {"--nThreads"}, description = "int: Number of threads to use for parallelization. Default: ${DEFAULT-VALUE}.", defaultValue = "8") Integer nThreads,
             @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
             @Option(names = {"-d", "--deletePFM"}, description = "bool: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: ${DEFAULT-VALUE}.", defaultValue = "false") Boolean deletePFM,
@@ -116,7 +116,7 @@ public class Commands implements Runnable{
 
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(inputFileNameTXT, width, height, angleDeg,
-                outputFileName,  algorithm, antialiasing, parallelAntialiasing, nThreads, convertInPNG,
+                outputFileName,  algorithm, antialiasing, parallel, nThreads, convertInPNG,
                 deletePFM, samplesPerSide, progBarFlushFrequence, gamma, factor, luminosity, numOfRays, maxDepth, russianRouletteLimit, initState, initSeq);
 
         try {
