@@ -39,8 +39,9 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '18'
+        distribution: 'temurin'
     - name: Build with Gradle
-      run: gradlew.bat build
+      run: ./gradlew build
     - name: Run Tests
-      run: gradlew.bat test
+      run: ./gradlew test
       
