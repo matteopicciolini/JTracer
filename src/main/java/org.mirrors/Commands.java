@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * A class that represents a collection of command-line commands for a .NET Core console app with argument parsing.
+ */
 @Command(name = "", description = ".NET Core console app with argument parsing.", mixinStandardHelpOptions = true)
 public class Commands implements Runnable{
     public static Float valueOfLuminosity(Float luminosity, String algorithm){
@@ -17,6 +20,30 @@ public class Commands implements Runnable{
         }
         else return luminosity;
     }
+
+    /**
+     * Runs the "demo" command for JTracer demo.
+     *
+     * @param width              the width of the image
+     * @param height             the height of the image
+     * @param angleDeg           the angle of view
+     * @param outputFilename     the path of the output LDR file
+     * @param algorithm          the rendering algorithm
+     * @param orthogonal         whether to use an orthogonal camera
+     * @param antialiasing       whether to use antialiasing algorithm
+     * @param parallel           whether to parallelize the code
+     * @param nThreads           the number of threads to use for parallelization
+     * @param convertInPNG       whether to convert the PFM file to PNG
+     * @param deletePFM          whether to delete the PFM file
+     * @param progBarFlushFrequence  the frequency of flush for the progress bar
+     * @param gamma              the exponent for gamma-correction
+     * @param factor             the multiplicative factor
+     * @param luminosity         the luminosity of the image
+     * @param numOfRays          the number of rays per pixel
+     * @param maxDepth           the maximum recursion depth
+     * @param russianRouletteLimit   the Russian roulette limit
+     * @throws InvalidOptionException if there is an invalid option combination
+     */
     @Command(name = "demo", description = "JTracer demo.", mixinStandardHelpOptions = true)
     public void demo(
             @Option(names = {"-w", "--width"}, description = "int: Width of the image. Default: ${DEFAULT-VALUE}.", defaultValue = "480") Integer width,
@@ -59,7 +86,15 @@ public class Commands implements Runnable{
         }
     }
 
-
+    /**
+     * Runs the "convert" command to convert a PFM file to PNG.
+     *
+     * @param inputFilename     the path of the input file
+     * @param outputFilename    the path of the output LDR file
+     * @param gamma             the exponent for gamma-correction
+     * @param factor            the multiplicative factor
+     * @param luminosity        the luminosity of the image
+     */
     @Command(name = "convert", description = "Convert pfm file to png.", mixinStandardHelpOptions = true)
     public void convert(
             @Parameters(index = "0", paramLabel = "-i", description = "String: Path of the input file") String inputFilename,
@@ -81,6 +116,32 @@ public class Commands implements Runnable{
         }
     }
 
+    /**
+     * Runs the "render" command for JTracer render.
+     *
+     * @param inputFileNameTXT   the path of the input TXT file
+     * @param width              the width of the image
+     * @param height             the height of the image
+     * @param angleDeg           the angle of view
+     * @param outputFileName     the path of the output LDR file
+     * @param algorithm          the rendering algorithm
+     * @param antialiasing       whether to use antialiasing algorithm
+     * @param parallel           whether to parallelize the code
+     * @param nThreads           the number of threads to use for parallelization
+     * @param convertInPNG       whether to convert the PFM file to PNG
+     * @param deletePFM          whether to delete the PFM file
+     * @param samplesPerSide     the number of samples per side for antialiasing algorithm
+     * @param progBarFlushFrequence  the frequency of flush for the progress bar
+     * @param gamma              the exponent for gamma-correction
+     * @param factor             the multiplicative factor
+     * @param luminosity         the luminosity of the image
+     * @param numOfRays          the number of rays per pixel
+     * @param maxDepth           the maximum recursion depth
+     * @param russianRouletteLimit   the Russian roulette limit
+     * @param initState          the PCG starter parameter
+     * @param initSeq            the PCG starter parameter
+     * @throws InvalidOptionException if there is an invalid option combination
+     */
     @Command(name = "render", description = "JTracer render.", mixinStandardHelpOptions = true)
     public void render(
             @Option(names = {"-i", "--input"}, required = true, description = "string: Path of the input TXT file. REQUIRED.") String inputFileNameTXT,
@@ -127,6 +188,18 @@ public class Commands implements Runnable{
         }
     }
 
+    /**
+     * Performs the conversion of a PFM file to PNG.
+     *
+     * @param outputFilename the path of the output LDR file
+     * @param convertInPNG whether to convert the PFM file to PNG
+     * @param deletePFM whether to delete the PFM file
+     * @param gamma the exponent for gamma-correction
+     * @param factor the multiplicative factor
+     * @param luminosity the luminosity of the image
+     * @throws IOException if an I/O error occurs
+     * @throws InvalidPfmFileFormatException if the PFM file format is invalid
+     */
     private void conversion(
             @Option(names = {"--output"}, description = "string: Path of the output ldr file. Default: ${DEFAULT-VALUE}.", defaultValue = "img.pfm") String outputFilename,
             @Option(names = {"-c", "--convertToPNG"}, description = "bool: At the end of the program execution, automatically convert the PFM file to PNG. Default: ${DEFAULT-VALUE}.", defaultValue = "true") Boolean convertInPNG,
@@ -143,6 +216,20 @@ public class Commands implements Runnable{
         }
     }
 
+    /**
+     * Performs the sum operation on PFM images.
+     *
+     * @param firstImagePath the path of the first PFM file
+     * @param secondImagePath the path of the second PFM file
+     * @param imageNamePattern the pattern of the PFM file names
+     * @param numOfImages the number of images to be summed (required)
+     * @param outputFileName the output file name for the summed PFM image (default: outputSum.pfm)
+     * @param factor the multiplicative factor for the resulting image (default: 0.18)
+     * @param gamma the exponent for gamma-correction (default: 2.2)
+     * @param luminosity the luminosity of the image (default: If it is not specified, it is calculated; otherwise, it is set to 0.5.)
+     * @throws Exception if an error occurs during the operation
+     * @throws InvalidPfmFileFormatException if the PFM file format is invalid
+     */
     @Command(name = "sum", description = "JTracer sum.", mixinStandardHelpOptions = true)
     private void sum(
             @Option(names = {"--firstImage"}, description = "string: Path of the first pfm file.") String firstImagePath,

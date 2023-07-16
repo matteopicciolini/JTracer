@@ -5,15 +5,30 @@ import java.util.List;
 
 import static java.lang.Math.*;
 
+/**
+ * Class representing a plane shape.
+ */
 public class Plain extends Shape{
+    /**
+     * Default constructor for the Plain class.
+     */
     public Plain() {
         super();
     }
 
+    /**
+     * Constructor for the Plain class with transformation and material.
+     *
+     * @param transformation the transformation to apply to the plane
+     * @param material       the material of the plane
+     */
     public Plain(Transformation transformation, Material material) {
         super(transformation, material);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HitRecord rayIntersection(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
@@ -31,6 +46,9 @@ public class Plain extends Shape{
                 this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<HitRecord> rayIntersectionList(Ray ray) {
         HitRecord hit = this.rayIntersection(ray);
@@ -40,6 +58,9 @@ public class Plain extends Shape{
         return intersections;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isInternal(Point point) {
         point = (Point) this.transformation.times(point);

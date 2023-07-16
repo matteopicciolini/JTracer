@@ -1,29 +1,53 @@
 package org.mirrors;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static java.lang.Math.sqrt;
-import static org.mirrors.Global.VecZ;
-
+/**
+ * Represents a cylinder shape in the scene.
+ */
 public class Cylinder extends Shape {
+
+    /**
+     * Constructs a cylinder with no transformation or material.
+     */
     public Cylinder() {
         super();
     }
+
+    /**
+     * Constructs a cylinder with the specified transformation and no material.
+     *
+     * @param transformation the transformation for the cylinder
+     */
     public Cylinder(Transformation transformation) {
         super(transformation);
     }
+
+    /**
+     * Constructs a cylinder with the specified material and no transformation.
+     *
+     * @param material the material for the cylinder
+     */
     public Cylinder(Material material) {
         super(material);
     }
+
+    /**
+     * Constructs a cylinder with the specified transformation and material.
+     *
+     * @param transformation the transformation for the cylinder
+     * @param material       the material for the cylinder
+     */
     public Cylinder(Transformation transformation, Material material) {
         super(transformation, material);
     }
 
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<HitRecord> rayIntersectionList(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
@@ -76,6 +100,9 @@ public class Cylinder extends Shape {
         return intersections.isEmpty() ? null : intersections;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isInternal(Point point) {
         point = (Point) this.transformation.inverse().times(point);
@@ -83,10 +110,9 @@ public class Cylinder extends Shape {
         return dist <= 1.0f && point.z >= 0.0f && point.z <= 1.0f;
     }
 
-
-
-
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HitRecord rayIntersection(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
