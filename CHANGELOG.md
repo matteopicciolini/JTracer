@@ -1,6 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## v1.0.0
+#### New Features
+- Implementation of compiler [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
+- Progress bar is now available [13](https://github.com/matteopicciolini/ray_tracing/pull/13).
+- Modify gradle importing `CLI` in `picoCLI` ([version 4.6.1][picocli]) and add new options [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
+- Add `sum` command to averaging `pfm` files.
+- New Shape: `Cylinder` [#14](https://github.com/matteopicciolini/ray_tracing/pull/14).
+- New Shape: `Hyperboloid` [#15](https://github.com/matteopicciolini/ray_tracing/pull/15).
+- New Shape: `Cone` [#15](https://github.com/matteopicciolini/ray_tracing/pull/15).
+- Implementation of `CSG` [#16](https://github.com/matteopicciolini/ray_tracing/pull/16).
+- Add documentation and readme.
+- Add CIBuilds for Windows and macOS.
 
+#### Fixed
+- Fixed bug in Parser [#17](https://github.com/matteopicciolini/ray_tracing/issues/17).
 
 ## v0.3.0
 #### New Features
