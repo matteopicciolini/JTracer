@@ -40,5 +40,3 @@ public class SpecularBRDF extends BRDF{
                 depth);
     }
 }
-
-
