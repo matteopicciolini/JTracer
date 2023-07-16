@@ -5,20 +5,44 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents an intersection operation between two shapes in Constructive Solid Geometry (CSG).
+ */
 public class CSGIntersection extends CSG{
 
+    /**
+     * Constructs a CSG intersection operation with the specified transformation, shape1, and shape2.
+     *
+     * @param transformation the transformation matrix for the CSG intersection operation
+     * @param shape1         the first shape in the intersection operation
+     * @param shape2         the second shape in the intersection operation
+     */
     public CSGIntersection(Transformation transformation, Shape shape1, Shape shape2) {
         super(transformation, shape1, shape2);
     }
+
+    /**
+     * Constructs a CSG intersection operation with the specified shape1 and shape2.
+     *
+     * @param shape1 the first shape in the intersection operation
+     * @param shape2 the second shape in the intersection operation
+     */
     public CSGIntersection(Shape shape1, Shape shape2) {
         super(shape1, shape2);
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HitRecord rayIntersection(Ray ray) {
         List<HitRecord> rayIntersectionList = this.rayIntersectionList(ray);
         return rayIntersectionList == null ? null : rayIntersectionList.get(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<HitRecord> rayIntersectionList(Ray ray) {
         Ray invRay = ray.transform(this.transformation.inverse());
@@ -47,7 +71,9 @@ public class CSGIntersection extends CSG{
                 .collect(Collectors.toList()) : null;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isInternal(Point point) {
         point = (Point) this.transformation.inverse().times(point);

@@ -1,15 +1,21 @@
 package org.mirrors;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mirrors.Global.*;
-import java.util.Arrays;
 public class Box extends Shape {
     public Point min;
     public Point max;
 
+    /**
+     * Constructs a `Box` object with the given minimum and maximum points, transformation, and material.
+     *
+     * @param min           the minimum point defining the box
+     * @param max           the maximum point defining the box
+     * @param transformation the transformation applied to the box
+     * @param material      the material of the box
+     */
     public Box(Point min, Point max, Transformation transformation, Material material) {
         super(transformation, material);
         this.min = min;
@@ -17,9 +23,18 @@ public class Box extends Shape {
         checkMinMax();
     }
 
+    /**
+     * Constructs a unit `Box` object with default parameters.
+     * The minimum point is (-0.5, -0.5, -0.5), and the maximum point is (0.5, 0.5, 0.5).
+     */
     public Box() {
         this(new Point(-0.5f, -0.5f, -0.5f), new Point(0.5f, 0.5f, 0.5f), new Transformation(), new Material());
     }
+
+    /**
+     * Checks if the minimum and maximum vertices of the box are consistent.
+     * If they are not consistent, default values will be used, and a warning message will be printed.
+     */
     private void checkMinMax() {
         for (int i = 0; i < 3; i++) {
             if (min.get(i) > max.get(i)) {
@@ -34,12 +49,12 @@ public class Box extends Shape {
         }
     }
 
-    public boolean isPointInternal(Point point) {
-        point = (Point) this.transformation.inverse().times(point);
-        return point.x >= min.x && point.x <= max.x &&
-                point.y >= min.y && point.y <= max.y &&
-                point.z >= min.z && point.z <= max.z;
-    }
+    /**
+     * Computes the intersection between a ray and the box, and returns the closest intersection point as a `HitRecord` object.
+     *
+     * @param ray the ray to intersect with the box
+     * @return the `HitRecord` object representing the closest intersection point, or `null` if there is no intersection
+     */
     @Override
     public HitRecord rayIntersection(Ray ray) {
         Ray iray = this.transformation.inverse().times(ray);
@@ -83,6 +98,12 @@ public class Box extends Shape {
         return new HitRecord((Point) this.transformation.times(point), (Normal) this.transformation.times(normal), toSurPoint(point, normal), t, ray, this);
     }
 
+    /**
+     * Computes the intersection between a ray and the box, and returns a list of all intersection points as `HitRecord` objects.
+     *
+     * @param ray the ray to intersect with the box
+     * @return a list of `HitRecord` objects representing the intersection points, or `null` if there is no intersection
+     */
     @Override
     public List<HitRecord> rayIntersectionList(Ray ray) {
         Ray iray = this.transformation.inverse().times(ray);
@@ -155,7 +176,12 @@ public class Box extends Shape {
             return resultList;
         }
     }
-
+    /**
+     * Checks if the given point is internal to the box in the world coordinate system.
+     *
+     * @param point the point to check
+     * @return `true` if the point is internal to the box, `false` otherwise
+     */
     @Override
     public boolean isInternal(Point point) {
         Point realP = (Point) this.transformation.inverse().times(point);
@@ -165,7 +191,13 @@ public class Box extends Shape {
     }
 
 
-
+    /**
+     * Computes the normal vector based on the minimum direction and the ray direction.
+     *
+     * @param minDir the index of the minimum direction (0 for x, 1 for y, 2 for z)
+     * @param rayDir the direction of the ray
+     * @return the computed normal vector
+     */
     private Normal getNormal(int minDir, Vec rayDir) {
         Normal norm = switch (minDir) {
             case 0 -> VecX.toNormal();
@@ -176,6 +208,14 @@ public class Box extends Shape {
         return (norm.toVec().dot(rayDir) >= 0) ? (Normal) norm.neg() : norm;
     }
 
+    /**
+     * Computes the surface point in texture coordinates given the intersection point and the normal vector.
+     *
+     * @param hit    the intersection point
+     * @param normal the normal vector
+     * @return the surface point in texture coordinates
+     * @throws RuntimeException if the normal does not match any of the predefined normal vectors
+     */
     private Vec2d toSurPoint(Point hit, Normal normal) {
         int face;
         if (normal.isClose(VecX.toNormal())) {
@@ -210,6 +250,4 @@ public class Box extends Shape {
             default -> throw new RuntimeException();
         };
     }
-
-
 }

@@ -82,7 +82,9 @@ public class ImageTracer {
         }
     }
 
-
+    /**
+     Parallelize FireAllRays
+     */
     public void fireAllRaysParallel(RayToColor f, int numThreads, int progBarFlushFrequence) {
         int totalPixels = this.image.width * this.image.height;
         Map<Thread, Integer> threadCountMap = new HashMap<>();

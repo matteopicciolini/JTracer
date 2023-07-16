@@ -1,5 +1,8 @@
 package org.mirrors;
 
+/**
+ * Class representing a progress bar for tracking the progress of a task.
+ */
 public class ProgressBar {
     public static final int BAR_LENGTH = 30;
 
@@ -10,14 +13,23 @@ public class ProgressBar {
     public long startTime;
     public int flushFrequence;
 
-    public ProgressBar(int totalProgress, int flushFrequence) {
+    /**
+     * Constructor for the ProgressBar class.
+     *
+     * @param totalProgress   the total progress value
+     * @param flushFrequency  the frequency at which to update and flush the progress bar
+     */
+    public ProgressBar(int totalProgress, int flushFrequency) {
         this.totalProgress = totalProgress;
         this.currentProgress = 0;
         this.progressBar = new StringBuilder();
         this.startTime = System.currentTimeMillis();
-        this.flushFrequence = flushFrequence;
+        this.flushFrequence = flushFrequency;
     }
 
+    /**
+     * Updates the progress of the task.
+     */
     public void updateProgress() {
         currentProgress++;
         float progress = (float) currentProgress / totalProgress;
@@ -58,6 +70,9 @@ public class ProgressBar {
         System.out.flush();
     }
 
+    /**
+     * Marks the progress as complete.
+     */
     public void completeProgress() {
         currentProgress = totalProgress;
         float progress = (float) currentProgress / totalProgress;
@@ -85,6 +100,12 @@ public class ProgressBar {
         System.out.flush();
     }
 
+    /**
+     * Appends the time value to the string builder in the format "hh:mm:ss".
+     *
+     * @param sb     the string builder to append the time value to
+     * @param millis the time value in milliseconds
+     */
     private void appendTime(StringBuilder sb, long millis) {
         long seconds = (millis / 1000) % 60;
         long minutes = (millis / (1000 * 60)) % 60;

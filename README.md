@@ -17,8 +17,9 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
     - [Modes](#Modes)
     - [Tutorials](#Tutorials)
     - [Shapes](#Shapes)
+- [Animations](#Animations)
 - [Gallery](#Gallery)
-- [Issue Tracking](#IssueTracking)
+- [Issue Tracking](#Issue-Tracking)
 
 
 ## Overview
@@ -182,6 +183,14 @@ The following options are available for this mode:
 
 This mode can be used in two different ways: by averaging between two images using the `--firstImage` and `--secondImage` parameters, or by averaging between multiple images with the same pattern using the `--imageNamePattern` parameter. For example, if `--numOfImages=20` images have been generated with the pattern `image`, the program will assume the existence of files `image01.pfm`, `image02.pfm`, ..., `image20.pfm`, and it will average all 20 images together.
 
+### Animations
+This code also implements the ability to generate animations. 
+Animations can be created by appropriately modifying and making 
+executable the bash files `animation.sh` and/or `parallel-generate-image.sh`. 
+Similarly, these files can be used to generate different images of the same scene in parallel, 
+and then utilize the `sum` mode.
+
+
 ### Tutorials
 For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary TXT files for the program, you can refer to the documentation or use the tutorials provided in the `Tutorials` folder.
 
@@ -249,7 +258,7 @@ In this section there are part of the images we've generated:
 
 
 
-## Issue Tracking
+## Issue-Tracking
 If you encounter any issues while using this project or find a bug in the code, please feel free to let us know! You can reach us at picciolinimatteo@gmail.com or fravilla30@gmail.com.
 
 

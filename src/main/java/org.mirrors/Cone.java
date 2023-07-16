@@ -7,56 +7,112 @@ import java.util.List;
 
 import static java.lang.Math.*;
 
+/**
+ * Represents a cone shape in 3D space.
+ */
 public class Cone extends Shape {
     public float radius;
     public float height;
 
+    /**
+     * Default constructor. Creates a cone with default radius and height.
+     */
     public Cone() {
         super();
         this.radius = 1.f;
         this.height = 1.f;
     }
 
+    /**
+     * Creates a cone with the specified radius and height.
+     *
+     * @param radius the radius of the cone
+     * @param height the height of the cone
+     */
     public Cone(float radius, float height) {
         super();
         this.radius = radius;
         this.height = height;
     }
 
+    /**
+     * Creates a cone with the specified transformation, radius, and height.
+     *
+     * @param transformation the transformation matrix for the cone
+     * @param radius         the radius of the cone
+     * @param height         the height of the cone
+     */
     public Cone(Transformation transformation, float radius, float height) {
         super(transformation);
         this.radius = radius;
         this.height = height;
     }
 
+    /**
+     * Creates a cone with the specified transformation and default radius and height.
+     *
+     * @param transformation the transformation matrix for the cone
+     */
     public Cone(Transformation transformation) {
         super(transformation);
         this.radius = 1.f;
         this.height = 1.f;
     }
 
+    /**
+     * Creates a cone with the specified material and default radius and height.
+     *
+     * @param material the material of the cone
+     */
     public Cone(Material material) {
         super(material);
         this.radius = 1.f;
         this.height = 1.f;
     }
+
+    /**
+     * Creates a cone with the specified transformation, material, and default radius and height.
+     *
+     * @param transformation the transformation matrix for the cone
+     * @param material       the material of the cone
+     */
     public Cone(Transformation transformation, Material material) {
         super(transformation, material);
         this.radius = 1.f;
         this.height = 1.f;
     }
 
+    /**
+     * Creates a cone with the specified transformation, material, radius, and height.
+     *
+     * @param transformation the transformation matrix for the cone
+     * @param material       the material of the cone
+     * @param radius         the radius of the cone
+     * @param height         the height of the cone
+     */
     public Cone(Transformation transformation, Material material, float radius, float height) {
         super(transformation, material);
         this.radius = radius;
         this.height = height;
     }
 
+    /**
+     * Computes the intersection between a ray and the cone, returning the closest hit record.
+     *
+     * @param ray the ray to intersect with the cone
+     * @return the hit record of the intersection, or null if there is no intersection
+     */
     public HitRecord rayIntersection(Ray ray) {
         List<HitRecord> rayIntersectionList = this.rayIntersectionList(ray);
         return rayIntersectionList.size() == 0 ? null : rayIntersectionList.get(0);
     }
 
+    /**
+     * Computes the intersections between a ray and the cone, returning a list of hit records.
+     *
+     * @param ray the ray to intersect with the cone
+     * @return a list of hit records of the intersections
+     */
     public List<HitRecord> rayIntersectionList(Ray ray) {
         List<HitRecord> hits = new ArrayList<>();
         Ray invRay = ray.transform(this.transformation.inverse());
@@ -138,6 +194,12 @@ public class Cone extends Shape {
         return hits;
     }
 
+    /**
+     * Checks if a point is internal to the cone.
+     *
+     * @param point the point to check
+     * @return true if the point is internal to the cone, false otherwise
+     */
     @Override
     public boolean isInternal(Point point) {
         Point invPoint = (Point) this.transformation.inverse().times(point);
@@ -154,9 +216,13 @@ public class Cone extends Shape {
         }
     }
 
-
-
-
+    /**
+     * Calculates the normal vector at a given point on the cone surface.
+     *
+     * @param point  the point on the cone surface
+     * @param rayDir the direction of the incoming ray
+     * @return the normal vector at the point on the cone surface
+     */
     private Normal getNormal(Point point, Vec rayDir) {
         Normal result;
         if (abs(point.z) < 1e-4f) {
@@ -171,6 +237,12 @@ public class Cone extends Shape {
         return result;
     }
 
+    /**
+     * Maps a point on the cone surface to the corresponding UV coordinates.
+     *
+     * @param point the point on the cone surface
+     * @return the UV coordinates of the point
+     */
     private Vec2d conePointToUV(Point point) {
         float u = 0f, v = 0f;
         if (abs(point.z) <1e-4f) {

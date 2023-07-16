@@ -1,6 +1,9 @@
 # Guidelines for properly creating text file and generate photorealistic images
 
-A quick way is to take inspiration from the files in the examples directory. Getting familiar with them is quite straightforward, however, we provide a detailed description of the syntax used in JTracer. Please note that although spaces and endline characters are ignored, they can still improve the file's readability. Additionally, comments can be helpful: `# This is a comment in a scene.`
+A quick way to learn how to write a text file describing a scene is to take inspiration from the files contained in the `Tutorial` folder.
+Getting familiar with them is quite straightforward, however, we provide a detailed description of the syntax used in JTracer. 
+Please note that although spaces and endline characters are ignored, 
+they can still improve the file's readability. Additionally, comments can be helpful: `# This is a comment in a scene.`
 
 Let's start with numerical types:
 - **Declaration of numerical variables:** `float newVariable(value)`, where the variable name must start with an alphanumeric character or underscore, and the value must be a number.
