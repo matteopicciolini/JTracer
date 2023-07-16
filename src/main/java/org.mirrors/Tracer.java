@@ -339,7 +339,7 @@ public class Tracer {
             case "flat" -> tracer.fireAllRays(new FlatRenderer(world), parameters.progBarFlushFrequence);
             case "onOff" -> tracer.fireAllRays(new OnOffRenderer(world), parameters.progBarFlushFrequence);
             case "pathTracer" -> {
-                if (parameters.parallelAntialiasing) {
+                if (parameters.parallel) {
                     tracer.fireAllRaysParallel(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit, pcg), parameters.nThreads, parameters.progBarFlushFrequence);
                 } else {
                     tracer.fireAllRays(new PathTracer(world, parameters.numOfRays, parameters.maxDepth, parameters.russianRouletteLimit, pcg), parameters.progBarFlushFrequence);

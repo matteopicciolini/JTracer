@@ -18,7 +18,7 @@ public class Parameters {
     public String algorithm;
     public boolean orthogonal;
     public boolean antialiasing;
-    public boolean parallelAntialiasing;
+    public boolean parallel;
     public int nThreads;
     public boolean convertInPNG;
     public boolean deletePFM;
@@ -50,7 +50,7 @@ public class Parameters {
         this.algorithm = algorithm;
         this.outputFileName = outputFileName;
         this.antialiasing = antialiasing;
-        this.parallelAntialiasing = parallelAntialiasing;
+        this.parallel = parallelAntialiasing;
         this.nThreads = nThreads;
         this.convertInPNG = convertInPNG;
         this.deletePFM = deletePFM;
@@ -79,7 +79,7 @@ public class Parameters {
         this.algorithm = algorithm;
         this.outputFileName = outputFileName;
         this.antialiasing = antialiasing;
-        this.parallelAntialiasing = parallelAntialiasing;
+        this.parallel = parallelAntialiasing;
         this.nThreads = nThreads;
         this.convertInPNG = convertInPNG;
         this.deletePFM = deletePFM;

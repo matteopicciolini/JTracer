@@ -139,16 +139,23 @@ public class Cone extends Shape {
     }
 
     @Override
-    public boolean isInternal(Point a) {
-        Point invPoint = (Point) this.transformation.inverse().times(a);
-        float x = invPoint.x * this.height / this.radius;
-        float y = invPoint.y * this.height / this.radius;
-        float z = invPoint.z - this.height;
-        if (z * z >= x * x + y * y && this.conePointToUV(invPoint).v < this.height)
+    public boolean isInternal(Point point) {
+        Point invPoint = (Point) this.transformation.inverse().times(point);
+        float x = invPoint.x;
+        float y = invPoint.y;
+        float z = invPoint.z;
+
+        float r = this.radius * (1 - z / this.height);
+
+        if (x * x + y * y <= r * r && z >= 0 && z <= this.height) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
+
+
+
 
     private Normal getNormal(Point point, Vec rayDir) {
         Normal result;
