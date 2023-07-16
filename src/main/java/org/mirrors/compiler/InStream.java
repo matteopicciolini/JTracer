@@ -489,7 +489,7 @@ public class InStream {
             result = new CheckeredPigment(color1, color2, numOfSteps);
         } else if (keyword == KeywordEnum.IMAGE) {
             String fileName = this.expectString();
-            try (InputStream imageFile = new FileInputStream(fileName + ".pfm")) {
+            try (InputStream imageFile = new FileInputStream(fileName)) {
                 HDRImage image = PfmCreator.readPfmImage(imageFile);
                 result = new ImagePigment(image);
             } catch (IOException | InvalidPfmFileFormatException e) {
@@ -718,9 +718,8 @@ public class InStream {
         String fileName= this.expectIdentifier();
         this.expectSymbol(')');
 
-        TriangleMesh mesh= new TriangleMesh(scene.materials.get(materialName), transformation);
-        mesh.createFileShape(fileName + ".txt");
-
+            TriangleMesh mesh = new TriangleMesh(scene.materials.get(materialName), transformation);
+            mesh.createFileShape(fileName+".txt");
         return new TriangleMesh(mesh.vertices, mesh.triangles, scene.materials.get(materialName), transformation);
     }
     public TriangleMesh parseIcosahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
