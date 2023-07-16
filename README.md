@@ -254,7 +254,13 @@ In this section there are part of the images we've generated:
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5aab2522-2844-4e42-a44a-4f621176e6dc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8c940470-39d0-452a-82b5-ec85b53e3423" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/b1e58f2f-39f7-4e69-b3b9-46f6441082cb" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5d94964f-3046-47eb-a455-621440c069b1" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
 </p>
+
 
 
 
