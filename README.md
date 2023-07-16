@@ -202,6 +202,7 @@ This raytracer implements the following shapes:
 - Sphere
 - Planes
 - Boxes
+- Cylinder
 - Cones
 - Hyperboloid
 - CSG Union
@@ -229,8 +230,6 @@ f 2 3 4
 In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
 -->
 ## Gallery
-
-In this section there are part of the images we've generated:
 
  <p float="center">
   <!--<img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/b65d86ed-dec6-400e-94a0-27c83ba3741c" height="200" />
