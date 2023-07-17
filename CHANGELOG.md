@@ -2,9 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## v1.1.0
-- New shape: `Triangle` [#18](https://github.com/matteopicciolini/JTracer/pull/18)
-- New shape: `TriangleMesh` [#18](https://github.com/matteopicciolini/JTracer/pull/18)
-- Implementation of AABB intersection method only in TriangleMesh class [#18](https://github.com/matteopicciolini/JTracer/pull/18)
+- New shape: `Triangle` [#18](https://github.com/matteopicciolini/JTracer/pull/18).
+- New shape: `TriangleMesh` [#18](https://github.com/matteopicciolini/JTracer/pull/18).
+- Implementation of AABB intersection method only in TriangleMesh class [#18](https://github.com/matteopicciolini/JTracer/pull/18).
 
 ## v1.0.0
 #### New Features
