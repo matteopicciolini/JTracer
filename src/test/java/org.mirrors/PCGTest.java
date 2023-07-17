@@ -16,5 +16,6 @@ class PCGTest {
         for(int i = 0; i < 6; ++i){
             assertEquals(correctList[i], pcg.random());
         }
+
     }
 }

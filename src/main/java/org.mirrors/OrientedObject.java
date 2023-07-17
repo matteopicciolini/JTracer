@@ -40,7 +40,7 @@ public abstract class OrientedObject extends Geometry {
     /**
      * Returns the dot product of the current OrientedObject and the input OrientedObject.
      *
-     * @param other The OrientedObject to calculate the dot product with.
+     * @param other    The OrientedObject to calculate the dot product with.
      * @return The dot product of the current OrientedObject and the input OrientedObject.
      */
     public float dot(OrientedObject other) {
@@ -57,6 +57,10 @@ public abstract class OrientedObject extends Geometry {
      */
     public float norm(){
         return (float) sqrt(this.squaredNorm());
+    }
+
+    public float module(){
+        return (float) sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
     }
 
     /**

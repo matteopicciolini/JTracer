@@ -36,7 +36,6 @@ public class PCG {
         this.state += initState;
         this.random();
     }
-
     /**
      * Generates the next random number in the sequence.
      *

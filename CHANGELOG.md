@@ -1,5 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## v1.1.0
+- New shape: `Triangle` [#18](https://github.com/matteopicciolini/JTracer/pull/18)
+- New shape: `TriangleMesh` [#18](https://github.com/matteopicciolini/JTracer/pull/18)
+- Implementation of AABB intersection method only in TriangleMesh class [#18](https://github.com/matteopicciolini/JTracer/pull/18)
+
 ## v1.0.0
 #### New Features
 - Implementation of compiler [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
@@ -13,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Add documentation and readme.
 - Add CIBuilds for Windows and macOS.
 
+
 #### Fixed
 - Fixed bug in Parser [#17](https://github.com/matteopicciolini/ray_tracing/issues/17).
 
@@ -20,7 +27,8 @@ All notable changes to this project will be documented in this file.
 #### New Features
 - Implementation of the PCG random number generator [#6](https://github.com/matteopicciolini/ray_tracing/pull/6).
 - Material characterization of `Shape` through the `Material` and `Pigment` classes is available [#6](https://github.com/matteopicciolini/ray_tracing/pull/6).
-- Two additional renders are available: `flat` and `pathTracer` [#8](https://github.com/matteopicciolini/ray_tracing/pull/8). The latter is the core of the program. 
+
+- Two additional renders are available: `flat` and `pathTracer` [#8](https://github.com/matteopicciolini/ray_tracing/pull/8). The latter is the core of the program.
 - Implementation of the antialiasing algorithm for `pathTracer` [#10](https://github.com/matteopicciolini/ray_tracing/pull/10).
 - Implement parallelization for antialiasing [#10](https://github.com/matteopicciolini/ray_tracing/pull/10).
 - New Shape: `Plane` [#6](https://github.com/matteopicciolini/ray_tracing/pull/6).

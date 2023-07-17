@@ -1,6 +1,4 @@
 package org.mirrors;
-
-
 import java.util.List;
 
 /**
