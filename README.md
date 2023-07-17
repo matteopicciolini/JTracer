@@ -239,7 +239,7 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   <!--<img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/ef222fc3-8a45-4b92-a90c-172a93023777" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f9b36d44-0663-402b-ab25-75c4f1466532" height="200" /> -->
 
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/cf0cd573-9f2b-4cf1-8feb-bcab256e8119" height="200" />
+  
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/985fc7f0-b165-4c62-a6a8-646f57a88afa" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/6d180acb-2c20-4b9d-9f55-747dcbc1914a" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5ff13031-f296-423c-aefa-cd786c5fb306" height="200" />
@@ -251,6 +251,7 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/791445bd-5ae4-457d-aca5-6173ff56915e" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/3fc5292b-b65c-4160-b08c-4e6a9f44b7f7" height="200" /> 
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/364d3295-a575-4c23-b316-136c81beaa53" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/cf0cd573-9f2b-4cf1-8feb-bcab256e8119" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5aab2522-2844-4e42-a44a-4f621176e6dc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8c940470-39d0-452a-82b5-ec85b53e3423" height="200" />
