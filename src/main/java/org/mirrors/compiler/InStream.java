@@ -3,6 +3,9 @@ import org.mirrors.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -705,6 +708,7 @@ public class InStream {
         return new TriangleMesh(dode.vertices, scene.materials.get(materialName), transformation);
     }
 
+
     public TriangleMesh parseFileShape(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
         this.expectSymbol('(');
 
@@ -713,13 +717,21 @@ public class InStream {
             throw new GrammarErrorException(this.location, "unknown material " + materialName);
         }
         this.expectSymbol(',');
+
         Transformation transformation = this.parseTransformation(scene);
         this.expectSymbol(',');
-        String fileName= this.expectIdentifier();
+
+        String filePath = this.expectString();
+        Path file = Paths.get(filePath);
+
+        if (!Files.exists(file)) {
+            throw new GrammarErrorException(this.location, "file not found: " + filePath);
+        }
+
         this.expectSymbol(')');
 
-            TriangleMesh mesh = new TriangleMesh(scene.materials.get(materialName), transformation);
-            mesh.createFileShape(fileName+".txt");
+        TriangleMesh mesh = new TriangleMesh(scene.materials.get(materialName), transformation);
+        mesh.createFileShape(String.valueOf(file));
         return new TriangleMesh(mesh.vertices, mesh.triangles, scene.materials.get(materialName), transformation);
     }
     public TriangleMesh parseIcosahedron(Scene scene) throws GrammarErrorException, IOException, InvalidMatrixException {
