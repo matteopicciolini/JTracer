@@ -259,6 +259,10 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
 
 
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/0be349f4-1065-432c-8f7c-c6818b3767d5" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/c32080d5-5d61-4aa0-8062-ca25eb35e182" height="200" />
+
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/1ecc99c7-5658-40fb-8fe4-6d9c8b6eb54e" height="200" />
   
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/395d57a8-9feb-4662-b2fe-2df412299edd" height="200" />
@@ -267,8 +271,9 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
 
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/06f25243-059d-42a2-9e50-8dc767b2b991" height="200" />
 
-
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a6240427-a372-41e4-a10f-6643ab62d1cd" height="200" />
+
+  
 
   
 </p>
