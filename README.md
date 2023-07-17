@@ -160,7 +160,7 @@ Below are the available options for the render mode. Note that the options for t
 - `-n, --numRays`                 `int`: Number of rays per pixel. Default: `10`.
 - `--nThreads`                    `int`: Number of threads to use for parallelization. Default: `8`.
 - `--output`                      `string`: Path of the output ldr file. Default: `img.pfm`.
-  - `--parallel`                  `bool`: Parallelize the code. Default: `true`.
+- `--parallel`                  `bool`: Parallelize the code. Default: `true`.
 - `--russianRouletteLimit`        `int`: Russian roulette limit. Default: `3`.
 - `-s, --samplePerSide`           `int`: In antialiasing algorithm, the number of samples per side. Default: `4`.
 - `-w, --width`                   `int:` Width of the image. Default: `480`.
@@ -173,7 +173,6 @@ This last method allows for effective utilization of parallel programming. By us
 The following options are available for this mode:
 - `--firstImage` `string`: Path of the first pfm file.
 - `--secondImage` `string`: Path of the second pfm file.
-
 - `--imageNamePattern` `string`: Pattern of the pfm file.
 - `--numOfImages` `int`: number of images.
 - `--outputFileName` `string`: output file name (.pfm). Default: `outputSum.pfm`.
