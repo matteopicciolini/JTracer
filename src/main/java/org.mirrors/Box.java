@@ -22,6 +22,18 @@ public class Box extends Shape {
         this.max = max;
         checkMinMax();
     }
+    public Box(Point min, Point max, Transformation transformation) {
+        super(transformation);
+        this.min = min;
+        this.max = max;
+        checkMinMax();
+    }
+    public Box(Point min, Point max) {
+
+        this.min = min;
+        this.max = max;
+        checkMinMax();
+    }
 
     /**
      * Constructs a unit `Box` object with default parameters.

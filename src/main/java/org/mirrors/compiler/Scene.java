@@ -1,7 +1,7 @@
 package org.mirrors.compiler;
 import org.mirrors.*;
-
 import java.util.*;
+
 
 public class Scene {
     public Map<String, Material> materials = new HashMap<>();

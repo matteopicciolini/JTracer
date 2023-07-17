@@ -8,6 +8,7 @@ import static java.lang.Math.abs;
  * This class also provides methods for checking if two geometries intersect and for calculating the distance between
  * two geometries.
  */
+
 public abstract class Geometry{
     public float x;
     public float y;

@@ -5,10 +5,8 @@ package org.mirrors;
  */
 public class ProgressBar {
     public static final int BAR_LENGTH = 30;
-
     public int totalProgress;
     public int currentProgress;
-
     private StringBuilder progressBar;
     public long startTime;
     public int flushFrequence;
