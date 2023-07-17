@@ -207,7 +207,7 @@ This raytracer implements the following shapes:
 - CSG Union
 - CSG Difference
 - CSG Intersection
-<!-- - Triangles
+- Triangles
 - Triangle Meshes
 
 Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
@@ -227,7 +227,7 @@ f 2 3 4
 ```
 
 In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
--->
+
 ## Gallery
 
  <p float="center">
@@ -257,6 +257,21 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
+
+  TrinagleMeshes
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/1ecc99c7-5658-40fb-8fe4-6d9c8b6eb54e" height="200" />
+  
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/395d57a8-9feb-4662-b2fe-2df412299edd" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/8b8ed1e9-1ef6-4656-b799-7e07941a3b66" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/06f25243-059d-42a2-9e50-8dc767b2b991" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a7588e51-94db-44f1-b61d-e278dc096126" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a6240427-a372-41e4-a10f-6643ab62d1cd" height="200" />
+
+  
 </p>
 
 
