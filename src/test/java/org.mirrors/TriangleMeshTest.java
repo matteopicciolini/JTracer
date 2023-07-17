@@ -49,9 +49,9 @@ public class TriangleMeshTest {
         TriangleMesh fileS= new TriangleMesh(green, scal);
         TriangleMesh fileR= new TriangleMesh(green, rot);
         TriangleMesh fileT= new TriangleMesh(green, transl);
-        fileS.createFileShape("tetra2x.txt");
-        fileR.createFileShape("tetra2x.txt");
-        fileT.createFileShape("tetra2x.txt");
+        fileS.createFileShape("shapes_txt/tetra2x.txt");
+        fileR.createFileShape("shapes_txt/tetra2x.txt");
+        fileT.createFileShape("shapes_txt/tetra2x.txt");
 
         Ray rayx = new Ray(new Point(10.f, 0.1f, 0.1f), InvVecX);
         Ray rayy = new Ray(new Point(0.1f, 10f, 0.1f), InvVecY);
@@ -79,10 +79,10 @@ public class TriangleMeshTest {
         TriangleMesh fileS= new TriangleMesh(green, scal);
         TriangleMesh fileR= new TriangleMesh(green, rot);
         TriangleMesh fileT= new TriangleMesh(green, transl);
-        fileS.createFileShape("tetra.txt");
-        fileR.createFileShape("tetra.txt");
-        fileT.createFileShape("tetra.txt");
-        file.createFileShape("tetra.txt");
+        fileS.createFileShape("shapes_txt/tetra.txt");
+        fileR.createFileShape("shapes_txt/tetra.txt");
+        fileT.createFileShape("shapes_txt/tetra.txt");
+        file.createFileShape("shapes_txt/tetra.txt");
 
         Ray rayx = new Ray(new Point(-10f, 0.1f, 0.1f), VecX);
         Ray rayy = new Ray(new Point(0.1f, -10f, 0.1f), VecY);
@@ -158,10 +158,10 @@ public class TriangleMeshTest {
             TriangleMesh fileS= new TriangleMesh(green, scal);
             TriangleMesh fileR= new TriangleMesh(green, rot);
             TriangleMesh fileT= new TriangleMesh(green, transl);
-            fileS.createFileShape("icos.txt");
-            fileR.createFileShape("icos.txt");
-            fileT.createFileShape("icos.txt");
-            file.createFileShape("icos.txt");
+            fileS.createFileShape("shapes_txt/icos.txt");
+            fileR.createFileShape("shapes_txt/icos.txt");
+            fileT.createFileShape("shapes_txt/icos.txt");
+            file.createFileShape("shapes_txt/icos.txt");
 
             Ray rayx = new Ray(new Point(-10f, 0.1f, 0.1f), VecX);
             Ray rayy = new Ray(new Point(0.1f, -10f, 0.1f), VecY);
@@ -201,7 +201,7 @@ public class TriangleMeshTest {
 
             System.out.println(green);
             TriangleMesh fileR= new TriangleMesh(green, rot);
-            fileR.createFileShape("tetraSingle.txt");
+            fileR.createFileShape("shapes_txt/tetraSingle.txt");
 
             Ray rayx = new Ray(new Point(10f, 0.1f, 0.1f), InvVecX);
 
