@@ -1,6 +1,7 @@
 <!--<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f3f3a503-224d-4669-ae42-efb1931727b7" alt="Competizione tra cervo gatto e lupo"  width="300">
 -->
-<img align="right" src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/cf0cd573-9f2b-4cf1-8feb-bcab256e8119"  width="300">
+<img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/5fd1b57c-910c-461e-af29-7c2654a78bd3"  width="300">
+
 <h1 align="center">  Ray Tracing Project </h1> <br>
 
 
@@ -207,7 +208,7 @@ This raytracer implements the following shapes:
 - CSG Union
 - CSG Difference
 - CSG Intersection
-<!-- - Triangles
+- Triangles
 - Triangle Meshes
 
 Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
@@ -227,7 +228,7 @@ f 2 3 4
 ```
 
 In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
--->
+
 ## Gallery
 
  <p float="center">
@@ -237,6 +238,7 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   
   <!--<img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/ef222fc3-8a45-4b92-a90c-172a93023777" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f9b36d44-0663-402b-ab25-75c4f1466532" height="200" /> -->
+
   
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/985fc7f0-b165-4c62-a6a8-646f57a88afa" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/6d180acb-2c20-4b9d-9f55-747dcbc1914a" height="200" />
@@ -249,6 +251,7 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/791445bd-5ae4-457d-aca5-6173ff56915e" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/3fc5292b-b65c-4160-b08c-4e6a9f44b7f7" height="200" /> 
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/364d3295-a575-4c23-b316-136c81beaa53" height="200" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/cf0cd573-9f2b-4cf1-8feb-bcab256e8119" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5aab2522-2844-4e42-a44a-4f621176e6dc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8c940470-39d0-452a-82b5-ec85b53e3423" height="200" />
@@ -257,6 +260,25 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
+
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/0be349f4-1065-432c-8f7c-c6818b3767d5" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/c32080d5-5d61-4aa0-8062-ca25eb35e182" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/1ecc99c7-5658-40fb-8fe4-6d9c8b6eb54e" height="200" />
+  
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/395d57a8-9feb-4662-b2fe-2df412299edd" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/8b8ed1e9-1ef6-4656-b799-7e07941a3b66" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/06f25243-059d-42a2-9e50-8dc767b2b991" height="200" />
+
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a6240427-a372-41e4-a10f-6643ab62d1cd" height="200" />
+
+  
+
+  
 </p>
 
 
