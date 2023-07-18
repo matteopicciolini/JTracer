@@ -2,15 +2,15 @@
 All notable changes to this project will be documented in this file.
 
 ## v1.1.0
-- New shape: `Triangle` [#18](https://github.com/matteopicciolini/JTracer/pull/18)
-- New shape: `TriangleMesh` [#18](https://github.com/matteopicciolini/JTracer/pull/18)
-- Implementation of AABB intersection method only in TriangleMesh class [#18](https://github.com/matteopicciolini/JTracer/pull/18)
+- New shape: `Triangle` [#18](https://github.com/matteopicciolini/JTracer/pull/18).
+- New shape: `TriangleMesh` [#18](https://github.com/matteopicciolini/JTracer/pull/18).
+- Implementation of AABB intersection method only in TriangleMesh class [#18](https://github.com/matteopicciolini/JTracer/pull/18).
 
 ## v1.0.0
 #### New Features
 - Implementation of compiler [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
-- Progress bar is now available [13](https://github.com/matteopicciolini/ray_tracing/pull/13).
-- Modify gradle importing `CLI` in `picoCLI` ([version 4.6.1][picocli]) and add new options [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
+- Progress bar is now available [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
+- Modify gradle importing `CLI` in `picoCLI` ([version 4.6.1](https://picocli.info/)) and add new options [#13](https://github.com/matteopicciolini/ray_tracing/pull/13).
 - Add `sum` command to averaging `pfm` files.
 - New Shape: `Cylinder` [#14](https://github.com/matteopicciolini/ray_tracing/pull/14).
 - New Shape: `Hyperboloid` [#15](https://github.com/matteopicciolini/ray_tracing/pull/15).
