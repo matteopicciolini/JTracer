@@ -210,7 +210,7 @@ This raytracer implements the following shapes:
 - Triangles
 - Triangle Meshes
 
-Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
+Concerning about the last shape, using triangle meshes is a bit complexer than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
 
 ```
 # vertices
