@@ -71,7 +71,7 @@ that can be used to avoid local installation of `Gradle`.
 ## Usage
 In order to use and modify the code you can clone the repository with the command:
 ```
-git clone git@github.com:matteopicciolini/ray_tracing.git
+git clone git@github.com:matteopicciolini/JTracer.git
 ```
 Then, you can run the command `./gradlew test` to verify that the package functions correctly by executing the tests.
 Project can be built from source code running the command `./gradlew build`.
