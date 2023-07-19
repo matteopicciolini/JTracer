@@ -39,7 +39,7 @@ Finally, let's discuss shapes. The syntax is straightforward, but it's essential
   5. `hyperboloid(zMin, zMax, material, transformation)`;
   6. `cone(radius, height, material, transformation)`;
   7. `triangle(vertex1, vertex2, vertex3, material, transformation)`;
-  8. `fileshape(material, transformatio, path)`;
+  8. `fileshape(material, transformation, path)`;
   9. `difference(shape1, shape2, transformation)`;
   10. `union(shape1, shape2, transformation)`;
   11. `intersection(shape1, shape2, transformation)`.
