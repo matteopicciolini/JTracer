@@ -227,7 +227,7 @@ f 1 3 4
 f 2 3 4
 ```
 
-In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
+In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the previous features.
 
 ## Gallery
 
