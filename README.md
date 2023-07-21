@@ -26,15 +26,12 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
 
 ## Overview
 
-The main purpose of this library is to generate photorealistic images from input files that describe 
-a specific scene. 
-The scene consists of geometric shapes (please refer to the list of available shapes), 
-each defined by its coordinates and material. 
-Our code allows you to choose between diffusive, emissive, or reflective materials. 
-The code incorporates different backward ray tracing algorithms to simulate the propagation of light rays. 
-A camera (perspective or orthogonal), representing the observer, will view the world through a 
-two-dimensional screen positioned in front of it. The camera is defined by its position, 
-distance from the screen, and aspect ratio.
+The primary objective of this library is to generate photorealistic images from input files that describe a specific scene.
+The scene comprises geometric shapes (please refer to the list of available shapes), each defined by its coordinates and material.
+Our code allows you to select between diffusive or reflective materials.
+The code incorporates various backward ray tracing algorithms to simulate the propagation of light rays.
+A camera (perspective or orthogonal), representing the observer, will view the world through a two-dimensional screen positioned in front of it. The camera is defined by its position, distance from the screen, and aspect ratio.
+
 ## Prerequisites
 For this project, we are using [version 18.0.2][corretto] of `Amazon Corretto`, an `OpenJDK` distribution
 provided by `Amazon Web Services`.
