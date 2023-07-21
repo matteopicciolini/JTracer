@@ -98,7 +98,7 @@ public class HDRImage {
      */
     public void writePfm(OutputStream stream, ByteOrder order) throws IOException {
 
-        String endianness_str = (order == LITTLE_ENDIAN) ?  "-1.0" :  "1.0";
+        String endianness_str = (order == LITTLE_ENDIAN) ?  "-1.0" : "1.0";
         byte[] bytes = String.format("PF\n%d %d\n%s\n", this.width, this.height, endianness_str).getBytes(StandardCharsets.US_ASCII);
         stream.write(bytes, 0 , bytes.length);
         Color color;
@@ -125,14 +125,6 @@ public class HDRImage {
         byte[] floatBytes = ByteBuffer.allocate(4).order(order).putFloat(value).array();
         stream.write(floatBytes);
     }
-    /*
-    private void writeFloatToStream(OutputStream stream, float value, ByteOrder order) throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream(4);
-        ByteBuffer buffer = ByteBuffer.allocate(4).order(order).putFloat(value);
-        byteStream.write(buffer.array());
-        byteStream.writeTo(stream);
-    }
-    */
 
     /**
      * Calculates the average luminosity of the image using the specified delta value.

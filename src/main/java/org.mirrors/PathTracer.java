@@ -105,11 +105,11 @@ public class PathTracer extends Renderer{
         if(hitColorLum > 0.f){
             for(int rayIndex = 0; rayIndex < this.numOfRays; ++rayIndex){
                 Ray newRay = hitMaterial.brdf.scatterRay(
-                        this.pcg,
-                        hitRecord.ray.dir,
-                        hitRecord.worldPoint,
-                        hitRecord.normal,
-                        ray.depth + 1
+                    this.pcg,
+                    hitRecord.ray.dir,
+                    hitRecord.worldPoint,
+                    hitRecord.normal,
+                    ray.depth + 1
                 );
                 // Recursive call
                 Color newRadiance = this.call(newRay);

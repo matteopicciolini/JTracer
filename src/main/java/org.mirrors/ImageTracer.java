@@ -56,8 +56,8 @@ public class ImageTracer {
     /**
      Fire a ray for each pixel in the image and set its color according to the returned value from a given function.
      */
-    public void fireAllRays(RayToColor f, int progBarFlushFrequence) throws InvalidMatrixException {
-        ProgressBar progressBar = new ProgressBar(this.image.width * this.image.height, progBarFlushFrequence);
+    public void fireAllRays(RayToColor f, int progBarFlushFrequency) throws InvalidMatrixException {
+        ProgressBar progressBar = new ProgressBar(this.image.width * this.image.height, progBarFlushFrequency);
         for(int i = 0; i < this.image.width; ++i){
             for(int j = 0; j < this.image.height; ++j){
                 Color cumColor = Black;
