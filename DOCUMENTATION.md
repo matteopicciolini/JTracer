@@ -1,8 +1,14 @@
 # Documentation
-⚠️ This documentation does not claim to be exhaustive but to provide general guidelines with which the user can start interfacing with `JTracer`. For the installation of prerequisites and usage, please refer to the [`README.md` file][readme].
+⚠️ This documentation does not claim to be exhaustive but to provide general guidelines with which the user can start interfacing with `JTracer`. ⚠️ 
+
+For the installation of prerequisites and usage, please refer to the [`README.md` file][readme].
 
 ## Table of Contents
 - [JTracer Commands and Options](#jtracer-commands-and-options)
+   - [`convert` mode](#convert-mode)
+   - [`demo` mode](#demo-mode)
+   - [`render` mode](#render-mode)
+   - [`sum` mode](#sum-mode)
 - [Guidelines for properly creating text file and generate photorealistic images](#guidelines-for-properly-creating-text-file-and-generate-photorealistic-images)
 
 ## JTracer Commands and Options
@@ -101,7 +107,7 @@ This mode can be used in two different ways: by averaging between two images usi
 
 ## Guidelines for properly creating text file and generate photorealistic images
 
-A quick way to learn how to write a text file describing a scene is to take inspiration from the files contained in the `Tutorial` folder.
+A quick way to learn how to write a text file describing a scene is to take inspiration from the files contained in the [`Tutorial` folder][tutorials].
 Getting familiar with them is quite straightforward, however, we provide a detailed description of the syntax used in JTracer. 
 Please note that although spaces and endline characters are ignored, 
 they can still improve the file's readability. Additionally, comments can be helpful: `# This is a comment in a scene.`
@@ -147,3 +153,4 @@ Finally, let's discuss shapes. The syntax is straightforward, but it's essential
 
 
 [readme]: https://github.com/matteopicciolini/ray_tracing/blob/master/README.md
+[tutorials]: https://github.com/matteopicciolini/JTracer/tree/master/Tutorials
