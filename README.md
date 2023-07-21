@@ -1,25 +1,27 @@
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=radical)
 <img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/5fd1b57c-910c-461e-af29-7c2654a78bd3"  width="300">
 
 <h1 align="center">  Ray Tracing Project </h1> <br>
 
+![GitHub release (with filter)](https://img.shields.io/github/v/release/matteopicciolini/JTracer)
+![GitHub top language](https://img.shields.io/github/languages/top/matteopicciolini/JTracer)
+![GitHub contributors](https://img.shields.io/github/contributors/matteopicciolini/JTracer)
+![GitHub Release Date - Published_At](https://img.shields.io/github/release-date/matteopicciolini/JTracer)
+![GitHub](https://img.shields.io/github/license/matteopicciolini/JTracer)
 
 This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by using Numerical Methods.
 This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
 The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`. It is available for `Linux`, `Windows` and `macOS`.
 
-<!--*Competition between deer, cat and wolf, realized with boxes, triangle meshes, sphere and plane*-->
-
 ## Table of Contents
-- [Overview](#Overview)
-- [Prerequisites](#Prerequisites)
-- [Usage](#Usage)
-    - [Modes](#Modes)
-    - [Tutorials](#Tutorials)
-    - [Shapes](#Shapes)
-- [Animations](#Animations)
-- [Gallery](#Gallery)
-- [Issue Tracking](#Issue-Tracking)
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+    - [Modes](#modes)
+    - [Tutorials](#tutorials)
+    - [Shapes](#shapes)
+- [Animations](#animations)
+- [Gallery](#gallery)
+- [Issue Tracking](#issue-tracking)
 
 
 ## Overview
@@ -35,8 +37,8 @@ two-dimensional screen positioned in front of it. The camera is defined by its p
 distance from the screen, and aspect ratio.
 ## Prerequisites
 For this project, we are using [version 18.0.2][corretto] of `Amazon Corretto`, an `OpenJDK` distribution
-provided by `Amazon Web Services` (`AWS`) designed to be a stable, secure, and free version of `Java`.
-It is possible to download the correct version of `Java` for your operating system on the `Oracle` website at this [link][correttoDownload].
+provided by `Amazon Web Services`.
+It is possible to download the correct version of `Java` for your operating system on the [`Oracle` website][correttoDownload].
 
 On a Debian-based system, you can install it by executing the following commands:
 ```
@@ -99,88 +101,9 @@ This program can be executed in three different modes:
    a .txt file using some simple rules, and generate your photorealistic image without touching the source code.
 4. `sum` mode. This technique allows to "combine" multiple images of the same scene generated with different seeds, in order to reduce the noise present in the image. It is typically used after generating many images in parallel.
 
-All of these modes include the `-h` option which displays specifications for each one.
+All of these modes include the `-h` option which displays specifications for each one. For a detailed description of the commands and options available, please refer to the [documentation][].
 
-The `demo` and `render` modes are the modes that actually allow for the creation of a photorealistic image. Therefore, it is important to focus on the fundamental parameter `--algorithm`, which is accepted by both modes. This parameter specifies the algorithm to use for rendering the image, and you can choose from the following options:
-1. `onOff`: simply estimates if a ray hits the point;
-2. `flat`: a bit more advanced than the previous, estimates the surface color;
-3. `pathTracer`: the "real" ray tracer, uses the ray tracing equation.
-
-Below is a summary of the specifications and usage for each mode.
-
-#### `convert` mode
-
-This mode can be executed by launching the following command from the command line.
-```
-./gradlew run --args="convert image.pfm"
-```
-Below we show the available options:
-- `-f, --factor`            `float`: Multiplicative factor. Default: `0.18`.
-- `-g, --gamma`             `float`: Exponent for gamma-correction. Default: `2.2`.
-- `-o, --outputFileName`    `string`: Path of the output LDR file. Default: `<inputFileName>.png`.
-- `-l, --luminosity`      `float`: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to `0.5`.
-
-
-If the output LDR file extension is not specified using the `-o` option, 
-a PNG file with the name of the input file will be generated.
-#### `demo` mode
-The command to run the program in demo mode is as follows:
-```
-./gradlew run --args="demo"
-```
-The method to modify to describe the scene is the `demo` method of the `Tracer` class. 
-For options, please refer to the `render` mode, which implements the same ones.
-
-#### `render` mode
-The render mode is the preferred mode for describing the scene and generating the photorealistic image. 
-To run the program in render mode, it is necessary to write a TXT file according to the rules described 
-in the `documentation.md` file that describes the scene. Some sample tutorials are also available in this folder. 
-To run the program in this mode, you can use the following command:
-```
-./gradlew run --args="render -i=inputFile.txt"
-``` 
-where `inputFile.txt` is the file that describes the scene.
-
-
-Below are the available options for the render mode. Note that the options for the demo mode are very similar.
-- `-a, --angle-deg`               `float`: Angle of view. Default: `0`.
-- `--algorithm`                   `string`: Algorithm of rendering. Default: `pathTracer`.
-- `--antialiasing`                `bool`: Use antialiasing algorithm. Default: `false`.
-- `-c, --convertToPNG`            `bool`: At the end of the program execution, automatically convert the PFM file to PNG. Default: `true`.
-- `-d, --deletePFM`               `bool`: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: `false`.
-- `-f, --factor`                  `float`: Multiplicative factor. Default: `0.18`.
-- `--flushFrequence`              `int`: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: `100`.
-- `-g, --gamma`                   `float`: Exponent for gamma-correction. Default: `2.2`.
-- `--height`                      `int`: Height of the image. Default: `480`.
-- `-i, --input`                   `string`: Path of the input TXT file. REQUIRED.
-- `--initState`                   `int`: PCG starter parameter. Default: `42`.
-- `--initSeq`                     `int`: PCG starter parameter. Default: `52`.
-- `-l, --luminosity`              `float`: Luminosity of the image.     Default: It is calculated for the pathTracer; otherwise, it is set to `0.5`.
-- `--maxDepth`                    `int`: Maximum recursion depth. Default: `2`.
-- `-n, --numRays`                 `int`: Number of rays per pixel. Default: `10`.
-- `--nThreads`                    `int`: Number of threads to use for parallelization. Default: `8`.
-- `--output`                      `string`: Path of the output ldr file. Default: `img.pfm`.
-- `--parallel`                  `bool`: Parallelize the code. Default: `true`.
-- `--russianRouletteLimit`        `int`: Russian roulette limit. Default: `3`.
-- `-s, --samplePerSide`           `int`: In antialiasing algorithm, the number of samples per side. Default: `4`.
-- `-w, --width`                   `int:` Width of the image. Default: `480`.
-
-
-By the end of the execution, there's no need to specify the conversion from HDR image to LDR image cause of the default settings of `--convertToPNG=true`.
-#### `sum` mode
-This last method allows for effective utilization of parallel programming. By using certain bash scripts, it is possible to run the same program in parallel on multiple cores with different `--initState` and `--initSeq` parameters for each core. Afterwards, this method can be used to "average" each pixel of the generated PFM images and reduce the noise.
-
-The following options are available for this mode:
-- `--firstImage` `string`: Path of the first pfm file.
-- `--secondImage` `string`: Path of the second pfm file.
-- `--imageNamePattern` `string`: Pattern of the pfm file.
-- `--numOfImages` `int`: number of images.
-- `--outputFileName` `string`: output file name (.pfm). Default: `outputSum.pfm`.
-- `-f`, `--factor` `float`: Multiplicative factor. Default: `0.18`.
-- `-g`, `--gamma` `float`: Exponent for gamma-correction. Default: `2.2`
-- `-l`, `--luminosity` `float`: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to `0.5`.
-
-This mode can be used in two different ways: by averaging between two images using the `--firstImage` and `--secondImage` parameters, or by averaging between multiple images with the same pattern using the `--imageNamePattern` parameter. For example, if `--numOfImages=20` images have been generated with the pattern `image`, the program will assume the existence of files `image01.pfm`, `image02.pfm`, ..., `image20.pfm`, and it will average all 20 images together.
+<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="280">
 
 ### Animations
 This code also implements the ability to generate animations. 
@@ -191,24 +114,28 @@ and then utilize the `sum` mode.
 
 
 ### Tutorials
-For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary TXT files for the program, you can refer to the documentation or use the tutorials provided in the `Tutorials` folder.
+For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary TXT files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
 
 
-<img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="280">
+
 
 ### Shapes
 This raytracer implements the following shapes:
-- Sphere
-- Planes
-- Boxes
-- Cylinder
-- Cones
-- Hyperboloid
-- CSG Union
-- CSG Difference
-- CSG Intersection
-- Triangles
-- Triangle Meshes
+
+From version 1.0.0:
+- Sphere 🌍
+- Planes ✈️
+- Boxes 📦
+- Cylinder 🎩
+- Cones 🍦
+- Hyperboloid ⏳
+- CSG Union ➕
+- CSG Difference ➖
+- CSG Intersection ⋂
+  
+From version 1.1.0:
+- Triangles ▲
+- Triangle Meshes 🦌
 
 Concerning about the last shape, using triangle meshes is a bit complex than other shapes. In facts, in order to build a scene with some specific shapes (tetrahedron, icosahedron and all the possible shapes like deers or cats) it is necessary to include a particular file `.txt` with the following structure:
 
@@ -226,56 +153,66 @@ f 1 3 4
 f 2 3 4
 ```
 
-In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the previous features.
+In this project, there is also a `Python` script that takes an input `.obj` file and generates an output `.txt` file with the preavious features.
 
 ## Gallery
 
- <p float="center">
-  <!--<img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/b65d86ed-dec6-400e-94a0-27c83ba3741c" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/04ccd682-2dd5-4dcb-a958-99a90671ec32" height="200" /> 
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c5def2d6-d87c-4358-bfb5-d5a4ce9842db" height="200" /> -->
-  
-  <!--<img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/ef222fc3-8a45-4b92-a90c-172a93023777" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/f9b36d44-0663-402b-ab25-75c4f1466532" height="200" /> -->
 
-  
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/985fc7f0-b165-4c62-a6a8-646f57a88afa" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/6d180acb-2c20-4b9d-9f55-747dcbc1914a" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5ff13031-f296-423c-aefa-cd786c5fb306" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8f553ba2-327a-404b-b4e0-5e54accba32b" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/53b846d7-d331-4170-9fbc-4d174101661e" height="200" /> 
+<div align="center">
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/6d180acb-2c20-4b9d-9f55-747dcbc1914a" height="250"  />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5ff13031-f296-423c-aefa-cd786c5fb306" height="250"  />
+</div>
+<div align="center">
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8f553ba2-327a-404b-b4e0-5e54accba32b" height="250" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/53b846d7-d331-4170-9fbc-4d174101661e" height="250" />
+</div>
+<p align="center"><em>Cornell Box rendered using JTracer with varying <br>
+    the number of rays cast per pixel (antialiasing algorithm).</em></p>
 
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/30caf212-ac8e-4414-a389-573726ab675e" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/6c4e73f1-3250-473d-b06e-21e7b353bd04" height="200" />
+    
+<br>
+<div align="center">
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/30caf212-ac8e-4414-a389-573726ab675e" height="250" />
+  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/6c4e73f1-3250-473d-b06e-21e7b353bd04" height="250" />
+</div>
+<p align="center"><em>Examples of pigments generated from existing pfm files.</em></p>
+
+
+
+<br>
+<div align="center">
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/791445bd-5ae4-457d-aca5-6173ff56915e" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/3fc5292b-b65c-4160-b08c-4e6a9f44b7f7" height="200" /> 
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/364d3295-a575-4c23-b316-136c81beaa53" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/cf0cd573-9f2b-4cf1-8feb-bcab256e8119" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/94148ac8-3d0d-4f3b-9646-9fb49896b7b7" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5aab2522-2844-4e42-a44a-4f621176e6dc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/8c940470-39d0-452a-82b5-ec85b53e3423" height="200" />
+</div>
+<p align="center"><em>Some implementations of abstract scenes.</em></p>
+<br>
+
+
+  <div align="center">
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/b1e58f2f-39f7-4e69-b3b9-46f6441082cb" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5d94964f-3046-47eb-a455-621440c069b1" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
-
-
+</div>
+<p align="center"><em>Milano Design Week. Picciolini Collection.</em></p>
+  
+  <br>
+  <div align="center">
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/0be349f4-1065-432c-8f7c-c6818b3767d5" height="200" />
-
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/c32080d5-5d61-4aa0-8062-ca25eb35e182" height="200" />
-
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/1ecc99c7-5658-40fb-8fe4-6d9c8b6eb54e" height="200" />
-  
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/395d57a8-9feb-4662-b2fe-2df412299edd" height="200" />
-
-  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/8b8ed1e9-1ef6-4656-b799-7e07941a3b66" height="200" />
-
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/06f25243-059d-42a2-9e50-8dc767b2b991" height="200" />
-
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/8b8ed1e9-1ef6-4656-b799-7e07941a3b66" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a6240427-a372-41e4-a10f-6643ab62d1cd" height="200" />
+</div>
+<p align="center"><em> New York Zoo. Villa Collection.</em></p>
 
-  
 
   
 </p>
@@ -284,6 +221,12 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
 
 
 ## Issue Tracking
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/matteopicciolini/JTracer)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/matteopicciolini/JTracer)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/matteopicciolini/JTracer)
+![GitHub issues](https://img.shields.io/github/issues/matteopicciolini/JTracer)
+![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/matteopicciolini/JTracer)
+
 If you encounter any issues while using this project or find a bug in the code, please feel free to let us know! You can reach us at picciolinimatteo@gmail.com or fravilla30@gmail.com.
 
 
@@ -298,3 +241,7 @@ If you encounter any issues while using this project or find a bug in the code, 
 [correttoDownload]: https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html
 [gradlew]: https://github.com/matteopicciolini/ray_tracing/blob/master/gradlew
 [javatuples]: https://www.javatuples.org/
+[documentation]: https://github.com/matteopicciolini/ray_tracing/blob/master/DOCUMENTATION.md
+[tutorials]: https://github.com/matteopicciolini/JTracer/tree/master/Tutorials
+
+
