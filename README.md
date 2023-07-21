@@ -98,7 +98,7 @@ This program can be executed in three different modes:
    code of the `Tracer` class. If this mode is launched without modifying the code, a default image will be
    generated. Editing the source code is recommended for advanced users only.
 3. `render` mode. That's the main feature of this program. With this mode, you can describe the scene inside
-   a .txt file using some simple rules, and generate your photorealistic image without touching the source code.
+   a `.txt` file using some simple rules, and generate your photorealistic image without touching the source code.
 4. `sum` mode. This technique allows to "combine" multiple images of the same scene generated with different seeds, in order to reduce the noise present in the image. It is typically used after generating many images in parallel.
 
 All of these modes include the `-h` option which displays specifications for each one. For a detailed description of the commands and options available, please refer to the [documentation][].
@@ -114,7 +114,7 @@ and then utilize the `sum` mode.
 
 
 ### Tutorials
-For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary TXT files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
+For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary `.txt` files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
 
 
 
