@@ -5,7 +5,7 @@
 <h1 align="center">  Ray Tracing Project </h1> <br>
 
 
-This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by solving the rendering equation using Numerical Methods.
+This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by using Numerical Methods.
 This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
 The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`. It is available for `Linux`, `Windows` and `macOS`.
 
@@ -284,7 +284,7 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
 
 
 
-## Issue-Tracking
+## Issue Tracking
 If you encounter any issues while using this project or find a bug in the code, please feel free to let us know! You can reach us at picciolinimatteo@gmail.com or fravilla30@gmail.com.
 
 
