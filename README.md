@@ -240,5 +240,3 @@ If you encounter any issues while using this project or find a bug in the code, 
 [javatuples]: https://www.javatuples.org/
 [documentation]: https://github.com/matteopicciolini/ray_tracing/blob/master/DOCUMENTATION.md
 [tutorials]: https://github.com/matteopicciolini/JTracer/tree/master/Tutorials
-
-
