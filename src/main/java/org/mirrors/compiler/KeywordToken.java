@@ -7,4 +7,9 @@ public class KeywordToken extends Token{
         super(location);
         this.keyword = keywordEnum;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(keyword);
+    }
 }

@@ -6,4 +6,6 @@ public abstract class Token {
         this.location = location;
     }
 
+    public abstract String toString();
+
 }
