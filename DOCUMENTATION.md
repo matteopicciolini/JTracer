@@ -1,4 +1,105 @@
-# Guidelines for properly creating text file and generate photorealistic images
+# Documentation
+⚠️ This documentation does not claim to be exhaustive but to provide general guidelines with which the user can start interfacing with `JTracer`. For the installation of prerequisites and usage, please refer to the [`README.md` file][readme].
+
+## Table of Contents
+- [JTracer Commands and Options](#jtracer-commands-and-options)
+- [Guidelines for properly creating text file and generate photorealistic images](#guidelines-for-properly-creating-text-file-and-generate-photorealistic-images)
+
+## JTracer Commands and Options
+This program can be executed in three different modes:
+1. `convert` mode. With this mode, you can convert a PFM file to an LDR file.
+2. `demo` mode. This mode allows the creation of photorealistic images by directly interacting with the source
+   code of the `Tracer` class. If this mode is launched without modifying the code, a default image will be
+   generated. Editing the source code is recommended for advanced users only.
+3. `render` mode. That's the main feature of this program. With this mode, you can describe the scene inside
+   a `.txt` file using some simple rules, and generate your photorealistic image without touching the source code.
+4. `sum` mode. This technique allows to "combine" multiple images of the same scene generated with different seeds, in order to reduce the noise present in the image. It is typically used after generating many images in parallel.
+
+All of these modes include the `-h` option which displays specifications for each one.
+
+The `demo` and `render` modes are the modes that actually allow for the creation of a photorealistic image. Therefore, it is important to focus on the fundamental parameter `--algorithm`, which is accepted by both modes. This parameter specifies the algorithm to use for rendering the image, and you can choose from the following options:
+1. `onOff`: simply estimates if a ray hits the point;
+2. `flat`: a bit more advanced than the previous, estimates the surface color;
+3. `pathTracer`: the "real" ray tracer, uses the ray tracing equation.
+
+Below is a summary of the specifications and usage for each mode.
+
+### `convert` mode
+
+This mode can be executed by launching the following command from the command line.
+```
+./gradlew run --args="convert image.pfm"
+```
+Below we show the available options:
+- `-f, --factor`            `float`: Multiplicative factor. Default: `0.18`.
+- `-g, --gamma`             `float`: Exponent for gamma-correction. Default: `2.2`.
+- `-o, --outputFileName`    `string`: Path of the output LDR file. Default: `<inputFileName>.png`.
+- `-l, --luminosity`      `float`: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to `0.5`.
+
+
+If the output LDR file extension is not specified using the `-o` option, 
+a PNG file with the name of the input file will be generated.
+### `demo` mode
+The command to run the program in demo mode is as follows:
+```
+./gradlew run --args="demo"
+```
+The method to modify to describe the scene is the `demo` method of the `Tracer` class. 
+For options, please refer to the `render` mode, which implements the same ones.
+
+### `render` mode
+The render mode is the preferred mode for describing the scene and generating the photorealistic image. 
+To run the program in render mode, it is necessary to write a TXT file according to the rules described 
+in the `documentation.md` file that describes the scene. Some sample tutorials are also available in this folder. 
+To run the program in this mode, you can use the following command:
+```
+./gradlew run --args="render -i=inputFile.txt"
+``` 
+where `inputFile.txt` is the file that describes the scene.
+
+
+Below are the available options for the render mode. Note that the options for the demo mode are very similar.
+- `-a, --angle-deg`               `float`: Angle of view. Default: `0`.
+- `--algorithm`                   `string`: Algorithm of rendering. Default: `pathTracer`.
+- `--antialiasing`                `bool`: Use antialiasing algorithm. Default: `false`.
+- `-c, --convertToPNG`            `bool`: At the end of the program execution, automatically convert the PFM file to PNG. Default: `true`.
+- `-d, --deletePFM`               `bool`: At the end of the program execution, keep only the LDR image, deleting the PFM. Default: `false`.
+- `-f, --factor`                  `float`: Multiplicative factor. Default: `0.18`.
+- `--flushFrequency`              `int`: Frequency of flush (expressed in number of processed pixels) of the progress bar. Default: `100`.
+- `-g, --gamma`                   `float`: Exponent for gamma-correction. Default: `2.2`.
+- `--height`                      `int`: Height of the image. Default: `480`.
+- `-i, --input`                   `string`: Path of the input TXT file. REQUIRED.
+- `--initState`                   `int`: PCG starter parameter. Default: `42`.
+- `--initSeq`                     `int`: PCG starter parameter. Default: `52`.
+- `-l, --luminosity`              `float`: Luminosity of the image.     Default: It is calculated for the pathTracer; otherwise, it is set to `0.5`.
+- `--maxDepth`                    `int`: Maximum recursion depth. Default: `2`.
+- `-n, --numRays`                 `int`: Number of rays per pixel. Default: `10`.
+- `--nThreads`                    `int`: Number of threads to use for parallelization. Default: `8`.
+- `--output`                      `string`: Path of the output ldr file. Default: `img.pfm`.
+- `--parallel`                  `bool`: Parallelize the code. Default: `true`.
+- `--russianRouletteLimit`        `int`: Russian roulette limit. Default: `3`.
+- `-s, --samplePerSide`           `int`: In antialiasing algorithm, the number of samples per side. Default: `4`.
+- `-w, --width`                   `int:` Width of the image. Default: `480`.
+
+
+By the end of the execution, there's no need to specify the conversion from HDR image to LDR image cause of the default settings of `--convertToPNG=true`.
+### `sum` mode
+This last method allows for effective utilization of parallel programming. By using certain bash scripts, it is possible to run the same program in parallel on multiple cores with different `--initState` and `--initSeq` parameters for each core. Afterwards, this method can be used to "average" each pixel of the generated PFM images and reduce the noise.
+
+The following options are available for this mode:
+- `--firstImage` `string`: Path of the first pfm file.
+- `--secondImage` `string`: Path of the second pfm file.
+- `--imageNamePattern` `string`: Pattern of the pfm file.
+- `--numOfImages` `int`: number of images.
+- `--outputFileName` `string`: output file name (.pfm). Default: `outputSum.pfm`.
+- `-f`, `--factor` `float`: Multiplicative factor. Default: `0.18`.
+- `-g`, `--gamma` `float`: Exponent for gamma-correction. Default: `2.2`
+- `-l`, `--luminosity` `float`: Luminosity of the image. Default: If it is not specified, it is calculated; otherwise, it is set to `0.5`.
+
+This mode can be used in two different ways: by averaging between two images using the `--firstImage` and `--secondImage` parameters, or by averaging between multiple images with the same pattern using the `--imageNamePattern` parameter. For example, if `--numOfImages=20` images have been generated with the pattern `image`, the program will assume the existence of files `image01.pfm`, `image02.pfm`, ..., `image20.pfm`, and it will average all 20 images together.
+
+
+## Guidelines for properly creating text file and generate photorealistic images
 
 A quick way to learn how to write a text file describing a scene is to take inspiration from the files contained in the `Tutorial` folder.
 Getting familiar with them is quite straightforward, however, we provide a detailed description of the syntax used in JTracer. 
@@ -43,3 +144,6 @@ Finally, let's discuss shapes. The syntax is straightforward, but it's essential
   9. `difference(shape1, shape2, transformation)`;
   10. `union(shape1, shape2, transformation)`;
   11. `intersection(shape1, shape2, transformation)`.
+
+
+[readme]: https://github.com/matteopicciolini/ray_tracing/blob/master/README.md
