@@ -5,7 +5,7 @@
 <h1 align="center">  Ray Tracing Project </h1> <br>
 
 
-This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by solving the rendering equation using Numerical Methods.
+This project was developed by [Matteo Picciolini][piccio] and [Francesco Villa][fravi] to generate photorealistic images by using Numerical Methods.
 This project is developed for ***Numeric calculus for photorealistic images generation*** course, held by professor [Maurizio Tomasi][ziotom] at University of Milan, Physics Department.
 The project has been written in `Java` and can be compiled using `Gradle`. Additionally, it is integrated with some bash scripts that allow generating animations using the open-source software `FFmpeg`. It is available for `Linux`, `Windows` and `macOS`.
 
@@ -71,7 +71,7 @@ that can be used to avoid local installation of `Gradle`.
 ## Usage
 In order to use and modify the code you can clone the repository with the command:
 ```
-git clone git@github.com:matteopicciolini/ray_tracing.git
+git clone git@github.com:matteopicciolini/JTracer.git
 ```
 Then, you can run the command `./gradlew test` to verify that the package functions correctly by executing the tests.
 Project can be built from source code running the command `./gradlew build`.
@@ -227,7 +227,7 @@ f 1 3 4
 f 2 3 4
 ```
 
-In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the prefìvious features.
+In our project, there is also a simple script in python wicht accept a `.obj` file as input and generate a `.txt` file as output with the previous features.
 
 ## Gallery
 
@@ -284,7 +284,7 @@ In our project, there is also a simple script in python wicht accept a `.obj` fi
 
 
 
-## Issue-Tracking
+## Issue Tracking
 If you encounter any issues while using this project or find a bug in the code, please feel free to let us know! You can reach us at picciolinimatteo@gmail.com or fravilla30@gmail.com.
 
 
