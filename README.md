@@ -1,6 +1,6 @@
 <img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/5fd1b57c-910c-461e-af29-7c2654a78bd3"  width="300">
 
-<h1 align="center">  Ray Tracing Project </h1> <br>
+<h1 align="center"> JTracer </h1> <br>
 
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/matteopicciolini/JTracer)
 ![GitHub top language](https://img.shields.io/github/languages/top/matteopicciolini/JTracer)
@@ -18,8 +18,8 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
 - [Usage](#usage)
     - [Modes](#modes)
     - [Tutorials](#tutorials)
-    - [Shapes](#shapes)
 - [Animations](#animations)
+- [Shapes](#shapes)
 - [Gallery](#gallery)
 - [Issue Tracking](#issue-tracking)
 
@@ -85,7 +85,7 @@ With the `--args` flag, you can pass parameters from the command line. For examp
 ./gradlew run --args="render --input=image.txt"
 ```
 
-Below are the available execution modes and parameters using the `Gradle` `run` task, as it avoids the generation of the binary file. 
+Below, and in more detail in [DOCUMENTATION file][documentation],  are the available execution modes and parameters using the `Gradle` `run` task, as it avoids the generation of the binary file. 
 However, please note that what follows is also (and especially) valid for the binary file generated with the `installDist` task.
 
 ### Modes
@@ -100,32 +100,29 @@ This program can be executed in three different modes:
 
 All of these modes include the `-h` option which displays specifications for each one. For a detailed description of the commands and options available, please refer to the [documentation][].
 
+
+### Tutorials
+For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary `.txt` files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
+
 <img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="280">
 
-### Animations
+## Animations
 This code also implements the ability to generate animations. 
 Animations can be created by appropriately modifying and making 
 executable the bash files `animation.sh` and/or `parallel-generate-image.sh`. 
 Similarly, these files can be used to generate different images of the same scene in parallel, 
 and then utilize the `sum` mode.
 
-
-### Tutorials
-For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary `.txt` files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
-
-
-
-
-### Shapes
+## Shapes
 This raytracer implements the following shapes:
 
 From version 1.0.0:
-- Sphere 🌍
+- Spheres 🌍
 - Planes ✈️
 - Boxes 📦
-- Cylinder 🎩
+- Cylinders 🎩
 - Cones 🍦
-- Hyperboloid ⏳
+- Hyperboloids ⏳
 - CSG Union ➕
 - CSG Difference ➖
 - CSG Intersection ⋂
@@ -195,6 +192,10 @@ In this project, there is also a `Python` script that takes an input `.obj` file
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
+  <img src="https://github.com/matteopicciolini/JTracer/assets/58447570/ae3170d6-dcff-4423-95c0-3fa12c66af33" height="200" />
+
+
+      
 </div>
 <p align="center"><em>Milano Design Week. Picciolini Collection.</em></p>
   
