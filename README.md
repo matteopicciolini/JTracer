@@ -18,8 +18,8 @@ The project has been written in `Java` and can be compiled using `Gradle`. Addit
 - [Usage](#usage)
     - [Modes](#modes)
     - [Tutorials](#tutorials)
-    - [Shapes](#shapes)
 - [Animations](#animations)
+- [Shapes](#shapes)
 - [Gallery](#gallery)
 - [Issue Tracking](#issue-tracking)
 
@@ -100,23 +100,20 @@ This program can be executed in three different modes:
 
 All of these modes include the `-h` option which displays specifications for each one. For a detailed description of the commands and options available, please refer to the [documentation][].
 
+
+### Tutorials
+For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary `.txt` files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
+
 <img align="right" img src="https://github.com/matteopicciolini/ray_tracing/assets/116730685/c40b165f-f7d5-41a1-910a-c10b1e454391"  width="280">
 
-### Animations
+## Animations
 This code also implements the ability to generate animations. 
 Animations can be created by appropriately modifying and making 
 executable the bash files `animation.sh` and/or `parallel-generate-image.sh`. 
 Similarly, these files can be used to generate different images of the same scene in parallel, 
 and then utilize the `sum` mode.
 
-
-### Tutorials
-For proper functionality, this code requires the user to be familiar with some syntax rules for describing the scene. To learn how to write the necessary `.txt` files for the program, you can refer to the documentation or use the tutorials provided in the [`Tutorials` folder][tutorials].
-
-
-
-
-### Shapes
+## Shapes
 This raytracer implements the following shapes:
 
 From version 1.0.0:
@@ -195,6 +192,8 @@ In this project, there is also a `Python` script that takes an input `.obj` file
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
+
+      
 </div>
 <p align="center"><em>Milano Design Week. Picciolini Collection.</em></p>
   
