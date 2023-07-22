@@ -1,6 +1,6 @@
 <img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/5fd1b57c-910c-461e-af29-7c2654a78bd3"  width="300">
 
-<h1 align="center">  Ray Tracing Project </h1> <br>
+<h1 align="center"> JTracer </h1> <br>
 
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/matteopicciolini/JTracer)
 ![GitHub top language](https://img.shields.io/github/languages/top/matteopicciolini/JTracer)
