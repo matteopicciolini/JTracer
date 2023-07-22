@@ -207,7 +207,7 @@ In this project, there is also a `Python` script that takes an input `.obj` file
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/395d57a8-9feb-4662-b2fe-2df412299edd" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/06f25243-059d-42a2-9e50-8dc767b2b991" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/8b8ed1e9-1ef6-4656-b799-7e07941a3b66" height="200" />
-  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a6240427-a372-41e4-a10f-6643ab62d1cd" height="200" />
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/1185d051-9335-4475-a974-ebebec810c7e" height="200" />
 </div>
 <p align="center"><em> New York Zoo. Villa Collection.</em></p>
 
