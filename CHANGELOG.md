@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v1.1.1
+#### Fixed
+- Fixed bug in Parser: [#21](https://github.com/matteopicciolini/JTracer/pull/21).
+
+
 ## v1.1.0
 - New shape: `Triangle` [#18](https://github.com/matteopicciolini/JTracer/pull/18).
 - New shape: `TriangleMesh` [#18](https://github.com/matteopicciolini/JTracer/pull/18).
@@ -27,7 +32,6 @@ All notable changes to this project will be documented in this file.
 #### New Features
 - Implementation of the PCG random number generator [#6](https://github.com/matteopicciolini/ray_tracing/pull/6).
 - Material characterization of `Shape` through the `Material` and `Pigment` classes is available [#6](https://github.com/matteopicciolini/ray_tracing/pull/6).
-
 - Two additional renders are available: `flat` and `pathTracer` [#8](https://github.com/matteopicciolini/ray_tracing/pull/8). The latter is the core of the program.
 - Implementation of the antialiasing algorithm for `pathTracer` [#10](https://github.com/matteopicciolini/ray_tracing/pull/10).
 - Implement parallelization for antialiasing [#10](https://github.com/matteopicciolini/ray_tracing/pull/10).
