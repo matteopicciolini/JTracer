@@ -1,4 +1,4 @@
-<img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/5fd1b57c-910c-461e-af29-7c2654a78bd3"  width="300">
+<img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/1185d051-9335-4475-a974-ebebec810c7e"  width="300">
 
 <h1 align="center"> JTracer </h1> <br>
 
