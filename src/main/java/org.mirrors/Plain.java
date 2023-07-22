@@ -3,12 +3,13 @@ package org.mirrors;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.floor;
 
 /**
  * Class representing a plane shape.
  */
-public class Plain extends Shape{
+public class Plain extends Shape {
     /**
      * Default constructor for the Plain class.
      */

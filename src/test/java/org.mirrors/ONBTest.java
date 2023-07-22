@@ -2,14 +2,15 @@ package org.mirrors;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ONBTest {
     @Test
-    void testOnbFromNormal(){
+    void testOnbFromNormal() {
         PCG pcg = new PCG();
 
-        for (int i = 0; i < 100; ++i){
+        for (int i = 0; i < 100; ++i) {
             Normal normal = new Normal(pcg.randomFloat(), pcg.randomFloat(), pcg.randomFloat());
             normal.normalize();
 

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Represents a union operation between two shapes in Constructive Solid Geometry (CSG).
  */
-public class CSGUnion extends CSG{
+public class CSGUnion extends CSG {
 
     /**
      * Constructs a CSG union operation with the specified transformation, shape1, and shape2.

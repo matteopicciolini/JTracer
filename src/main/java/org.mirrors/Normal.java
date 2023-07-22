@@ -48,7 +48,7 @@ public class Normal extends OrientedObject {
      * @param other The Vec to calculate the cross product with.
      * @return A new Normal object that represents the cross product of the current Normal and the input Vec.
      */
-    public Normal cross(Vec other){
+    public Normal cross(Vec other) {
         return cross(this, other, Normal.class);
     }
 
@@ -58,9 +58,11 @@ public class Normal extends OrientedObject {
      * @param other The Normal to calculate the cross product with.
      * @return A new Normal object that represents the cross product of the current Normal and the input Normal.
      */
-    public Normal cross(Normal other){
+    public Normal cross(Normal other) {
         return cross(this, other, Normal.class);
     }
 
-    public Vec toVec(){return new Vec(this.x , this.y, this.z);}
+    public Vec toVec() {
+        return new Vec(this.x, this.y, this.z);
+    }
 }

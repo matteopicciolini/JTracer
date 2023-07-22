@@ -13,7 +13,7 @@ public class Matrix4x4 {
     /**
      * Constructs a new Matrix4x4 object initialized to the identity matrix.
      */
-    public Matrix4x4(){
+    public Matrix4x4() {
         this.matrix = Global.IdentityMatrix;
     }
 
@@ -22,8 +22,8 @@ public class Matrix4x4 {
      *
      * @param a The value to set all elements to.
      */
-    public Matrix4x4(float a){
-        for (int i = 0; i < 16; ++i){
+    public Matrix4x4(float a) {
+        for (int i = 0; i < 16; ++i) {
             this.matrix[i] = a;
         }
     }
@@ -35,7 +35,7 @@ public class Matrix4x4 {
      * @throws InvalidMatrixException if the provided array does not contain exactly 16 elements.
      */
     public Matrix4x4(float[] matrix) throws InvalidMatrixException {
-        if(matrix.length != 16){
+        if (matrix.length != 16) {
             throw new InvalidMatrixException("Invalid 4x4 matrix.");
         }
         this.matrix = matrix;
@@ -47,10 +47,10 @@ public class Matrix4x4 {
      * @return A string representation of this Matrix4x4 object.
      */
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder str = new StringBuilder("Matrix4x4: \n");
-        for(int i = 0; i < 4; ++i){
-            for (int j = 0; j < 4; ++j){
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
                 str.append("   ").append(this.getMatrixElement(i, j));
             }
             str.append("\n");
@@ -61,8 +61,8 @@ public class Matrix4x4 {
     /**
      * Sets the value of a specific element in this matrix.
      *
-     * @param row The row index of the element to set.
-     * @param col The column index of the element to set.
+     * @param row   The row index of the element to set.
+     * @param col   The column index of the element to set.
      * @param value The value to set the element to.
      */
     public void setMatrixElement(int row, int col, float value) {
@@ -86,7 +86,7 @@ public class Matrix4x4 {
      * @param b The matrix to multiply this matrix by.
      * @return The matrix product of this matrix and b.
      */
-    public Matrix4x4 cross(Matrix4x4 b){
+    public Matrix4x4 cross(Matrix4x4 b) {
         Matrix4x4 matrix_prod = new Matrix4x4(0.f);
 
         for (int i = 0; i < 4; ++i) {
@@ -107,10 +107,10 @@ public class Matrix4x4 {
      * @param b The matrix to compare this matrix to.
      * @return True if this matrix is approximately equal to b, false otherwise.
      */
-    public boolean isClose(Matrix4x4 b){
+    public boolean isClose(Matrix4x4 b) {
         float epsilon = 1e-4f;
-        for(int i = 0; i < 16; ++i){
-            if(this.matrix[i] - b.matrix[i] > epsilon){
+        for (int i = 0; i < 16; ++i) {
+            if (this.matrix[i] - b.matrix[i] > epsilon) {
                 return false;
             }
         }

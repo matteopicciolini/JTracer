@@ -1,6 +1,6 @@
 package org.mirrors;
 
-public abstract class Camera{
+public abstract class Camera {
     float aspectRatio;
     Transformation transformation;
 

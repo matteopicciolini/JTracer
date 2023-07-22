@@ -1,8 +1,7 @@
 package org.mirrors;
-import static org.mirrors.Transformation.translation;
 
 /**
- A class representing a ray in 3D space.
+ * A class representing a ray in 3D space.
  */
 public class Ray {
     Point origin = new Point();
@@ -12,15 +11,17 @@ public class Ray {
     int depth = 0;
 
     /**
-     Default constructor for Ray class.
+     * Default constructor for Ray class.
      */
-    public Ray() {}
+    public Ray() {
+    }
 
     /**
-     Constructor for Ray class.
-     @param origin the origin point of the ray.
-     @param dir the direction vector of the ray.
-     @param depth the depth of the ray for tracing rays recursively.
+     * Constructor for Ray class.
+     *
+     * @param origin the origin point of the ray.
+     * @param dir    the direction vector of the ray.
+     * @param depth  the depth of the ray for tracing rays recursively.
      */
     public Ray(Point origin, Vec dir, int depth) {
         this.origin = origin;
@@ -37,9 +38,10 @@ public class Ray {
     }
 
     /**
-     Constructor for Ray class.
-     @param origin the origin point of the ray.
-     @param dir the direction vector of the ray.
+     * Constructor for Ray class.
+     *
+     * @param origin the origin point of the ray.
+     * @param dir    the direction vector of the ray.
      */
     public Ray(Point origin, Vec dir) {
         this.origin = origin;
@@ -47,18 +49,20 @@ public class Ray {
     }
 
     /**
-     Calculate the point on the ray at distance t from the origin.
-     @param t the distance from the origin point of the ray.
-     @return the point on the ray at distance t from the origin.
+     * Calculate the point on the ray at distance t from the origin.
+     *
+     * @param t the distance from the origin point of the ray.
+     * @return the point on the ray at distance t from the origin.
      */
     public Point at(float t) {
         return this.origin.sum((Vec) this.dir.dot(t));
     }
 
     /**
-     Check if two rays are close to each other.
-     @param ray the ray to compare with this ray.
-     @return true if the two rays have close origin points and direction vectors.
+     * Check if two rays are close to each other.
+     *
+     * @param ray the ray to compare with this ray.
+     * @return true if the two rays have close origin points and direction vectors.
      */
     public boolean isClose(Ray ray) {
         boolean b1 = ray.origin.isClose(this.origin);
@@ -67,11 +71,12 @@ public class Ray {
     }
 
     /**
-     Transform the ray with a given transformation.
-     @param transformation the transformation to apply to the ray.
-     @return the transformed ray.
+     * Transform the ray with a given transformation.
+     *
+     * @param transformation the transformation to apply to the ray.
+     * @return the transformed ray.
      */
-    public Ray transform(Transformation transformation){
+    public Ray transform(Transformation transformation) {
         return new Ray((Point) transformation.times(this.origin), (Vec) transformation.times(this.dir), this.depth);
     }
 }

@@ -1,8 +1,11 @@
 package org.mirrors;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mirrors.Global.*;
+import static org.mirrors.Global.InvVecY;
+import static org.mirrors.Global.InvVecZ;
+
 public class TriangleTest {
     @Test
     void rayIntersection() throws InvalidMatrixException {
@@ -25,27 +28,29 @@ public class TriangleTest {
 
         assertNull(intersection2);
     }
+
     @Test
-    void calculateTriangleArea(){
+    void calculateTriangleArea() {
         Point v0 = new Point(0, 0, 3);
         Point v1 = new Point(2, 0, 3);
         Point v2 = new Point(1, 2, 3);
-        Triangle tri=new Triangle(v0, v1, v2);
+        Triangle tri = new Triangle(v0, v1, v2);
         System.out.println(tri.calculateTriangleArea(v0, v1, v2));
         assertEquals(tri.calculateTriangleArea(v0, v1, v2), 2f);
     }
+
     @Test
     void calculateSurfacePoint() throws InvalidMatrixException {
         Point v0 = new Point(0, 0, 3);
         Point v1 = new Point(3, 0, 3);
         Point v2 = new Point(0, 3, 3);
-        Triangle tri=new Triangle(v0, v1, v2);
+        Triangle tri = new Triangle(v0, v1, v2);
 
         assertTrue(tri.calculateSurfacePoint(v0).isClose(new Vec2d(0, 0)));
         assertTrue(tri.calculateSurfacePoint(v2).isClose(new Vec2d(0, 1)));
         assertTrue(tri.calculateSurfacePoint(v1).isClose(new Vec2d(1, 0)));
 
-        Ray ray=new Ray(new Point(1, 1, 4), InvVecZ);
+        Ray ray = new Ray(new Point(1, 1, 4), InvVecZ);
         assertTrue(tri.calculateSurfacePoint(tri.rayIntersection(ray).worldPoint).isClose(new Vec2d(.33333F, 0.33333F)));
     }
 

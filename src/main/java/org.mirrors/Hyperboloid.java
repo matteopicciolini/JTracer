@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 /**
  * Represents a hyperboloid shape in 3D space.
  */
@@ -94,8 +95,8 @@ public class Hyperboloid extends Shape {
     /**
      * Calculates the surface normal at the given point.
      *
-     * @param p       the point in object space
-     * @param rayDir  the direction of the ray
+     * @param p      the point in object space
+     * @param rayDir the direction of the ray
      * @return the surface normal at the point
      */
     private Normal getNormal(Point p, Vec rayDir) {

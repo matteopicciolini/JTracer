@@ -3,7 +3,6 @@ package org.mirrors;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PermutationsTest {
     @Test
@@ -16,7 +15,7 @@ public class PermutationsTest {
         vertices.add(new Point(3, 2, 0.5f));
 
         ArrayList<Triangle> tris = new ArrayList<>();
-        int c=0;
+        int c = 0;
         for (int i = 0; i < vertices.size() - 2; i++) {
             for (int j = i + 1; j < vertices.size() - 1; j++) {
                 for (int k = j + 1; k < vertices.size(); k++) {

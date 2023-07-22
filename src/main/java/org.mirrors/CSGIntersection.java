@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Represents an intersection operation between two shapes in Constructive Solid Geometry (CSG).
  */
-public class CSGIntersection extends CSG{
+public class CSGIntersection extends CSG {
 
     /**
      * Constructs a CSG intersection operation with the specified transformation, shape1, and shape2.

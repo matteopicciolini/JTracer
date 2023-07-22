@@ -1,8 +1,9 @@
 package org.mirrors;
+
 /**
  * Represents a pigment that uses an HDRImage for color.
  */
-public class ImagePigment extends Pigment{
+public class ImagePigment extends Pigment {
     HDRImage image;
 
     /**

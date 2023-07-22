@@ -7,7 +7,7 @@ import static org.mirrors.Global.White;
 /**
  * On-Off renderer class.
  */
-public class OnOffRenderer extends Renderer{
+public class OnOffRenderer extends Renderer {
     Color color;
 
     /**

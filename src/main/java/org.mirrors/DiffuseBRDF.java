@@ -23,7 +23,7 @@ public class DiffuseBRDF extends BRDF {
      * @param pigment     the pigment for the BRDF
      * @param reflectance the reflectance value for the BRDF
      */
-    public DiffuseBRDF(Pigment pigment, float reflectance){
+    public DiffuseBRDF(Pigment pigment, float reflectance) {
         super(pigment);
         this.reflectance = reflectance;
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.sqrt;
+
 /**
  * Represents a cylinder shape in the scene.
  */
@@ -129,7 +130,7 @@ public class Cylinder extends Shape {
         float tMax = (-b + sqrtDelta) / (2.0f * a);
         float firstHitT;
 
-        if (tMin < invRay.tMax&& tMin > invRay.tMin && invRay.at(tMin).z > 0.0f && invRay.at(tMin).z < 1.0f) {
+        if (tMin < invRay.tMax && tMin > invRay.tMin && invRay.at(tMin).z > 0.0f && invRay.at(tMin).z < 1.0f) {
             firstHitT = tMin;
         } else if (tMax < invRay.tMax && tMax > invRay.tMin && invRay.at(tMax).z > 0.0f && invRay.at(tMax).z < 1.0f) {
             firstHitT = tMax;
@@ -150,7 +151,7 @@ public class Cylinder extends Shape {
         return new HitRecord(
                 (Point) this.transformation.times(hitPoint),
                 (Normal) this.transformation.times(normal),
-                new Vec2d(u ,v),
+                new Vec2d(u, v),
                 firstHitT,
                 ray,
                 this

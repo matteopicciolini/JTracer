@@ -5,14 +5,14 @@ import static org.mirrors.Global.Black;
 /**
  * Abstract class representing a renderer that converts rays to colors.
  */
-public abstract class Renderer implements RayToColor{
+public abstract class Renderer implements RayToColor {
     World world;
     Color backgroundColor;
 
     /**
      * Constructor for the Renderer class.
      *
-     * @param world             the world to render
+     * @param world the world to render
      */
     public Renderer(World world) {
         this.world = world;
@@ -22,8 +22,8 @@ public abstract class Renderer implements RayToColor{
     /**
      * Constructor for the Renderer class.
      *
-     * @param world             the world to render
-     * @param backgroundColor   the background color
+     * @param world           the world to render
+     * @param backgroundColor the background color
      */
     public Renderer(World world, Color backgroundColor) {
         this.world = world;

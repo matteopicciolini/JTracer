@@ -1,5 +1,7 @@
 package org.mirrors;
+
 import java.lang.reflect.InvocationTargetException;
+
 import static java.lang.Math.sqrt;
 
 /**
@@ -29,6 +31,28 @@ public abstract class OrientedObject extends Geometry {
     }
 
     /**
+     * Returns the cross product of two OrientedObjects as a new instance of the specified class type.
+     *
+     * @param a          The first OrientedObject.
+     * @param b          The second OrientedObject.
+     * @param returnType The class type of the returned instance.
+     * @param <T>        The type of the returned instance.
+     * @return The cross product of the two OrientedObjects as a new instance of the specified class type.
+     */
+    protected static <T extends OrientedObject> T cross(OrientedObject a, OrientedObject b, Class<T> returnType) {
+        try {
+            T result = returnType.getDeclaredConstructor().newInstance();
+            result.x = a.y * b.z - a.z * b.y;
+            result.y = a.z * b.x - a.x * b.z;
+            result.z = a.x * b.y - a.y * b.x;
+            return result;
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Returns a new instance of the current OrientedObject with each coordinate negated.
      *
      * @return A new instance of the current OrientedObject with each coordinate negated.
@@ -40,7 +64,7 @@ public abstract class OrientedObject extends Geometry {
     /**
      * Returns the dot product of the current OrientedObject and the input OrientedObject.
      *
-     * @param other    The OrientedObject to calculate the dot product with.
+     * @param other The OrientedObject to calculate the dot product with.
      * @return The dot product of the current OrientedObject and the input OrientedObject.
      */
     public float dot(OrientedObject other) {
@@ -55,12 +79,12 @@ public abstract class OrientedObject extends Geometry {
      *
      * @return The Euclidean norm (magnitude) of the current OrientedObject.
      */
-    public float norm(){
+    public float norm() {
         return (float) sqrt(this.squaredNorm());
     }
 
-    public float module(){
-        return (float) sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+    public float module() {
+        return (float) sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
     /**
@@ -68,38 +92,17 @@ public abstract class OrientedObject extends Geometry {
      *
      * @return The squared Euclidean norm of the current OrientedObject.
      */
-    public float squaredNorm(){
+    public float squaredNorm() {
         return this.dot(this);
     }
 
     /**
      * Normalizes the current OrientedObject to have unit length.
      */
-    public void normalize(){
+    public void normalize() {
         float norm = this.norm();
         this.x /= norm;
         this.y /= norm;
         this.z /= norm;
-    }
-
-    /**
-     * Returns the cross product of two OrientedObjects as a new instance of the specified class type.
-     *
-     * @param a The first OrientedObject.
-     * @param b The second OrientedObject.
-     * @param returnType The class type of the returned instance.
-     * @param <T> The type of the returned instance.
-     * @return The cross product of the two OrientedObjects as a new instance of the specified class type.
-     */
-    protected static <T extends OrientedObject> T cross(OrientedObject a, OrientedObject b, Class<T> returnType) {
-        try {
-            T result = returnType.getDeclaredConstructor().newInstance();
-            result.x = a.y * b.z - a.z * b.y;
-            result.y = a.z * b.x - a.x * b.z;
-            result.z = a.x * b.y - a.y * b.x;
-            return result;
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

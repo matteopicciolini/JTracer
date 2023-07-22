@@ -3,7 +3,7 @@ package org.mirrors;
 /**
  * Abstract base class for Constructive Solid Geometry (CSG) operations.
  */
-public abstract class CSG extends Shape{
+public abstract class CSG extends Shape {
     public Shape shape1;
     public Shape shape2;
 
@@ -14,7 +14,7 @@ public abstract class CSG extends Shape{
      * @param shape1         the first shape in the CSG operation
      * @param shape2         the second shape in the CSG operation
      */
-    public CSG(Transformation transformation, Shape shape1, Shape shape2){
+    public CSG(Transformation transformation, Shape shape1, Shape shape2) {
         super(transformation);
         this.shape1 = shape1;
         this.shape2 = shape2;
@@ -26,7 +26,7 @@ public abstract class CSG extends Shape{
      * @param shape1 the first shape in the CSG operation
      * @param shape2 the second shape in the CSG operation
      */
-    public CSG(Shape shape1, Shape shape2){
+    public CSG(Shape shape1, Shape shape2) {
         super();
         this.shape1 = shape1;
         this.shape2 = shape2;

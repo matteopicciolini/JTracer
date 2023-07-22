@@ -15,7 +15,7 @@ public class Color {
     /**
      * Constructs a new Color object with all components set to 0.0.
      */
-    public Color(){
+    public Color() {
         this.r = 0.0f;
         this.g = 0.0f;
         this.b = 0.0f;
@@ -29,7 +29,7 @@ public class Color {
      * @param b The blue component of the color.
      * @throws InvalidParameterException if any of the components are negative.
      */
-    public Color(float r, float g, float b){
+    public Color(float r, float g, float b) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -41,7 +41,7 @@ public class Color {
      * @param color1 The color to add to this color.
      * @return The sum of this color and the specified color.
      */
-    public Color sum(Color color1){
+    public Color sum(Color color1) {
         Color color = new Color();
         color.r = this.r + color1.r;
         color.g = this.g + color1.g;
@@ -49,7 +49,7 @@ public class Color {
         return color;
     }
 
-    public Color sum(float lambda){
+    public Color sum(float lambda) {
         Color color = new Color();
         color.r = this.r + lambda;
         color.g = this.g + lambda;
@@ -63,7 +63,7 @@ public class Color {
      * @param scalar The scalar to multiply this color by.
      * @return The product of this color and the specified scalar.
      */
-    public Color prod(float scalar){
+    public Color prod(float scalar) {
         Color color = new Color();
         color.r = this.r * scalar;
         color.g = this.g * scalar;
@@ -91,7 +91,7 @@ public class Color {
      * @param color1 The color to calculate the difference with.
      * @return The absolute difference between this color and the specified color.
      */
-    public Color difference(Color color1){
+    public Color difference(Color color1) {
         Color color = new Color();
         color.r = Math.abs(this.r - color1.r);
         color.g = Math.abs(this.g - color1.g);
@@ -105,7 +105,7 @@ public class Color {
      * @param color1 The color to compare to this color.
      * @return true if this color is close to the specified color, false otherwise.
      */
-    public boolean isClose(Color color1){
+    public boolean isClose(Color color1) {
         float epsilon = 1e-5F;
         Color color_diff = this.difference(color1);
         return (color_diff.r < epsilon &&
@@ -128,7 +128,7 @@ public class Color {
      *
      * @return The luminosity of this color.
      */
-    public float luminosity(){
-        return ((Math.max(Math.max(this.r, this.g ), this.b)) + Math.min(Math.min(this.r, this.g), this.b))/2.0f;
+    public float luminosity() {
+        return ((Math.max(Math.max(this.r, this.g), this.b)) + Math.min(Math.min(this.r, this.g), this.b)) / 2.0f;
     }
 }

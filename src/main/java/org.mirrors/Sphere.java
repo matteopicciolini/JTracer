@@ -1,6 +1,5 @@
 package org.mirrors;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,7 @@ import static java.lang.Math.*;
  * The Sphere class represents a sphere shape in the scene.
  * It inherits from the Shape class and overrides the rayIntersection method.
  */
-public class Sphere extends Shape{
+public class Sphere extends Shape {
 
     /**
      * Initializes a new Sphere object with an identity transformation matrix.
@@ -19,12 +18,15 @@ public class Sphere extends Shape{
     public Sphere() {
         super();
     }
+
     public Sphere(Transformation transformation) {
         super(transformation);
     }
+
     public Sphere(Material material) {
         super(material);
     }
+
     public Sphere(Transformation transformation, Material material) {
         super(transformation, material);
     }
@@ -120,11 +122,12 @@ public class Sphere extends Shape{
 
     /**
      * Computes the normal of the sphere at the given point and with the given ray direction.
-     * @param point The point on the sphere to compute the normal for.
+     *
+     * @param point  The point on the sphere to compute the normal for.
      * @param rayDir The direction of the incoming ray.
      * @return A Normal object representing the normal of the sphere at the given point.
      */
-    private Normal sphereNormal(Point point, Vec rayDir){
+    private Normal sphereNormal(Point point, Vec rayDir) {
         return point.toVec().dot(rayDir) < 0.f ?
                 new Normal(point.x, point.y, point.z) :
                 new Normal(-point.x, -point.y, -point.z);
@@ -132,10 +135,11 @@ public class Sphere extends Shape{
 
     /**
      * Maps a point on the sphere to a (u,v) coordinate pair.
+     *
      * @param point The point on the sphere to map to (u,v) coordinates.
      * @return A Vec2d object representing the (u,v) coordinates of the given point on the sphere.
      */
-    private Vec2d spherePointToUV(Point point){
+    private Vec2d spherePointToUV(Point point) {
         float u = (float) (atan2(point.y, point.x) / (2.f * PI));
         return new Vec2d(
                 u >= 0.f ? u : u + 1.f,

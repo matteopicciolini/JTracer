@@ -30,7 +30,8 @@ public class Parameters {
     public int russianRouletteLimit;
     public int initState;
     public int initSeq;
-    public Parameters(float factor, float gamma, String inputFileName, String outputFileName){
+
+    public Parameters(float factor, float gamma, String inputFileName, String outputFileName) {
         this.factor = factor;
         this.gamma = gamma;
         this.inputFileName = inputFileName;
@@ -42,7 +43,7 @@ public class Parameters {
                       boolean parallelAntialiasing, int nThreads, boolean convertInPNG,
                       boolean deletePFM, int samplesPerSide, int progBarFlushFrequence, float gamma,
                       float factor, Float luminosity, int numOfRays, int maxDepth,
-                      int russianRouletteLimit, int state, int inc){
+                      int russianRouletteLimit, int state, int inc) {
         this.inputFileNameTXT = inputFileNameTXT;
         this.width = width;
         this.height = height;
@@ -71,7 +72,7 @@ public class Parameters {
                       boolean parallelAntialiasing, int nThreads, boolean convertInPNG,
                       boolean deletePFM, int progBarFlushFrequence, float gamma,
                       float factor, Float luminosity, int numOfRays, int maxDepth,
-                      int russianRouletteLimit){
+                      int russianRouletteLimit) {
         this.orthogonal = orthogonal;
         this.width = width;
         this.height = height;

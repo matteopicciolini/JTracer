@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.mirrors.Global.VecZ;
-import static org.mirrors.Global.VecX;
-import static org.mirrors.Global.VecY;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CylinderTest {
@@ -61,6 +58,7 @@ class CylinderTest {
         assertFalse(cylinder.isInternal(new Point(-0.8f, 0.4f, 0.5f)));
         assertTrue(cylinder.isInternal(new Point(0.7f, 0.0f, 12.5f)));
     }
+
     @Test
     public void rayIntersectionTest2() throws InvalidMatrixException {
         Cylinder cylinder = new Cylinder(Transformation.rotationY(90.0f));

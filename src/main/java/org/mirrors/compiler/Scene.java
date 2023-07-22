@@ -1,6 +1,13 @@
 package org.mirrors.compiler;
-import org.mirrors.*;
-import java.util.*;
+
+import org.mirrors.Camera;
+import org.mirrors.Material;
+import org.mirrors.Shape;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Scene {
@@ -8,8 +15,11 @@ public class Scene {
     public List<Shape> objects = new ArrayList<>();
     public Camera camera;
     public Map<String, Float> floatVariables = new HashMap<>();
-    public Scene(Camera camera){
+
+    public Scene(Camera camera) {
         this.camera = camera;
     }
-    public Scene(){}
+
+    public Scene() {
+    }
 }

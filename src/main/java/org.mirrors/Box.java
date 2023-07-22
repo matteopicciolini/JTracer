@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mirrors.Global.*;
+
 public class Box extends Shape {
     public Point min;
     public Point max;
@@ -11,10 +12,10 @@ public class Box extends Shape {
     /**
      * Constructs a `Box` object with the given minimum and maximum points, transformation, and material.
      *
-     * @param min           the minimum point defining the box
-     * @param max           the maximum point defining the box
+     * @param min            the minimum point defining the box
+     * @param max            the maximum point defining the box
      * @param transformation the transformation applied to the box
-     * @param material      the material of the box
+     * @param material       the material of the box
      */
     public Box(Point min, Point max, Transformation transformation, Material material) {
         super(transformation, material);
@@ -22,12 +23,14 @@ public class Box extends Shape {
         this.max = max;
         checkMinMax();
     }
+
     public Box(Point min, Point max, Transformation transformation) {
         super(transformation);
         this.min = min;
         this.max = max;
         checkMinMax();
     }
+
     public Box(Point min, Point max) {
 
         this.min = min;
@@ -188,6 +191,7 @@ public class Box extends Shape {
             return resultList;
         }
     }
+
     /**
      * Checks if the given point is internal to the box in the world coordinate system.
      *

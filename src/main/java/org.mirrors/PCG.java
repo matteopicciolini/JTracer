@@ -1,9 +1,8 @@
 package org.mirrors;
 
 /**
-
- This class represents a PCG (Permuted Congruential Generator) used for generating pseudo-random numbers.
- It implements a 64-bit PCG algorithm.
+ * This class represents a PCG (Permuted Congruential Generator) used for generating pseudo-random numbers.
+ * It implements a 64-bit PCG algorithm.
  */
 public class PCG {
     public long state;
@@ -14,7 +13,7 @@ public class PCG {
      * Constructs a PCG object with default initial state and sequence values.
      * The generator is seeded with two initial random numbers.
      */
-    public PCG(){
+    public PCG() {
         this.state = 0;
         this.inc = (54 << 1) | 1;
         this.random();
@@ -36,6 +35,7 @@ public class PCG {
         this.state += initState;
         this.random();
     }
+
     /**
      * Generates the next random number in the sequence.
      *

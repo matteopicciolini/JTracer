@@ -3,7 +3,7 @@ package org.mirrors;
 /**
  * Class representing a uniform pigment.
  */
-public class UniformPigment extends Pigment{
+public class UniformPigment extends Pigment {
 
     public Color color;
 
@@ -11,9 +11,9 @@ public class UniformPigment extends Pigment{
      * Constructor for the UniformPigment class.
      * Initializes the uniform pigment with the given color.
      *
-     * @param color     the color of the uniform pigment
+     * @param color the color of the uniform pigment
      */
-    public UniformPigment(Color color){
+    public UniformPigment(Color color) {
         this.color = color;
     }
 
@@ -21,7 +21,7 @@ public class UniformPigment extends Pigment{
      * Default constructor for the UniformPigment class.
      * Initializes the uniform pigment with a black color.
      */
-    public UniformPigment(){
+    public UniformPigment() {
         this.color = new Color();
     }
 

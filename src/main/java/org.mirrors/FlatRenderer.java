@@ -7,7 +7,7 @@ import static org.mirrors.Global.Black;
 /**
  * Represents a flat renderer that computes colors for rays in a world.
  */
-public class FlatRenderer extends Renderer{
+public class FlatRenderer extends Renderer {
 
     /**
      * Constructs a flat renderer with the specified world and background color.
@@ -15,7 +15,7 @@ public class FlatRenderer extends Renderer{
      * @param world           the world to render
      * @param backgroundColor the background color
      */
-    public FlatRenderer(World world, Color backgroundColor){
+    public FlatRenderer(World world, Color backgroundColor) {
         super(world, backgroundColor);
     }
 
@@ -24,7 +24,7 @@ public class FlatRenderer extends Renderer{
      *
      * @param world the world to render
      */
-    public FlatRenderer(World world){
+    public FlatRenderer(World world) {
         super(world, Black);
     }
 
@@ -34,7 +34,7 @@ public class FlatRenderer extends Renderer{
     @Override
     public Color call(Ray ray) throws InvalidMatrixException {
         HitRecord hit = this.world.rayIntersection(ray);
-        if(Objects.isNull(hit)){
+        if (Objects.isNull(hit)) {
             return this.backgroundColor;
         }
         Material material = hit.shape.material;

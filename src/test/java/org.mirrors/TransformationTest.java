@@ -2,7 +2,8 @@ package org.mirrors;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TransformationTest {
 
@@ -19,7 +20,7 @@ class TransformationTest {
                 0.5f, 0.5f, -1.0f, 1.0f,
                 -1.375f, 0.875f, 0.0f, -0.5f,
         });
-        Transformation t1  = new Transformation(matrix, invMatrix);
+        Transformation t1 = new Transformation(matrix, invMatrix);
 
         Transformation t2 = t1.inverse();
         assertTrue(t2.isConsistent());
@@ -62,16 +63,16 @@ class TransformationTest {
     void testTimes() throws InvalidMatrixException {
         Transformation t = new Transformation(
                 new Matrix4x4(new float[]{
-                    1.0f, 2.0f, 3.0f, 4.0f,
-                    5.0f, 6.0f, 7.0f, 8.0f,
-                    9.0f, 9.0f, 8.0f, 7.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f
+                        1.0f, 2.0f, 3.0f, 4.0f,
+                        5.0f, 6.0f, 7.0f, 8.0f,
+                        9.0f, 9.0f, 8.0f, 7.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f
                 }),
                 new Matrix4x4((new float[]{
-                    -3.75f, 2.75f, -1f, 0f,
-                    5.75f, -4.75f, 2.0f, 1.0f,
-                    -2.25f, 2.25f, -1.0f, -2.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f
+                        -3.75f, 2.75f, -1f, 0f,
+                        5.75f, -4.75f, 2.0f, 1.0f,
+                        -2.25f, 2.25f, -1.0f, -2.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f
                 }))
         );
 

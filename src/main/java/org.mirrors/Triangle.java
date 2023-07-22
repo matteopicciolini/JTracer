@@ -3,7 +3,13 @@ package org.mirrors;
 
 import java.util.List;
 
-public class Triangle extends Shape{
+public class Triangle extends Shape {
+    public Point v0;  // Vertice 0
+    public Point v1;  // Vertice 1
+    public Point v2;  // Vertice 2
+    public Vec e1;  // lato 1
+    public Vec e2;  // lato 2
+    public Normal norm;
     public Triangle(Transformation transformation) {
         super(transformation);
     }
@@ -15,16 +21,9 @@ public class Triangle extends Shape{
         this.v0 = v0;
         this.v1 = v1;
         this.v2 = v2;
-        norm=calculateNormal();
+        norm = calculateNormal();
 
     }
-
-    public Point v0;  // Vertice 0
-    public Point v1;  // Vertice 1
-    public Point v2;  // Vertice 2
-    public Vec e1;  // lato 1
-    public Vec e2;  // lato 2
-    public  Normal norm;
 
     public Triangle(Point v0, Point v1, Point v2, Material material) {
         super(material);
@@ -33,6 +32,7 @@ public class Triangle extends Shape{
         this.v2 = v2;
         norm = calculateNormal();
     }
+
     public Triangle(Point v0, Point v1, Point v2) {
         this.v0 = v0;
         this.v1 = v1;
@@ -41,13 +41,13 @@ public class Triangle extends Shape{
     }
 
 
-
     public HitRecord rayIntersection(Ray ray) {
         // Applica la trasformazione inversa al raggio
         Ray iray = this.transformation.inverse().times(ray);
 
         if (isNormalOrientationCorrect(iray)) {
-            norm = (Normal) norm.neg();}
+            norm = (Normal) norm.neg();
+        }
 
         // Prodotto vettoriale tra direzione del raggio e il secondo lato del triangolo
         Vec pvec = iray.dir.cross(e2);
@@ -56,7 +56,9 @@ public class Triangle extends Shape{
         float det = e1.dot(pvec);
 
         // Condizione di parallelismo
-        if (Math.abs(det) < 1e-5) {return null;}
+        if (Math.abs(det) < 1e-5) {
+            return null;
+        }
 
         float invDet = 1.0f / det;
 
@@ -67,7 +69,9 @@ public class Triangle extends Shape{
         float u = tvec.dot(pvec) * invDet;
 
         // Controlla se il parametro u è fuori dai limiti del triangolo
-        if (u < 0 || u > 1) {return null;}
+        if (u < 0 || u > 1) {
+            return null;
+        }
 
         // Calcola il prodotto vettoriale tra il vettore tvec e il primo lato del triangolo
         Vec qvec = tvec.cross(e1);
@@ -76,13 +80,17 @@ public class Triangle extends Shape{
         float v = iray.dir.dot(qvec) * invDet;
 
         // Controlla se il parametro v è fuori dai limiti del triangolo
-        if (v < 0 || u + v > 1) {return null;}
+        if (v < 0 || u + v > 1) {
+            return null;
+        }
 
         // Calcola il parametro t dell'intersezione del raggio con il triangolo
         float t = e2.dot(qvec) * invDet;
 
         // Controlla se l'intersezione è dietro il punto di origine del raggio o oltre il limite massimo
-        if (t < iray.tMin || t > iray.tMax) {return null;}
+        if (t < iray.tMin || t > iray.tMax) {
+            return null;
+        }
 
         // Calcola il punto di intersezione nel sistema di coordinate del mondo
         Point point = iray.at(t);
@@ -96,6 +104,7 @@ public class Triangle extends Shape{
         Vec2d surfacePoint = calculateSurfacePoint(point);
         return new HitRecord(point, norm, surfacePoint, t, ray, this);
     }
+
     public Normal calculateNormal() {
         // Calcola il vettore normale al piano del triangolo utilizzando il prodotto vettoriale tra due lati
         e1 = v1.minus(v0);
@@ -104,6 +113,7 @@ public class Triangle extends Shape{
         norm.normalize();
         return norm;
     }
+
     private boolean isNormalOrientationCorrect(Ray iray) {
         return norm.dot(iray.dir) > 0;
     }
@@ -112,10 +122,10 @@ public class Triangle extends Shape{
         // Calcola l'area del triangolo utilizzando il prodotto vettoriale tra due lati
         Vec side1 = p1.minus(p0);
         Vec side2 = p2.minus(p0);
-        return side1.cross(side2).module()*0.5f;
+        return side1.cross(side2).module() * 0.5f;
     }
 
-    public Vec2d calculateSurfacePoint(Point hit){
+    public Vec2d calculateSurfacePoint(Point hit) {
         // Calcola le coordinate di superficie (uv) dei vertici.
         Vec2d uv0 = new Vec2d(0.0f, 0.0f);
         Vec2d uv1 = new Vec2d(1.0f, 0.0f);
@@ -139,9 +149,13 @@ public class Triangle extends Shape{
         return new Vec2d(u, v);
     }
 
-    public List<HitRecord> rayIntersectionList(Ray ray) {return null;}
+    public List<HitRecord> rayIntersectionList(Ray ray) {
+        return null;
+    }
 
-    public boolean isInternal(Point point){return false;}
+    public boolean isInternal(Point point) {
+        return false;
+    }
 
 
 }

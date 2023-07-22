@@ -7,15 +7,15 @@ public class ProgressBar {
     public static final int BAR_LENGTH = 30;
     public int totalProgress;
     public int currentProgress;
-    private StringBuilder progressBar;
     public long startTime;
     public int flushFrequence;
+    private StringBuilder progressBar;
 
     /**
      * Constructor for the ProgressBar class.
      *
-     * @param totalProgress   the total progress value
-     * @param flushFrequency  the frequency at which to update and flush the progress bar
+     * @param totalProgress  the total progress value
+     * @param flushFrequency the frequency at which to update and flush the progress bar
      */
     public ProgressBar(int totalProgress, int flushFrequency) {
         this.totalProgress = totalProgress;

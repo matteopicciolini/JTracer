@@ -1,4 +1,5 @@
 package org.mirrors;
+
 import org.mirrors.compiler.GrammarErrorException;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -13,35 +14,34 @@ import java.util.Objects;
  * A class that represents a collection of command-line commands for a .NET Core console app with argument parsing.
  */
 @Command(name = "", description = ".NET Core console app with argument parsing.", mixinStandardHelpOptions = true)
-public class Commands implements Runnable{
-    public static Float valueOfLuminosity(Float luminosity, String algorithm){
-        if(!Objects.equals(algorithm, "pathTracer") && luminosity == null){
+public class Commands implements Runnable {
+    public static Float valueOfLuminosity(Float luminosity, String algorithm) {
+        if (!Objects.equals(algorithm, "pathTracer") && luminosity == null) {
             return 0.5f;
-        }
-        else return luminosity;
+        } else return luminosity;
     }
 
     /**
      * Runs the "demo" command for JTracer demo.
      *
-     * @param width              the width of the image
-     * @param height             the height of the image
-     * @param angleDeg           the angle of view
-     * @param outputFilename     the path of the output LDR file
-     * @param algorithm          the rendering algorithm
-     * @param orthogonal         whether to use an orthogonal camera
-     * @param antialiasing       whether to use antialiasing algorithm
-     * @param parallel           whether to parallelize the code
-     * @param nThreads           the number of threads to use for parallelization
-     * @param convertInPNG       whether to convert the PFM file to PNG
-     * @param deletePFM          whether to delete the PFM file
-     * @param progBarFlushFrequence  the frequency of flush for the progress bar
-     * @param gamma              the exponent for gamma-correction
-     * @param factor             the multiplicative factor
-     * @param luminosity         the luminosity of the image
-     * @param numOfRays          the number of rays per pixel
-     * @param maxDepth           the maximum recursion depth
-     * @param russianRouletteLimit   the Russian roulette limit
+     * @param width                 the width of the image
+     * @param height                the height of the image
+     * @param angleDeg              the angle of view
+     * @param outputFilename        the path of the output LDR file
+     * @param algorithm             the rendering algorithm
+     * @param orthogonal            whether to use an orthogonal camera
+     * @param antialiasing          whether to use antialiasing algorithm
+     * @param parallel              whether to parallelize the code
+     * @param nThreads              the number of threads to use for parallelization
+     * @param convertInPNG          whether to convert the PFM file to PNG
+     * @param deletePFM             whether to delete the PFM file
+     * @param progBarFlushFrequence the frequency of flush for the progress bar
+     * @param gamma                 the exponent for gamma-correction
+     * @param factor                the multiplicative factor
+     * @param luminosity            the luminosity of the image
+     * @param numOfRays             the number of rays per pixel
+     * @param maxDepth              the maximum recursion depth
+     * @param russianRouletteLimit  the Russian roulette limit
      * @throws InvalidOptionException if there is an invalid option combination
      */
     @Command(name = "demo", description = "JTracer demo.", mixinStandardHelpOptions = true)
@@ -68,7 +68,7 @@ public class Commands implements Runnable{
             @Option(names = {"--maxDepth"}, description = "int: Maximum recursion depth", defaultValue = "2") Integer maxDepth,
             @Option(names = {"--russianRouletteLimit"}, description = "int: Russian roulette limit. Default: ${DEFAULT-VALUE}.", defaultValue = "3") Integer russianRouletteLimit
     ) throws InvalidOptionException {
-        if(!convertInPNG && deletePFM){
+        if (!convertInPNG && deletePFM) {
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
         }
         luminosity = valueOfLuminosity(luminosity, algorithm);
@@ -89,11 +89,11 @@ public class Commands implements Runnable{
     /**
      * Runs the "convert" command to convert a PFM file to PNG.
      *
-     * @param inputFilename     the path of the input file
-     * @param outputFilename    the path of the output LDR file
-     * @param gamma             the exponent for gamma-correction
-     * @param factor            the multiplicative factor
-     * @param luminosity        the luminosity of the image
+     * @param inputFilename  the path of the input file
+     * @param outputFilename the path of the output LDR file
+     * @param gamma          the exponent for gamma-correction
+     * @param factor         the multiplicative factor
+     * @param luminosity     the luminosity of the image
      */
     @Command(name = "convert", description = "Convert pfm file to png.", mixinStandardHelpOptions = true)
     public void convert(
@@ -102,15 +102,15 @@ public class Commands implements Runnable{
             @Option(names = {"-g", "--gamma"}, description = "float: Exponent for gamma-correction. \t Default: 2.2.") Float gamma,
             @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. \t Default: 0.18.") Float factor,
             @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: If it is not specified, it is calculated; otherwise, it is set to 0.5.") Float luminosity
-    )
-    {
+    ) {
         if (outputFilename == null) outputFilename = inputFilename.substring(0, inputFilename.length() - 3) + "png";
         if (gamma == null) gamma = 2.2f;
         if (factor == null) factor = 0.18f;
 
         try {
-            if (luminosity == null){ Tracer.pfm2image(factor, gamma, inputFilename, outputFilename);}
-            else Tracer.pfm2image(factor, gamma, inputFilename, outputFilename, luminosity);
+            if (luminosity == null) {
+                Tracer.pfm2image(factor, gamma, inputFilename, outputFilename);
+            } else Tracer.pfm2image(factor, gamma, inputFilename, outputFilename, luminosity);
         } catch (Exception | InvalidPfmFileFormatException e) {
             throw new RuntimeException(e);
         }
@@ -119,27 +119,27 @@ public class Commands implements Runnable{
     /**
      * Runs the "render" command for JTracer render.
      *
-     * @param inputFileNameTXT   the path of the input TXT file
-     * @param width              the width of the image
-     * @param height             the height of the image
-     * @param angleDeg           the angle of view
-     * @param outputFileName     the path of the output LDR file
-     * @param algorithm          the rendering algorithm
-     * @param antialiasing       whether to use antialiasing algorithm
-     * @param parallel           whether to parallelize the code
-     * @param nThreads           the number of threads to use for parallelization
-     * @param convertInPNG       whether to convert the PFM file to PNG
-     * @param deletePFM          whether to delete the PFM file
-     * @param samplesPerSide     the number of samples per side for antialiasing algorithm
-     * @param progBarFlushFrequence  the frequency of flush for the progress bar
-     * @param gamma              the exponent for gamma-correction
-     * @param factor             the multiplicative factor
-     * @param luminosity         the luminosity of the image
-     * @param numOfRays          the number of rays per pixel
-     * @param maxDepth           the maximum recursion depth
-     * @param russianRouletteLimit   the Russian roulette limit
-     * @param initState          the PCG starter parameter
-     * @param initSeq            the PCG starter parameter
+     * @param inputFileNameTXT      the path of the input TXT file
+     * @param width                 the width of the image
+     * @param height                the height of the image
+     * @param angleDeg              the angle of view
+     * @param outputFileName        the path of the output LDR file
+     * @param algorithm             the rendering algorithm
+     * @param antialiasing          whether to use antialiasing algorithm
+     * @param parallel              whether to parallelize the code
+     * @param nThreads              the number of threads to use for parallelization
+     * @param convertInPNG          whether to convert the PFM file to PNG
+     * @param deletePFM             whether to delete the PFM file
+     * @param samplesPerSide        the number of samples per side for antialiasing algorithm
+     * @param progBarFlushFrequence the frequency of flush for the progress bar
+     * @param gamma                 the exponent for gamma-correction
+     * @param factor                the multiplicative factor
+     * @param luminosity            the luminosity of the image
+     * @param numOfRays             the number of rays per pixel
+     * @param maxDepth              the maximum recursion depth
+     * @param russianRouletteLimit  the Russian roulette limit
+     * @param initState             the PCG starter parameter
+     * @param initSeq               the PCG starter parameter
      * @throws InvalidOptionException if there is an invalid option combination
      */
     @Command(name = "render", description = "JTracer render.", mixinStandardHelpOptions = true)
@@ -169,21 +169,21 @@ public class Commands implements Runnable{
             @Option(names = {"--russianRouletteLimit"}, description = "int: Russian roulette limit. Default: ${DEFAULT-VALUE}.", defaultValue = "3") Integer russianRouletteLimit,
             @Option(names = {"--initState"}, description = "int: PCG starter parameter. Default: ${DEFAULT-VALUE}.", defaultValue = "42") Integer initState,
             @Option(names = {"--initSeq"}, description = "int: PCG starter parameter. Default: ${DEFAULT-VALUE}.", defaultValue = "54") Integer initSeq
-    ) throws InvalidOptionException{
-        if(!convertInPNG && deletePFM){
+    ) throws InvalidOptionException {
+        if (!convertInPNG && deletePFM) {
             throw new InvalidOptionException("If the deletePFM parameter is true, the convertInPNG parameter cannot be false.");
         }
         luminosity = valueOfLuminosity(luminosity, algorithm);
 
 
         org.mirrors.Parameters parameters = new org.mirrors.Parameters(inputFileNameTXT, width, height, angleDeg,
-                outputFileName,  algorithm, antialiasing, parallel, nThreads, convertInPNG,
+                outputFileName, algorithm, antialiasing, parallel, nThreads, convertInPNG,
                 deletePFM, samplesPerSide, progBarFlushFrequence, gamma, factor, luminosity, numOfRays, maxDepth, russianRouletteLimit, initState, initSeq);
 
         try {
             Tracer.render(parameters);
             conversion(outputFileName, convertInPNG, deletePFM, gamma, factor, luminosity);
-        }catch (InvalidMatrixException | IOException | GrammarErrorException | InvalidPfmFileFormatException e) {
+        } catch (InvalidMatrixException | IOException | GrammarErrorException | InvalidPfmFileFormatException e) {
             throw new RuntimeException(e);
         }
     }
@@ -192,12 +192,12 @@ public class Commands implements Runnable{
      * Performs the conversion of a PFM file to PNG.
      *
      * @param outputFilename the path of the output LDR file
-     * @param convertInPNG whether to convert the PFM file to PNG
-     * @param deletePFM whether to delete the PFM file
-     * @param gamma the exponent for gamma-correction
-     * @param factor the multiplicative factor
-     * @param luminosity the luminosity of the image
-     * @throws IOException if an I/O error occurs
+     * @param convertInPNG   whether to convert the PFM file to PNG
+     * @param deletePFM      whether to delete the PFM file
+     * @param gamma          the exponent for gamma-correction
+     * @param factor         the multiplicative factor
+     * @param luminosity     the luminosity of the image
+     * @throws IOException                   if an I/O error occurs
      * @throws InvalidPfmFileFormatException if the PFM file format is invalid
      */
     private void conversion(
@@ -208,26 +208,27 @@ public class Commands implements Runnable{
             @Option(names = {"-f", "--factor"}, description = "float: Multiplicative factor. Default: ${DEFAULT-VALUE}.", defaultValue = "0.18") Float factor,
             @Option(names = {"-l", "--luminosity"}, description = "float: Luminosity of the image. \t Default: If it is not specified, it is calculated; otherwise, it is set to 0.5.") Float luminosity
     ) throws IOException, InvalidPfmFileFormatException {
-        if(convertInPNG){
+        if (convertInPNG) {
             String fileOutputPNG = outputFilename.substring(0, outputFilename.length() - 3) + "png";
-            if (luminosity == null){ Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);}
-            else Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG, luminosity);
-            if(deletePFM) Tracer.RemoveFile(outputFilename);
+            if (luminosity == null) {
+                Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG);
+            } else Tracer.pfm2image(factor, gamma, outputFilename, fileOutputPNG, luminosity);
+            if (deletePFM) Tracer.RemoveFile(outputFilename);
         }
     }
 
     /**
      * Performs the sum operation on PFM images.
      *
-     * @param firstImagePath the path of the first PFM file
-     * @param secondImagePath the path of the second PFM file
+     * @param firstImagePath   the path of the first PFM file
+     * @param secondImagePath  the path of the second PFM file
      * @param imageNamePattern the pattern of the PFM file names
-     * @param numOfImages the number of images to be summed (required)
-     * @param outputFileName the output file name for the summed PFM image (default: outputSum.pfm)
-     * @param factor the multiplicative factor for the resulting image (default: 0.18)
-     * @param gamma the exponent for gamma-correction (default: 2.2)
-     * @param luminosity the luminosity of the image (default: If it is not specified, it is calculated; otherwise, it is set to 0.5.)
-     * @throws Exception if an error occurs during the operation
+     * @param numOfImages      the number of images to be summed (required)
+     * @param outputFileName   the output file name for the summed PFM image (default: outputSum.pfm)
+     * @param factor           the multiplicative factor for the resulting image (default: 0.18)
+     * @param gamma            the exponent for gamma-correction (default: 2.2)
+     * @param luminosity       the luminosity of the image (default: If it is not specified, it is calculated; otherwise, it is set to 0.5.)
+     * @throws Exception                     if an error occurs during the operation
      * @throws InvalidPfmFileFormatException if the PFM file format is invalid
      */
     @Command(name = "sum", description = "JTracer sum.", mixinStandardHelpOptions = true)
@@ -247,12 +248,11 @@ public class Commands implements Runnable{
 
         String outputFileNamePNG = outputFileName.substring(0, outputFileName.length() - 3) + "png";
 
-        if(firstImagePath != null && secondImagePath != null) {
+        if (firstImagePath != null && secondImagePath != null) {
             HDRImage firstImage = PfmCreator.readPfmImage(new FileInputStream(firstImagePath));
             HDRImage secondImage = PfmCreator.readPfmImage(new FileInputStream(secondImagePath));
             Tracer.calculateAverage(firstImage, secondImage, outputFileName);
-        }
-        else if(imageNamePattern != null && numOfImages != null){
+        } else if (imageNamePattern != null && numOfImages != null) {
             int numDigits = (int) Math.log10(numOfImages) + 1;
 
             // Creazione del vettore per contenere le immagini
@@ -263,7 +263,7 @@ public class Commands implements Runnable{
                 String imageNumber = String.format("%0" + numDigits + "d", i);
 
                 // Creazione del nome dell'immagine combinando il pattern e il numero
-                String imageName = imageNamePattern + imageNumber +".pfm";
+                String imageName = imageNamePattern + imageNumber + ".pfm";
                 HDRImage imageHDR = PfmCreator.readPfmImage(new FileInputStream(imageName));
                 // Aggiunta del nome dell'immagine al vettore
                 imageArray[i - 1] = imageHDR;

@@ -1,9 +1,11 @@
 package org.mirrors;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mirrors.Global.Black;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mirrors.Global.Black;
 
 public class ImageTracerTest {
     HDRImage image;
@@ -11,9 +13,9 @@ public class ImageTracerTest {
     ImageTracer tracer;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         image = new HDRImage(4, 2);
-        camera = new PerspectiveCamera(1.f,2.f);
+        camera = new PerspectiveCamera(1.f, 2.f);
         tracer = new ImageTracer(image, camera);
     }
 
@@ -22,12 +24,12 @@ public class ImageTracerTest {
         Ray topLeftRay = tracer.fireRay(0, 0, 0.f, 0.f);
         assertTrue((new Point(0.f, 2.f, 1.f)).isClose(topLeftRay.at(1.f)));
 
-        Ray bottomRightRay =tracer.fireRay(3, 1, 1.f, 1.f);
+        Ray bottomRightRay = tracer.fireRay(3, 1, 1.f, 1.f);
         assertTrue((new Point(0.f, -2.f, -1.f)).isClose(bottomRightRay.at(1.f)));
     }
 
     @Test
-    void testUvSubMapping(){
+    void testUvSubMapping() {
         Ray ray1 = tracer.fireRay(0, 0, 2.5f, 1.5f);
         Ray ray2 = tracer.fireRay(2, 1, 0.5f, 0.5f);
         assertTrue(ray1.isClose(ray2));
@@ -36,8 +38,8 @@ public class ImageTracerTest {
     @Test
     void testImageCoverage() throws InvalidMatrixException {
         tracer.fireAllRays((ray) -> new Color(1.f, 2.f, 3.f), 10);
-        for(int i = 0; i < this.image.height; ++i){
-            for(int j = 0; j < this.image.width; ++j){
+        for (int i = 0; i < this.image.height; ++i) {
+            for (int j = 0; j < this.image.width; ++j) {
                 assertTrue(this.image.getPixel(j, i).isClose(new Color(1.f, 2.f, 3.f)));
             }
         }
@@ -46,7 +48,7 @@ public class ImageTracerTest {
     @Test
     void antialiasing() throws InvalidMatrixException {
         final int[] numOfRays = {0};
-        HDRImage smallImage = new HDRImage(1,1);
+        HDRImage smallImage = new HDRImage(1, 1);
         Camera camera = new OrthogonalCamera(1);
         ImageTracer tracer = new ImageTracer(smallImage, camera, 10, new PCG());
 

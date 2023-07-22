@@ -7,19 +7,10 @@ package org.mirrors;
 public class Point extends Geometry {
 
     /**
-     * Converts a Point object to a Vec object with the same coordinates.
-     *
-     * @return A new Vec object with the same coordinates as the current Point.
-     */
-    protected Vec toVec(){
-        return new Vec(this.x , this.y, this.z);
-    }
-
-    /**
      * Constructor for the Point class with no arguments.
      * Initializes x, y, and z to 0.
      */
-    public Point(){
+    public Point() {
         super();
     }
 
@@ -31,8 +22,17 @@ public class Point extends Geometry {
      * @param y The y-coordinate.
      * @param z The z-coordinate.
      */
-    public Point(float x, float y, float z){
+    public Point(float x, float y, float z) {
         super(x, y, z);
+    }
+
+    /**
+     * Converts a Point object to a Vec object with the same coordinates.
+     *
+     * @return A new Vec object with the same coordinates as the current Point.
+     */
+    protected Vec toVec() {
+        return new Vec(this.x, this.y, this.z);
     }
 
     /**
@@ -54,7 +54,7 @@ public class Point extends Geometry {
      * @param other The Point to subtract from the current Point.
      * @return A new Vec object that represents the difference between the current Point and the input Point.
      */
-    public Vec minus(Point other){
+    public Vec minus(Point other) {
         return difference(this, other, Vec.class);
     }
 
@@ -64,7 +64,7 @@ public class Point extends Geometry {
      * @param other The Vec to subtract from the current Point.
      * @return A new Point object that represents the difference between the current Point and the input Vec.
      */
-    public Point minus(Vec other){
+    public Point minus(Vec other) {
         return difference(this, other, Point.class);
     }
 
@@ -74,7 +74,7 @@ public class Point extends Geometry {
      * @param other The Vec to add to the current Point.
      * @return A new Point object that represents the sum of the current Point and the input Vec.
      */
-    public Point sum(Vec other){
+    public Point sum(Vec other) {
         return sum(this, other, Point.class);
     }
 }

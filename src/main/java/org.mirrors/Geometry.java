@@ -1,5 +1,7 @@
 package org.mirrors;
+
 import java.lang.reflect.InvocationTargetException;
+
 import static java.lang.Math.abs;
 
 /**
@@ -9,7 +11,7 @@ import static java.lang.Math.abs;
  * two geometries.
  */
 
-public abstract class Geometry{
+public abstract class Geometry {
     public float x;
     public float y;
     public float z;
@@ -18,7 +20,7 @@ public abstract class Geometry{
      * Constructor for the Geometry class with no arguments.
      * Initializes x, y, and z to 0.
      */
-    public Geometry(){
+    public Geometry() {
         this.x = 0.f;
         this.y = 0.f;
         this.z = 0.f;
@@ -32,7 +34,7 @@ public abstract class Geometry{
      * @param y The y-coordinate.
      * @param z The z-coordinate.
      */
-    public Geometry(float x, float y, float z){
+    public Geometry(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -62,8 +64,8 @@ public abstract class Geometry{
     /**
      * Returns a new instance of the specified subclass with coordinates equal to the difference between the coordinates of the two input Geometry objects.
      *
-     * @param a The first Geometry object.
-     * @param b The second Geometry object.
+     * @param a          The first Geometry object.
+     * @param b          The second Geometry object.
      * @param returnType The class of the subclass to return.
      * @return A new instance of the specified subclass with coordinates equal to the difference between the coordinates of the two input Geometry objects.
      */
@@ -74,10 +76,12 @@ public abstract class Geometry{
             result.y = a.y - b.y;
             result.z = a.z - b.z;
             return result;
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
+
     protected static <T extends Geometry> T sum(Geometry a, float b, Class<T> returnType) {
         try {
             T result = returnType.getDeclaredConstructor().newInstance();
@@ -85,7 +89,8 @@ public abstract class Geometry{
             result.y = a.y + b;
             result.z = a.z + b;
             return result;
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
@@ -93,8 +98,8 @@ public abstract class Geometry{
     /**
      * Returns a new instance of the specified subclass with coordinates equal to the sum of the coordinates of the two input Geometry objects.
      *
-     * @param a The first Geometry object.
-     * @param b The second Geometry object.
+     * @param a          The first Geometry object.
+     * @param b          The second Geometry object.
      * @param returnType The class of the subclass to return.
      * @return A new instance of the specified subclass with coordinates equal to the sum of the coordinates of the two input Geometry objects.
      */
@@ -105,7 +110,8 @@ public abstract class Geometry{
             result.y = a.y + b.y;
             result.z = a.z + b.z;
             return result;
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
@@ -125,13 +131,16 @@ public abstract class Geometry{
                 abs(diff.y) < epsilon &&
                 abs(diff.z) < epsilon);
     }
+
     /**
      * Returns a string representation of the current Geometry object in the format ClassName(x, y, z), where ClassName is the name of the actual subclass of Geometry and x, y, and z are the coordinates of the Geometry object.
      *
      * @return A string representation of the current Geometry object.
      */
     @Override
-    public String toString() {return "%s(%s, %s, %s)".formatted(this.getClass().getName(), x, y, z);}
+    public String toString() {
+        return "%s(%s, %s, %s)".formatted(this.getClass().getName(), x, y, z);
+    }
 
     public float get(int i) {
         switch (i) {

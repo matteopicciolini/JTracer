@@ -32,7 +32,7 @@ class SphereTest {
         Ray ray3 = new Ray(new Point(0.f, 0.f, 0.f), VecX);
         HitRecord intersection3 = sphere.rayIntersection(ray3);
         HitRecord trueIntersection3 = new HitRecord(new Point(1.f, 0.f, 0.f),
-                new Normal(- 1.f, 0.f, 0.f),
+                new Normal(-1.f, 0.f, 0.f),
                 new Vec2d(0.f, 0.5f),
                 1.f, ray3, new Sphere());
         assertNotNull(intersection3);
@@ -41,13 +41,13 @@ class SphereTest {
 
     @Test
     void sphereTransformation() throws InvalidMatrixException {
-        Sphere sphere = new Sphere(Transformation.translation(new Vec(10.f,0.f,0.f)), new Material());
+        Sphere sphere = new Sphere(Transformation.translation(new Vec(10.f, 0.f, 0.f)), new Material());
 
         Ray ray1 = new Ray(new Point(10.f, 0.f, 2.f), InvVecZ);
         HitRecord intersection1 = sphere.rayIntersection(ray1);
         HitRecord trueIntersection1 = new HitRecord(
                 new Point(10.f, 0.f, 1.f),
-                new Normal(0.f,0.f,1.f),
+                new Normal(0.f, 0.f, 1.f),
                 new Vec2d(0.f, 0.f),
                 1.f, ray1, new Sphere());
         assertNotNull(intersection1);
@@ -63,7 +63,7 @@ class SphereTest {
         assertNotNull(intersection2);
         assertTrue(trueIntersection2.isClose(intersection2));
 
-        assertNull(sphere.rayIntersection(new Ray(new Point(0.f,0.f,2.f), InvVecZ)));
-        assertNull(sphere.rayIntersection(new Ray(new Point(-10.f,0.f,0.f), InvVecZ)));
+        assertNull(sphere.rayIntersection(new Ray(new Point(0.f, 0.f, 2.f), InvVecZ)));
+        assertNull(sphere.rayIntersection(new Ray(new Point(-10.f, 0.f, 0.f), InvVecZ)));
     }
 }

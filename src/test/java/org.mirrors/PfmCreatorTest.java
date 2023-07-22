@@ -1,14 +1,13 @@
 package org.mirrors;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import static java.nio.ByteOrder.BIG_ENDIAN;
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PfmCreatorTest {
     @Test
@@ -58,7 +57,7 @@ class PfmCreatorTest {
         byte[][] bytes_arrays = new byte[2][];
         bytes_arrays[0] = Global.LEReferenceBytes;
         bytes_arrays[1] = Global.BEReferenceBytes;
-        for (byte [] bytes_array : bytes_arrays){
+        for (byte[] bytes_array : bytes_arrays) {
             HDRImage img = PfmCreator.readPfmImage(new ByteArrayInputStream(bytes_array));
             assertEquals(3, img.width);
             assertEquals(2, img.height);

@@ -245,7 +245,7 @@ public class Cone extends Shape {
      */
     private Vec2d conePointToUV(Point point) {
         float u = 0f, v = 0f;
-        if (abs(point.z) <1e-4f) {
+        if (abs(point.z) < 1e-4f) {
             u = (point.x + this.radius) / (4f * this.radius);  // u in [0,0.5]
             v = (point.y + this.radius) / (4f * this.radius);  // v in [0,0.5]
         } else {

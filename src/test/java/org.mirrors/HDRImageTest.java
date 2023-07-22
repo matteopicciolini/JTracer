@@ -1,12 +1,14 @@
 package org.mirrors;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteOrder;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class HDRImageTest {
 
@@ -55,6 +57,7 @@ class HDRImageTest {
         img.writePfm(stream_big, ByteOrder.BIG_ENDIAN);
         assertArrayEquals(stream_big.toByteArray(), Global.BEReferenceBytes);
     }
+
     @Test
     void readLine() throws IOException {
         InputStream targetStream = new ByteArrayInputStream("Hello\nWorld".getBytes());
@@ -92,7 +95,7 @@ class HDRImageTest {
         img.setPixel(0, 0, new Color(5.0f, 10.0f, 15.0f));
         img.setPixel(1, 0, new Color(500.0f, 1000.0f, 1500.0f));
         img.clampImage();
-        for(Color pixel : img.pixels){
+        for (Color pixel : img.pixels) {
             assertTrue(pixel.r >= 0 && pixel.r <= 1);
             assertTrue(pixel.g >= 0 && pixel.g <= 1);
             assertTrue(pixel.b >= 0 && pixel.b <= 1);

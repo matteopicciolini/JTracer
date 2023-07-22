@@ -84,13 +84,13 @@ class InStreamTest {
     @Test
     public void testLexer() throws IOException, GrammarErrorException {
         String input = """
-        # This is a comment
-        # This is another comment
-        new material skyMaterial(
-            diffuse(image("my file.pfm")),
-            <5.0, 500.0, 300.0>
-        ) # Comment at the end of the line
-""";
+                        # This is a comment
+                        # This is another comment
+                        new material skyMaterial(
+                            diffuse(image("my file.pfm")),
+                            <5.0, 500.0, 300.0>
+                        ) # Comment at the end of the line
+                """;
         InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
 
         assertIsKeyword(inStream.readToken(), KeywordEnum.NEW);
@@ -108,33 +108,33 @@ class InStreamTest {
     @Test
     public void TestParser() throws InvalidMatrixException, GrammarErrorException, IOException {
         String input = """
-        float clock(150)
-    
-        material skyMaterial(
-            diffuse(uniform(<0, 0, 0>)),
-            uniform(<0.7, 0.5, 1>)
-        )
-    
-        # Here is a comment
-    
-        material groundMaterial(
-            diffuse(checkered(<0.3, 0.5, 0.1>,
-                              <0.1, 0.2, 0.5>, 4)),
-            uniform(<0, 0, 0>)
-        )
-    
-        material sphereMaterial(
-            specular(uniform(<0.5, 0.5, 0.5>)),
-            uniform(<black>)
-        )
-    
-        plane (skyMaterial, translation([0, 0, 100]) * rotationY(clock))
-        plane (groundMaterial, identity)
-    
-        sphere(sphereMaterial, translation([0, 0, 1]))
-    
-        camera(perspective, rotationZ(30) * translation([-4, 0, 1]), 1.0, 1.0)
-        """;
+                float clock(150)
+                    
+                material skyMaterial(
+                    diffuse(uniform(<0, 0, 0>)),
+                    uniform(<0.7, 0.5, 1>)
+                )
+                    
+                # Here is a comment
+                    
+                material groundMaterial(
+                    diffuse(checkered(<0.3, 0.5, 0.1>,
+                                      <0.1, 0.2, 0.5>, 4)),
+                    uniform(<0, 0, 0>)
+                )
+                    
+                material sphereMaterial(
+                    specular(uniform(<0.5, 0.5, 0.5>)),
+                    uniform(<black>)
+                )
+                    
+                plane (skyMaterial, translation([0, 0, 100]) * rotationY(clock))
+                plane (groundMaterial, identity)
+                    
+                sphere(sphereMaterial, translation([0, 0, 1]))
+                    
+                camera(perspective, rotationZ(30) * translation([-4, 0, 1]), 1.0, 1.0)
+                """;
         InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
         Scene scene = inStream.parseScene();
 
@@ -170,7 +170,7 @@ class InStreamTest {
 
         assertTrue(skyMaterial.emittedRadiance instanceof UniformPigment);
         assertTrue(skyMaterial.emittedRadiance.getColor(new Vec2d()).isClose(new Color(0.7f, 0.5f, 1.f)));
-        assertTrue(groundMaterial.emittedRadiance instanceof  UniformPigment);
+        assertTrue(groundMaterial.emittedRadiance instanceof UniformPigment);
         assertTrue(groundMaterial.emittedRadiance.getColor(new Vec2d()).isClose(Black));
         assertTrue(sphereMaterial.emittedRadiance instanceof UniformPigment);
         assertTrue(sphereMaterial.emittedRadiance.getColor(new Vec2d()).isClose(Black));
@@ -186,11 +186,11 @@ class InStreamTest {
         assertTrue(Transformation.translation(new Vec(0.f, 0.f, 0.f)).isClose(scene.objects.get(1).transformation));
         assertTrue(Transformation.translation(new Vec(0.f, 0.f, 100.f)).times(Transformation.rotationY(150)).isClose(scene.objects.get(0).transformation));
 
-        assertTrue((new Color(0.f, 0.f,0.f)).isClose(((UniformPigment) scene.objects.get(0).material.brdf.pigment).color));
-        assertTrue((new Color(0.7f, 0.5f,1.f)).isClose(((UniformPigment) scene.objects.get(0).material.emittedRadiance).color));
+        assertTrue((new Color(0.f, 0.f, 0.f)).isClose(((UniformPigment) scene.objects.get(0).material.brdf.pigment).color));
+        assertTrue((new Color(0.7f, 0.5f, 1.f)).isClose(((UniformPigment) scene.objects.get(0).material.emittedRadiance).color));
 
-        assertTrue((new Color(0.5f, 0.5f,0.5f)).isClose(((UniformPigment) scene.objects.get(2).material.brdf.pigment).color));
-        assertTrue((new Color(0.f, 0.f,0.f)).isClose(((UniformPigment) scene.objects.get(2).material.emittedRadiance).color));
+        assertTrue((new Color(0.5f, 0.5f, 0.5f)).isClose(((UniformPigment) scene.objects.get(2).material.brdf.pigment).color));
+        assertTrue((new Color(0.f, 0.f, 0.f)).isClose(((UniformPigment) scene.objects.get(2).material.emittedRadiance).color));
 
     }
 
@@ -198,8 +198,8 @@ class InStreamTest {
     public void testParserUndefinedMaterial() throws InvalidMatrixException, IOException {
         try {
             String input = """
-    plane(thisMaterialDoesNotExist, identity)
-    """;
+                    plane(thisMaterialDoesNotExist, identity)
+                    """;
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
             fail("The code did not throw an exception");
@@ -212,9 +212,9 @@ class InStreamTest {
     public void testParserDoubleCamera() throws InvalidMatrixException, IOException {
         try {
             String input = """
-    camera(perspective, rotationZ(30) * translation([-4, 0, 1]), 1.0, 1.0)
-    camera(orthogonal, identity, 1.0, 1.0)
-    """;
+                    camera(perspective, rotationZ(30) * translation([-4, 0, 1]), 1.0, 1.0)
+                    camera(orthogonal, identity, 1.0, 1.0)
+                    """;
             InStream inStream = new InStream(new ByteArrayInputStream(input.getBytes()));
             Scene scene = inStream.parseScene();
             fail("The code did not throw an exception");

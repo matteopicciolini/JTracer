@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Represents a difference operation between two shapes in Constructive Solid Geometry (CSG).
  */
-public class CSGDifference extends CSG{
+public class CSGDifference extends CSG {
 
     /**
      * Constructs a CSG difference operation with the specified transformation, shape1, and shape2.
@@ -48,7 +48,7 @@ public class CSGDifference extends CSG{
         Ray invRay = ray.transform(this.transformation.inverse());
         List<HitRecord> intersections1 = this.shape1.rayIntersectionList(invRay);
 
-        if(intersections1 == null) return null;
+        if (intersections1 == null) return null;
         int dim1 = intersections1.size();
         for (int i = dim1 - 1; i >= 0; i--) {
             if (shape2.isInternal(intersections1.get(i).worldPoint)) {

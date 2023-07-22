@@ -1,14 +1,14 @@
 package org.mirrors;
 
-import com.sun.jdi.connect.TransportTimeoutException;
 import org.mirrors.compiler.GrammarErrorException;
 import org.mirrors.compiler.InStream;
 import org.mirrors.compiler.Scene;
+
 import java.io.*;
-import java.util.ArrayList;
 
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
-import static org.mirrors.Global.*;
+import static org.mirrors.Global.Black;
+import static org.mirrors.Global.Yellow;
 
 public class Tracer {
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class Tracer {
 
     public static void calculateAverage(HDRImage firstImage, HDRImage secondImage, String outputFileName) throws IOException {
         HDRImage image = new HDRImage(500, 500);
-        for(int i = 0; i < image.width; ++i) {
+        for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
                 image.setPixel(i, j, firstImage.getPixel(i, j).sum(secondImage.getPixel(i, j)).prod(0.5f));
             }
@@ -40,13 +40,13 @@ public class Tracer {
                 Color ave = new Color(0.f, 0.f, 0.f);
                 for (int k = 0; k < numImages; k++) {
                     HDRImage currentImage = images[k];
-                    if (currentImage.width != width || currentImage.height != height){
+                    if (currentImage.width != width || currentImage.height != height) {
                         throw new Exception("Dimension error!");
                     }
                     Color pixel = currentImage.getPixel(i, j);
                     ave = ave.sum(pixel);
                 }
-                ave = ave.prod(1.f/numImages);
+                ave = ave.prod(1.f / numImages);
                 averageImage.setPixel(i, j, ave);
             }
         }
@@ -86,8 +86,8 @@ public class Tracer {
         Material sphereMaterial = new Material(new SpecularBRDF(new UniformPigment(Yellow)));
         Material boxMaterial = new Material(new DiffuseBRDF(new UniformPigment(new Color(1f, 0f, 0f))), new UniformPigment(Black));
         Material groundMaterial = new Material(new DiffuseBRDF(new CheckeredPigment(
-                                new Color(0.f, 0.5f, 0.f),
-                                new Color(1f, 1f, 1f), 16)), new UniformPigment(Black)
+                new Color(0.f, 0.5f, 0.f),
+                new Color(1f, 1f, 1f), 16)), new UniformPigment(Black)
         );
 
         Transformation rotation = Transformation.rotationZ(parameters.angleDeg);
@@ -101,7 +101,7 @@ public class Tracer {
 
         //CUBE
         translation = Transformation.translation(new Vec(0f, 0f, 0.042f));
-        world.addShape(new Box(new Point(-0.2f,-0.2f,-0.2f), new Point(0.2f, 0.2f, 0.2f),
+        world.addShape(new Box(new Point(-0.2f, -0.2f, -0.2f), new Point(0.2f, 0.2f, 0.2f),
                 translation.times(Transformation.rotationX(40).times(Transformation.rotationY(45))), boxMaterial));
         translation = Transformation.translation(new Vec(0.f, 0.f, -0.1f));
 
@@ -116,14 +116,14 @@ public class Tracer {
 
         HDRImage image = new HDRImage(parameters.width, parameters.height);
         Camera camera = parameters.orthogonal ?
-                new OrthogonalCamera((float) parameters.width/parameters.height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
-                new PerspectiveCamera(1f, (float) parameters.width/parameters.height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
+                new OrthogonalCamera((float) parameters.width / parameters.height, Transformation.translation(new Vec(1.0f, 0.0f, 0.0f))) :
+                new PerspectiveCamera(1f, (float) parameters.width / parameters.height, rotation.times(Transformation.translation(new Vec(0.1f, 0f, 0.1f)).times(Transformation.rotationY(3))));
 
         PCG pcg = new PCG();
         ImageTracer tracer;
-        if (parameters.antialiasing){
+        if (parameters.antialiasing) {
             tracer = new ImageTracer(image, camera, 4, pcg);
-        }else{
+        } else {
             tracer = new ImageTracer(image, camera);
         }
         createPfmImageWithAlgorithm(parameters, world, image, tracer, pcg);
@@ -152,7 +152,7 @@ public class Tracer {
             if (file.delete()) {
                 System.out.println("The file " + fileName + " has been successfully deleted.");
             } else {
-                System.out.println("Unable to delete the file " + fileName +".");
+                System.out.println("Unable to delete the file " + fileName + ".");
             }
         } else {
             System.out.println("The file " + fileName + "does not exist.");
@@ -171,14 +171,14 @@ public class Tracer {
         HDRImage image = new HDRImage(parameters.width, parameters.height);
         ImageTracer tracer;
         PCG pcg = new PCG(parameters.initState, parameters.initSeq);
-        if (parameters.antialiasing){
+        if (parameters.antialiasing) {
             tracer = new ImageTracer(image, scene.camera, parameters.samplesPerSide, pcg);
-        }else{
+        } else {
             tracer = new ImageTracer(image, scene.camera, pcg);
         }
 
         World world = new World();
-        for (int i = 0; i < scene.objects.size();  ++i){
+        for (int i = 0; i < scene.objects.size(); ++i) {
             world.addShape(scene.objects.get(i));
         }
         createPfmImageWithAlgorithm(parameters, world, image, tracer, pcg);

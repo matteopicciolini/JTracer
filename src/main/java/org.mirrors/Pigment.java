@@ -20,7 +20,7 @@ public abstract class Pigment {
      * @param uv the Vec2d coordinates
      * @return the color at the given coordinates
      */
-    public Color getColor(Vec2d uv){
+    public Color getColor(Vec2d uv) {
         return getColor(uv.u, uv.v);
     }
 }
