@@ -85,7 +85,7 @@ With the `--args` flag, you can pass parameters from the command line. For examp
 ./gradlew run --args="render --input=image.txt"
 ```
 
-Below are the available execution modes and parameters using the `Gradle` `run` task, as it avoids the generation of the binary file. 
+Below, and in more detail in [DOCUMENTATION file][documentation],  are the available execution modes and parameters using the `Gradle` `run` task, as it avoids the generation of the binary file. 
 However, please note that what follows is also (and especially) valid for the binary file generated with the `installDist` task.
 
 ### Modes
@@ -120,12 +120,12 @@ For proper functionality, this code requires the user to be familiar with some s
 This raytracer implements the following shapes:
 
 From version 1.0.0:
-- Sphere 🌍
+- Spheres 🌍
 - Planes ✈️
 - Boxes 📦
-- Cylinder 🎩
+- Cylinders 🎩
 - Cones 🍦
-- Hyperboloid ⏳
+- Hyperboloids ⏳
 - CSG Union ➕
 - CSG Difference ➖
 - CSG Intersection ⋂
