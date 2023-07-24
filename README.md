@@ -1,4 +1,4 @@
-<img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/5fd1b57c-910c-461e-af29-7c2654a78bd3"  width="300">
+<img align="right" src="https://github.com/matteopicciolini/JTracer/assets/116730685/1185d051-9335-4475-a974-ebebec810c7e"  width="300">
 
 <h1 align="center"> JTracer </h1> <br>
 
@@ -188,11 +188,12 @@ In this project, there is also a `Python` script that takes an input `.obj` file
 
   <div align="center">
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/b1e58f2f-39f7-4e69-b3b9-46f6441082cb" height="200" />
-  <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/5d94964f-3046-47eb-a455-621440c069b1" height="200" />
+  <img src="https://github.com/matteopicciolini/JTracer/assets/58447570/213f13c1-4e5c-427f-89c5-0bdc29fefd78" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/be40e663-6059-4ccf-997e-e5120c4d44cc" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/58447570/ae3170d6-dcff-4423-95c0-3fa12c66af33" height="200" />
+
 
 
       
@@ -207,7 +208,7 @@ In this project, there is also a `Python` script that takes an input `.obj` file
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/395d57a8-9feb-4662-b2fe-2df412299edd" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/06f25243-059d-42a2-9e50-8dc767b2b991" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/8b8ed1e9-1ef6-4656-b799-7e07941a3b66" height="200" />
-  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/a6240427-a372-41e4-a10f-6643ab62d1cd" height="200" />
+  <img src="https://github.com/matteopicciolini/JTracer/assets/116730685/1185d051-9335-4475-a974-ebebec810c7e" height="200" />
 </div>
 <p align="center"><em> New York Zoo. Villa Collection.</em></p>
 
