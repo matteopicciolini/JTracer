@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v1.1.2
+#### Fixed
+- Fixed issue: [#22](https://github.com/matteopicciolini/JTracer/pull/22).
+
+
 ## v1.1.1
 #### Fixed
 - Fixed bug in Parser: [#21](https://github.com/matteopicciolini/JTracer/pull/21).
