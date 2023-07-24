@@ -30,7 +30,6 @@ class PathTracerTest {
 
             float colorExpected = emittedRadianceFloat / (1.f - reflectanceFloat);
 
-            System.out.println(colorExpected - color.r);
             assertEquals(colorExpected, color.r, 1e-3);
             assertEquals(colorExpected, color.g, 1e-3);
             assertEquals(colorExpected, color.b, 1e-3);

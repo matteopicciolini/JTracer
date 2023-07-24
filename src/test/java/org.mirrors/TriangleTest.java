@@ -24,7 +24,6 @@ public class TriangleTest {
 
         Ray ray2 = new Ray(new Point(0f, 0f, 0), InvVecY);
         HitRecord intersection2 = tri.rayIntersection(ray2);
-        System.out.println("raggioparallelo");
 
         assertNull(intersection2);
     }
@@ -35,7 +34,6 @@ public class TriangleTest {
         Point v1 = new Point(2, 0, 3);
         Point v2 = new Point(1, 2, 3);
         Triangle tri = new Triangle(v0, v1, v2);
-        System.out.println(tri.calculateTriangleArea(v0, v1, v2));
         assertEquals(tri.calculateTriangleArea(v0, v1, v2), 2f);
     }
 

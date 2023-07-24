@@ -9,11 +9,7 @@ import java.util.List;
  * Represents a hyperboloid shape in 3D space.
  */
 public class Hyperboloid extends Shape {
-    /*
-    private float a; // Parametro che influenza la dimensione del raggio dell'iperboloide lungo l'asse x
-    private float b; // Parametro che influenza la dimensione del raggio dell'iperboloide lungo l'asse y
-    private float c; // Parametro che influenza la dimensione del raggio dell'iperboloide lungo l'asse z
-    */
+
     private float minZ = -2.5f;
     private float maxZ = 2.5f;
 

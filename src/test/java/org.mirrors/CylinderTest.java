@@ -73,7 +73,6 @@ class CylinderTest {
 
         List<HitRecord> intersections1 = cylinder.rayIntersectionList(ray1);
 
-        System.out.println(intersections1.get(1).worldPoint);
         assertTrue(intersections1.get(1).worldPoint.isClose(new Point(0.5f, 0.0f, -1.0f)));
         assertTrue(intersections1.get(1).surfPoint.isClose(new Vec2d(0.0f, 0.5f)));
         assertTrue(intersections1.get(1).normal.isClose(new Normal(0.0f, 0.0f, 1.0f)));

@@ -175,22 +175,16 @@ public class TriangleMeshTest {
 
         //Verifica normali normalizzate
 
-        System.out.println("riscalato");
-        for (int i = 0; i < fileS.triangles.size(); i++) {
 
-            System.out.println(fileS.triangles.get(i).norm.module());
+        for (int i = 0; i < fileS.triangles.size(); i++) {
             assertEquals(fileS.triangles.get(i).norm.module(), 1, 1e-5);
         }
-        System.out.println("traslato");
-        for (int i = 0; i < fileT.triangles.size(); i++) {
 
-            System.out.println(fileT.triangles.get(i).norm.module());
+        for (int i = 0; i < fileT.triangles.size(); i++) {
             assertEquals(fileT.triangles.get(i).norm.module(), 1, 1e-5);
         }
-        System.out.println("ruotato");
-        for (int i = 0; i < fileR.triangles.size(); i++) {
 
-            System.out.println(fileR.triangles.get(i).norm.module());
+        for (int i = 0; i < fileR.triangles.size(); i++) {
             assertEquals(fileR.triangles.get(i).norm.module(), 1, 1e-5);
         }
 
@@ -201,17 +195,12 @@ public class TriangleMeshTest {
         Transformation rot = Transformation.rotationY(-90);
         Material green = new Material(new DiffuseBRDF(new UniformPigment(Green)));
 
-        System.out.println(green);
         TriangleMesh fileR = new TriangleMesh(green, rot);
         fileR.createFileShape("shapes_txt/tetraSingle.txt");
 
         Ray rayx = new Ray(new Point(10f, 0.1f, 0.1f), InvVecX);
 
         HitRecord hit = fileR.rayIntersection(rayx);
-        System.out.println(fileR.triangles.get(0).norm);
-        System.out.println(fileR.triangles.get(0).material);
-        System.out.println(hit.worldPoint);
-
 
     }
 }

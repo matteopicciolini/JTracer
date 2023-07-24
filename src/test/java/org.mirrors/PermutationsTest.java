@@ -25,6 +25,5 @@ public class PermutationsTest {
                 }
             }
         }
-        System.out.println(c);
     }
 }

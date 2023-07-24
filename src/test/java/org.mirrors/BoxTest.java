@@ -17,7 +17,6 @@ class BoxTest {
         float expectedT1 = 1.5F;
         HitRecord int1 = b.rayIntersection(ray1);
 
-        System.out.println(int1.surfPoint);
         assertTrue(int1.worldPoint.isClose(expectedHitPoint1));
         assertTrue(int1.normal.isClose(expectedNormal1));
         assertEquals(int1.t, expectedT1, 1e-3);
@@ -60,5 +59,4 @@ class BoxTest {
         assertEquals(int4.t, expectedT4, 1e-3);
         assertTrue(int4.surfPoint.isClose(expectedUV4));
     }
-
 }
