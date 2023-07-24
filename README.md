@@ -193,6 +193,7 @@ In this project, there is also a `Python` script that takes an input `.obj` file
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/d4d99cdc-bdf1-4231-b175-00c373608d56" height="200" />
   <img src="https://github.com/matteopicciolini/ray_tracing/assets/58447570/a4470de5-6317-4ce0-ab6c-dd5b13f8296d" height="200" />
   <img src="https://github.com/matteopicciolini/JTracer/assets/58447570/ae3170d6-dcff-4423-95c0-3fa12c66af33" height="200" />
+  <img src="https://github.com/matteopicciolini/JTracer/assets/58447570/213f13c1-4e5c-427f-89c5-0bdc29fefd78" height="200" />
 
 
       
