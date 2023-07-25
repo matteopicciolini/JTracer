@@ -51,20 +51,20 @@ sphere(
 fileshape(
           deer_mat,
           scaling([1.4, 1.1, 1.4]) * rotationX(90) * translation([1.4, 1.2, 0]) * rotationY(180),
-          "shapes_txt/deer.txt"
+          "ShapesTxt/deer.txt"
 )
 
 #cat
 fileshape(
           cat_mat,
           scaling([0.6, 0.2, 0.3]) * rotationX(90) * translation([3, 1.9, -4.9]) * rotationY(180),
-          "shapes_txt/cat.txt"
+          "ShapesTxt/cat.txt"
 )
 
 fileshape(
           white_mat,
           rotationX(90) * translation([1.57, 0.65, 1.2]) * rotationY(180) * scaling([0.8, 0.8, 0.4]),
-          "shapes_txt/wolf.txt"
+          "ShapesTxt/wolf.txt"
 )
 
 #wolf
