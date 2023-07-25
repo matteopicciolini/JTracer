@@ -1,10 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## HEAD
+- [Rename](https://github.com/matteopicciolini/JTracer/commit/842ca080dd2323122834fb0ff6afe84f33eca425) directory `shape_txt` in `ShapeTxt`.
 
+#### Fixed
+- Fixed [bug](https://github.com/matteopicciolini/JTracer/commit/59aef2a64f88c4df70577014087769211c90dd62) in progress bar.
+  
 ## v1.1.2
 #### Fixed
 - Fixed issue: [#22](https://github.com/matteopicciolini/JTracer/pull/22).
-
 
 ## v1.1.1
 #### Fixed
