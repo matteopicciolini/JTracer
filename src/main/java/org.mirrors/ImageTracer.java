@@ -82,6 +82,7 @@ public class ImageTracer {
                 progressBar.updateProgress();
             }
         }
+        progressBar.completeProgress();
     }
 
     /**
